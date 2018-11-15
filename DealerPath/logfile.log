@@ -1,0 +1,35 @@
+2018-11-15 20:56:49,543 INFO  [LogFactory] - Test data file path is :D:\Users\sc42324\Documents\dealerpath15Nov-master\DealerPath\TestData\DealerPathAutomation_R1_India.xlsx
+2018-11-15 20:56:54,821 INFO  [LogFactory] - opening the browser....
+2018-11-15 20:56:57,740 INFO  [LogFactory] - ****************************************************************************************
+2018-11-15 20:56:57,740 INFO  [LogFactory] - Verify Valid Login
+2018-11-15 20:56:57,740 INFO  [LogFactory] - ****************************************************************************************
+2018-11-15 20:56:57,906 INFO  [LogFactory] - Username...
+2018-11-15 20:56:58,072 INFO  [LogFactory] - Password ...
+2018-11-15 20:56:58,817 INFO  [LogFactory] - Clicked on Sign-In button...
+2018-11-15 20:57:01,370 INFO  [LogFactory] - User logged-in successfully
+2018-11-15 20:57:01,564 INFO  [LogFactory] - Utility Menu Clicked.....
+2018-11-15 20:57:01,693 INFO  [LogFactory] - Successfully clicked on Admin Link from utility manu....
+2018-11-15 20:57:01,694 INFO  [LogFactory] - Unique number of RACF ID's  >>>>>   1 [X611394]
+2018-11-15 20:57:04,629 INFO  [LogFactory] - Clicked Analyze User link from left navigation.....
+2018-11-15 20:57:04,644 INFO  [LogFactory] - Enter User RACF ID.....X611394
+2018-11-15 20:57:14,910 INFO  [LogFactory] - Click on Analyze Button.....
+2018-11-15 20:57:18,400 INFO  [LogFactory] - X611394 Analyze User Details{MRU=[3P00], Department=[Business Admin & HR, Finance & Incentives, Information Technology, Integrated Solutions, Marketing & Advertising, Parts & Attachments, Sales, Service & Support, Training & Events], Language=[en_GB], Security Groups=[dealer, external, O3PDPDP, D3P, Agriculture Dealer R1_IN, Agriculture Main Dealer, Agriculture Main Dealer RBUG Group], Theme Colors=[Green & Yellow], User Products=[Agriculture], Access=[Y]}
+2018-11-15 20:57:21,251 INFO  [LogFactory] - User X611394 Impersonated Successfully
+2018-11-15 20:57:32,274 INFO  [LogFactory] - Unable to locate the element- No such Element Found
+2018-11-15 20:57:32,274 INFO  [LogFactory] - DealerPrinciple : Y   Multilingual Flag :  Y   AddtionalTestcases : Y    DealerType :   NA
+2018-11-15 20:57:32,274 INFO  [LogFactory] - Reading addtional testcases sheet for the dealer X611394
+2018-11-15 20:57:33,368 INFO  [LogFactory] - User is on homepage
+2018-11-15 20:57:33,368 INFO  [LogFactory] - Translation is not found for : [DealerPath] so it is translated to en_US as: [DealerPath]
+2018-11-15 20:57:33,368 INFO  [LogFactory] - ****************************************************************************************
+2018-11-15 20:57:33,368 INFO  [LogFactory] - TC02_Homepage : Verify title on the Homepage is displayed
+2018-11-15 20:57:33,368 INFO  [LogFactory] - ****************************************************************************************
+2018-11-15 20:57:33,410 INFO  [LogFactory] - Page Title DealerPath is displayed on the homepage
+2018-11-15 20:57:33,480 INFO  [LogFactory] - Translation is not found for : [Welcome message is displayed] so it is translated to en_US as: [Welcome message is displayed]
+2018-11-15 20:57:33,480 INFO  [LogFactory] - ****************************************************************************************
+2018-11-15 20:57:33,480 INFO  [LogFactory] - TC03_Homepage : Verify welcome message on homepage is showing
+2018-11-15 20:57:33,480 INFO  [LogFactory] - ****************************************************************************************
+2018-11-15 20:57:33,533 INFO  [LogFactory] - Welcome username :Welcome, SHASHI AGARWAL
+2018-11-15 20:57:33,562 INFO  [LogFactory] - Translation is not found for : [Green & Yellow] so it is translated to en_US as: [Green & Yellow]
+2018-11-15 20:57:33,562 INFO  [LogFactory] - ****************************************************************************************
+2018-11-15 20:57:33,563 INFO  [LogFactory] - TC04_Homepage : Verify selected theme color label on My Preferences
+2018-11-15 20:57:33,563 INFO  [LogFactory] - ****************************************************************************************

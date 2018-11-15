@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="DealerPath Application Automation Test Suite">
+  <test thread-count="1" name="Dealer Path">
+    <classes>
+      <class name="com.deere.TestCasesFactory.Homepage_TestCase"/>
+      <class name="com.deere.TestCasesFactory.EndImpersonate_TestCase"/>
+    </classes>
+  </test> <!-- Dealer Path -->
+</suite> <!-- DealerPath Application Automation Test Suite -->

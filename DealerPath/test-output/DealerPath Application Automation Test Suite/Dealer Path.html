@@ -1,0 +1,334 @@
+<html>
+<head>
+<title>TestNG:  Dealer Path</title>
+<link href="../testng.css" rel="stylesheet" type="text/css" />
+<link href="../my-testng.css" rel="stylesheet" type="text/css" />
+
+<style type="text/css">
+.log { display: none;} 
+.stack-trace { display: none;} 
+</style>
+<script type="text/javascript">
+<!--
+function flip(e) {
+  current = e.style.display;
+  if (current == 'block') {
+    e.style.display = 'none';
+    return 0;
+  }
+  else {
+    e.style.display = 'block';
+    return 1;
+  }
+}
+
+function toggleBox(szDivId, elem, msg1, msg2)
+{
+  var res = -1;  if (document.getElementById) {
+    res = flip(document.getElementById(szDivId));
+  }
+  else if (document.all) {
+    // this is the way old msie versions work
+    res = flip(document.all[szDivId]);
+  }
+  if(elem) {
+    if(res == 0) elem.innerHTML = msg1; else elem.innerHTML = msg2;
+  }
+
+}
+
+function toggleAllBoxes() {
+  if (document.getElementsByTagName) {
+    d = document.getElementsByTagName('div');
+    for (i = 0; i < d.length; i++) {
+      if (d[i].className == 'log') {
+        flip(d[i]);
+      }
+    }
+  }
+}
+
+// -->
+</script>
+
+</head>
+<body>
+<h2 align='center'>Dealer Path</h2><table border='1' align="center">
+<tr>
+<td>Tests passed/Failed/Skipped:</td><td>10/2/0</td>
+</tr><tr>
+<td>Started on:</td><td>Mon Nov 05 11:55:03 IST 2018</td>
+</tr>
+<tr><td>Total time:</td><td>331 seconds (331180 ms)</td>
+</tr><tr>
+<td>Included groups:</td><td></td>
+</tr><tr>
+<td>Excluded groups:</td><td></td>
+</tr>
+</table><p/>
+<small><i>(Hover the method name to see the test class name)</i></small><p/>
+<table width='100%' border='1' class='invocation-failed'>
+<tr><td colspan='4' align='center'><b>FAILED TESTS</b></td></tr>
+<tr><td><b>Test method</b></td>
+<td width="30%"><b>Exception</b></td>
+<td width="10%"><b>Time (seconds)</b></td>
+<td><b>Instance</b></td>
+</tr>
+<tr>
+<td title='com.deere.TestCasesFactory.Announcement_TestCase.verifyAnnouncementOnDepartmentUncheck()'><b>verifyAnnouncementOnDepartmentUncheck</b><br>Test class: com.deere.TestCasesFactory.Announcement_TestCase</td>
+<td><div><pre>java.lang.IndexOutOfBoundsException: Index 0 out-of-bounds for length 0
+	at java.base/jdk.internal.util.Preconditions.outOfBounds(Preconditions.java:64)
+	at java.base/jdk.internal.util.Preconditions.outOfBoundsCheckIndex(Preconditions.java:70)
+	at java.base/jdk.internal.util.Preconditions.checkIndex(Preconditions.java:248)
+	at java.base/java.util.Objects.checkIndex(Objects.java:372)
+	at java.base/java.util.ArrayList.get(ArrayList.java:440)
+	at com.deere.TestCasesFactory.Announcement_TestCase.verifyAnnouncementOnDepartmentUncheck(Announcement_TestCase.java:74)
+	at com.deere.Helpers.IterationTest.testNgSuite(IterationTest.java:56)
+	at com.deere.Helpers.Invoke.invokeUserCredentials(Invoke.java:78)
+... Removed 45 stack frames</pre></div><a href='#' onClick='toggleBox("stack-trace630949334", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace630949334'><pre>java.lang.IndexOutOfBoundsException: Index 0 out-of-bounds for length 0
+	at java.base/jdk.internal.util.Preconditions.outOfBounds(Preconditions.java:64)
+	at java.base/jdk.internal.util.Preconditions.outOfBoundsCheckIndex(Preconditions.java:70)
+	at java.base/jdk.internal.util.Preconditions.checkIndex(Preconditions.java:248)
+	at java.base/java.util.Objects.checkIndex(Objects.java:372)
+	at java.base/java.util.ArrayList.get(ArrayList.java:440)
+	at com.deere.TestCasesFactory.Announcement_TestCase.verifyAnnouncementOnDepartmentUncheck(Announcement_TestCase.java:74)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:564)
+	at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:84)
+	at org.testng.internal.Invoker.invokeMethod(Invoker.java:714)
+	at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:901)
+	at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:1231)
+	at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:127)
+	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:111)
+	at org.testng.TestRunner.privateRun(TestRunner.java:767)
+	at org.testng.TestRunner.run(TestRunner.java:617)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:348)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:343)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:305)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:254)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:86)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1224)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1149)
+	at org.testng.TestNG.run(TestNG.java:1057)
+	at com.deere.Helpers.IterationTest.testNgSuite(IterationTest.java:56)
+	at com.deere.Helpers.Invoke.invokeUserCredentials(Invoke.java:78)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:564)
+	at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:84)
+	at org.testng.internal.Invoker.invokeMethod(Invoker.java:714)
+	at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:901)
+	at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:1231)
+	at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:127)
+	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:111)
+	at org.testng.TestRunner.privateRun(TestRunner.java:767)
+	at org.testng.TestRunner.run(TestRunner.java:617)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:348)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:343)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:305)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:254)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:86)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1224)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1149)
+	at org.testng.TestNG.run(TestNG.java:1057)
+	at org.testng.remote.AbstractRemoteTestNG.run(AbstractRemoteTestNG.java:114)
+	at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:251)
+	at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:77)
+</pre></div></td>
+<td>27</td>
+<td>com.deere.TestCasesFactory.Announcement_TestCase@75181b50</td></tr>
+<tr>
+<td title='com.deere.TestCasesFactory.Announcement_TestCase.verifyCountryUncheckOfAnnouncementPortletOnHomepage()'><b>verifyCountryUncheckOfAnnouncementPortletOnHomepage</b><br>Test class: com.deere.TestCasesFactory.Announcement_TestCase</td>
+<td><div><pre>java.lang.IndexOutOfBoundsException: Index 0 out-of-bounds for length 0
+	at java.base/jdk.internal.util.Preconditions.outOfBounds(Preconditions.java:64)
+	at java.base/jdk.internal.util.Preconditions.outOfBoundsCheckIndex(Preconditions.java:70)
+	at java.base/jdk.internal.util.Preconditions.checkIndex(Preconditions.java:248)
+	at java.base/java.util.Objects.checkIndex(Objects.java:372)
+	at java.base/java.util.ArrayList.get(ArrayList.java:440)
+	at com.deere.TestCasesFactory.Announcement_TestCase.verifyCountryUncheckOfAnnouncementPortletOnHomepage(Announcement_TestCase.java:190)
+	at com.deere.Helpers.IterationTest.testNgSuite(IterationTest.java:56)
+	at com.deere.Helpers.Invoke.invokeUserCredentials(Invoke.java:78)
+... Removed 45 stack frames</pre></div><a href='#' onClick='toggleBox("stack-trace989001798", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace989001798'><pre>java.lang.IndexOutOfBoundsException: Index 0 out-of-bounds for length 0
+	at java.base/jdk.internal.util.Preconditions.outOfBounds(Preconditions.java:64)
+	at java.base/jdk.internal.util.Preconditions.outOfBoundsCheckIndex(Preconditions.java:70)
+	at java.base/jdk.internal.util.Preconditions.checkIndex(Preconditions.java:248)
+	at java.base/java.util.Objects.checkIndex(Objects.java:372)
+	at java.base/java.util.ArrayList.get(ArrayList.java:440)
+	at com.deere.TestCasesFactory.Announcement_TestCase.verifyCountryUncheckOfAnnouncementPortletOnHomepage(Announcement_TestCase.java:190)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:564)
+	at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:84)
+	at org.testng.internal.Invoker.invokeMethod(Invoker.java:714)
+	at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:901)
+	at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:1231)
+	at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:127)
+	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:111)
+	at org.testng.TestRunner.privateRun(TestRunner.java:767)
+	at org.testng.TestRunner.run(TestRunner.java:617)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:348)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:343)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:305)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:254)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:86)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1224)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1149)
+	at org.testng.TestNG.run(TestNG.java:1057)
+	at com.deere.Helpers.IterationTest.testNgSuite(IterationTest.java:56)
+	at com.deere.Helpers.Invoke.invokeUserCredentials(Invoke.java:78)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:564)
+	at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:84)
+	at org.testng.internal.Invoker.invokeMethod(Invoker.java:714)
+	at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:901)
+	at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:1231)
+	at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:127)
+	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:111)
+	at org.testng.TestRunner.privateRun(TestRunner.java:767)
+	at org.testng.TestRunner.run(TestRunner.java:617)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:348)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:343)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:305)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:254)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:86)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1224)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1149)
+	at org.testng.TestNG.run(TestNG.java:1057)
+	at org.testng.remote.AbstractRemoteTestNG.run(AbstractRemoteTestNG.java:114)
+	at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:251)
+	at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:77)
+</pre></div></td>
+<td>0</td>
+<td>com.deere.TestCasesFactory.Announcement_TestCase@75181b50</td></tr>
+</table><p>
+<table width='100%' border='1' class='invocation-passed'>
+<tr><td colspan='4' align='center'><b>PASSED TESTS</b></td></tr>
+<tr><td><b>Test method</b></td>
+<td width="30%"><b>Exception</b></td>
+<td width="10%"><b>Time (seconds)</b></td>
+<td><b>Instance</b></td>
+</tr>
+<tr>
+<td title='com.deere.TestCasesFactory.EndImpersonate_TestCase.endImpersonateUser()'><b>endImpersonateUser</b><br>Test class: com.deere.TestCasesFactory.EndImpersonate_TestCase</td>
+<td></td>
+<td>6</td>
+<td>com.deere.TestCasesFactory.EndImpersonate_TestCase@2d64160c</td></tr>
+<tr>
+<td title='com.deere.TestCasesFactory.EndImpersonate_TestCase.resetMyPreferenceSetting()'><b>resetMyPreferenceSetting</b><br>Test class: com.deere.TestCasesFactory.EndImpersonate_TestCase<br/>
+<a href="#Output-663824117" onClick='toggleBox("Output-663824117", this, "Show output", "Hide output");'>Show output</a>
+
+<a href="#Output-663824117" onClick="toggleAllBoxes();">Show all outputs</a>
+<div class='log' id="Output-663824117">
+<tr id=Reset My Preferences><td width=15%>Reset My Preferences</td><td width=15%>Verify that changes made to 'My Preference' are reverted back.</td><td width=15%>Selections on 'My Preferences' before making any changes. </br><b> Language </b>: English.</br><b> Theme </b>: Green & Yellow.</br><b> Departments </b>: [Business Admin & HR, Finance & Incentives, Information Technology, Integrated Solutions, Marketing & Advertising, Parts & Attachments, Sales, Service & Support, Training & Events].</br><b> Site </b>:</br> <b>Departments which are NOT present as per Analyze user</b> : Finance & Incentives</br></td><td width=15%>Changes made to verify the functionalities should be reverted back.</td><td width=15%>All the changes made to 'My Preferences' may not have reverted back.</td><td align=center BGCOLOR=#DC143C> <a href='C:\Users\shrey.choudhary\git\repository6\DealerPath\Screenshot\Reset My Preferences_05-11-2018_12-00-27.png' target='_blank' > Fail </a></td></td><br/>
+</div>
+</td>
+<td></td>
+<td>22</td>
+<td>com.deere.TestCasesFactory.EndImpersonate_TestCase@2d64160c</td></tr>
+<tr>
+<td title='com.deere.TestCasesFactory.Announcement_TestCase.verifyAnnouncementCountOnHeader()'><b>verifyAnnouncementCountOnHeader</b><br>Test class: com.deere.TestCasesFactory.Announcement_TestCase<br/>
+<a href="#Output-901614537" onClick='toggleBox("Output-901614537", this, "Show output", "Hide output");'>Show output</a>
+
+<a href="#Output-901614537" onClick="toggleAllBoxes();">Show all outputs</a>
+<div class='log' id="Output-901614537">
+<tr id=TC12_Announcement_Portlet><td width=15%>TC12_Announcement_Portlet</td><td width=15%>Verify Announcement header count is same as announouncements available</td><td width=15%>NA</td><td width=15%>Announcement header count should be same as announcement present</td><td width=15%>Announcement header count is :<B>9</B></br>Actual count of Announcement title is :<B>9</B></td><TD align=center BGCOLOR= #00ff00 > Pass</td><br/>
+</div>
+</td>
+<td></td>
+<td>0</td>
+<td>com.deere.TestCasesFactory.Announcement_TestCase@75181b50</td></tr>
+<tr>
+<td title='com.deere.TestCasesFactory.Announcement_TestCase.verifyAnnouncementHeaderFormat()'><b>verifyAnnouncementHeaderFormat</b><br>Test class: com.deere.TestCasesFactory.Announcement_TestCase<br/>
+<a href="#Output-1190941229" onClick='toggleBox("Output-1190941229", this, "Show output", "Hide output");'>Show output</a>
+
+<a href="#Output-1190941229" onClick="toggleAllBoxes();">Show all outputs</a>
+<div class='log' id="Output-1190941229">
+<tr id=TC09_Announcement_Portlet><td width=15%>TC09_Announcement_Portlet</td><td width=15%>Verify Announcement header titles on the Announcement Portlet </td><td width=15%>Data format is : yyyy-MM-dd</td><td width=15%>Announcement header title should be in the format --> Published Date (yyyy-MM-dd) : Announcement Title </td><td width=15%>All Announcement header titles are displayed in the format --> Published Date (yyyy-MM-dd) : Announcement Title </td><TD align=center BGCOLOR= #00ff00 > Pass</td><br/>
+</div>
+</td>
+<td></td>
+<td>1</td>
+<td>com.deere.TestCasesFactory.Announcement_TestCase@75181b50</td></tr>
+<tr>
+<td title='com.deere.TestCasesFactory.Announcement_TestCase.verifyAnnouncementOnProductUncheck()'><b>verifyAnnouncementOnProductUncheck</b><br>Test class: com.deere.TestCasesFactory.Announcement_TestCase</td>
+<td></td>
+<td>0</td>
+<td>com.deere.TestCasesFactory.Announcement_TestCase@75181b50</td></tr>
+<tr>
+<td title='com.deere.TestCasesFactory.Announcement_TestCase.verifyAnnouncementPortletEmbededLinks()'><b>verifyAnnouncementPortletEmbededLinks</b><br>Test class: com.deere.TestCasesFactory.Announcement_TestCase<br/>
+<a href="#Output-2143233788" onClick='toggleBox("Output-2143233788", this, "Show output", "Hide output");'>Show output</a>
+
+<a href="#Output-2143233788" onClick="toggleAllBoxes();">Show all outputs</a>
+<div class='log' id="Output-2143233788">
+<tr id=TC10_Announcement_Portlet><td width=15%>TC10_Announcement_Portlet</td><td width=15%>Verify embeded links on Announcement Portlet</td><td width=15%>NA</td><td width=15%>Embeded links should not be broken or empty</td><td width=15%>Embeded links are not broken and working fine as expected :,AGTN 2018-11-3,AGTN 2018-11-1,AGTN 2018-11-2,AGTN 2018-10-6,today,,Demo</td><TD align=center BGCOLOR= #00ff00 > Pass</td><br/>
+</div>
+</td>
+<td></td>
+<td>15</td>
+<td>com.deere.TestCasesFactory.Announcement_TestCase@75181b50</td></tr>
+<tr>
+<td title='com.deere.TestCasesFactory.Announcement_TestCase.verifyAnnouncementTitle()'><b>verifyAnnouncementTitle</b><br>Test class: com.deere.TestCasesFactory.Announcement_TestCase<br/>
+<a href="#Output-28612052" onClick='toggleBox("Output-28612052", this, "Show output", "Hide output");'>Show output</a>
+
+<a href="#Output-28612052" onClick="toggleAllBoxes();">Show all outputs</a>
+<div class='log' id="Output-28612052">
+<tr id=WCM_TC04><td width=15%>WCM_TC04</td><td width=15%> Verify the Announcement titles on the Announcement portlet for the Content Type :<B>AT-Announcement</B></td><td width=15%><B>WCM Maping :</B> Country :  ,</br><B> WCM Product Type : </B>  NA</br><B>WCM Department Name :</B>  Sales</br><B> Copy to Department  :</B>  </br> <B>Dealer Maping :</B> Country : Region 4/Canada ,</br><B>User's Product Type : </B>Construction/Construction,Construction/Utility,Forestry/Forestry,CWP/CWP,Hitachi/Hitachi,Hitachi/Mining,Agriculture/Ag Equipment,Agriculture/Sprayers & Nutrient Applicators,Agriculture/Scraper and Scraper Tractor,Agriculture/Forage Harvester,Turf/Commercial,Turf/Residential</td><td width=15%>Verify the announcement title :Government Sales Resources published and displayed in Announcement Portlet </td><td width=15%>User product & country doesn't match hence title is not present</td><TD align=center BGCOLOR= #00ff00 > Pass</td><br/>
+<tr id=WCM_TC05><td width=15%>WCM_TC05</td><td width=15%> Verify the Announcement titles on the Announcement portlet for the Content Type :<B>AT-Announcement</B></td><td width=15%><B>WCM Maping :</B> Country :  ,</br><B> WCM Product Type : </B>  NA</br><B>WCM Department Name :</B>  Training & Events</br><B> Copy to Department  :</B>  </br> <B>Dealer Maping :</B> Country : Region 4/Canada ,</br><B>User's Product Type : </B>Construction/Construction,Construction/Utility,Forestry/Forestry,CWP/CWP,Hitachi/Hitachi,Hitachi/Mining,Agriculture/Ag Equipment,Agriculture/Sprayers & Nutrient Applicators,Agriculture/Scraper and Scraper Tractor,Agriculture/Forage Harvester,Turf/Commercial,Turf/Residential</td><td width=15%>Verify the announcement title :Technician Accelerated Development Program - Full Implementation published and displayed in Announcement Portlet </td><td width=15%>User product & country doesn't match hence title is not present</td><TD align=center BGCOLOR= #00ff00 > Pass</td><br/>
+<tr id=WCM_TC06><td width=15%>WCM_TC06</td><td width=15%> Verify the Announcement titles on the Announcement portlet for the Content Type :<B>AT-Announcement</B></td><td width=15%><B>WCM Maping :</B> Country :  ,</br><B> WCM Product Type : </B>  NA</br><B>WCM Department Name :</B>  Training & Events</br><B> Copy to Department  :</B>  </br> <B>Dealer Maping :</B> Country : Region 4/Canada ,</br><B>User's Product Type : </B>Construction/Construction,Construction/Utility,Forestry/Forestry,CWP/CWP,Hitachi/Hitachi,Hitachi/Mining,Agriculture/Ag Equipment,Agriculture/Sprayers & Nutrient Applicators,Agriculture/Scraper and Scraper Tractor,Agriculture/Forage Harvester,Turf/Commercial,Turf/Residential</td><td width=15%>Verify the announcement title :Planter MaxEmerge™5 Technical Systems and Adjustment (IDT) published and displayed in Announcement Portlet </td><td width=15%>User product & country doesn't match hence title is not present</td><TD align=center BGCOLOR= #00ff00 > Pass</td><br/>
+<tr id=WCM_TC07><td width=15%>WCM_TC07</td><td width=15%> Verify the Announcement titles on the Announcement portlet for the Content Type :<B>AT-Announcement</B></td><td width=15%><B>WCM Maping :</B> Country :  ,</br><B> WCM Product Type : </B>  NA</br><B>WCM Department Name :</B>  Training & Events</br><B> Copy to Department  :</B>  </br> <B>Dealer Maping :</B> Country : Region 4/Canada ,</br><B>User's Product Type : </B>Construction/Construction,Construction/Utility,Forestry/Forestry,CWP/CWP,Hitachi/Hitachi,Hitachi/Mining,Agriculture/Ag Equipment,Agriculture/Sprayers & Nutrient Applicators,Agriculture/Scraper and Scraper Tractor,Agriculture/Forage Harvester,Turf/Commercial,Turf/Residential</td><td width=15%>Verify the announcement title :Sales Tips - John Deere Connect Mobile - Harvest published and displayed in Announcement Portlet </td><td width=15%>User product & country doesn't match hence title is not present</td><TD align=center BGCOLOR= #00ff00 > Pass</td><br/>
+</div>
+</td>
+<td></td>
+<td>249</td>
+<td>com.deere.TestCasesFactory.Announcement_TestCase@75181b50</td></tr>
+<tr>
+<td title='com.deere.TestCasesFactory.Announcement_TestCase.verifyExpandAndCollapseLinkOnAnnouncement()'><b>verifyExpandAndCollapseLinkOnAnnouncement</b><br>Test class: com.deere.TestCasesFactory.Announcement_TestCase<br/>
+<a href="#Output-856880372" onClick='toggleBox("Output-856880372", this, "Show output", "Hide output");'>Show output</a>
+
+<a href="#Output-856880372" onClick="toggleAllBoxes();">Show all outputs</a>
+<div class='log' id="Output-856880372">
+<tr id=TC14_Announcement_Portlet><td width=15%>TC14_Announcement_Portlet</td><td width=15%>Verify <B>[Expand]</B> link displayed for announcement portlet on my dealerpath</td><td width=15%>NA</td><td width=15%>If <B>[Expand]</B> link is present it should work as expected</td><td width=15%><B>[Expand] and [Collapse]</B>link is displayed for announcement portlet and working as expected</td><TD align=center BGCOLOR= #00ff00 > Pass</td><br/>
+</div>
+</td>
+<td></td>
+<td>4</td>
+<td>com.deere.TestCasesFactory.Announcement_TestCase@75181b50</td></tr>
+<tr>
+<td title='com.deere.TestCasesFactory.Announcement_TestCase.verifyOrderOfAnnouncemnts()'><b>verifyOrderOfAnnouncemnts</b><br>Test class: com.deere.TestCasesFactory.Announcement_TestCase<br/>
+<a href="#Output-1036420486" onClick='toggleBox("Output-1036420486", this, "Show output", "Hide output");'>Show output</a>
+
+<a href="#Output-1036420486" onClick="toggleAllBoxes();">Show all outputs</a>
+<div class='log' id="Output-1036420486">
+<tr id=TC11_Announcement_Portlet><td width=15%>TC11_Announcement_Portlet</td><td width=15%>Verify Announcements are displayed in descending order with newest one's on top of homepage</td><td width=15%>NA</td><td width=15%>Announcements should be displayed in descending order with newest one's on top of homepage</td><td width=15%>Announcement title dates are in descending order with newest one's on top by date on homepage</td><TD align=center BGCOLOR= #00ff00 > Pass</td><br/>
+</div>
+</td>
+<td></td>
+<td>0</td>
+<td>com.deere.TestCasesFactory.Announcement_TestCase@75181b50</td></tr>
+<tr>
+<td title='com.deere.TestCasesFactory.Announcement_TestCase.verifyReadMoreAndCollapseLinkOnAnnouncement()'><b>verifyReadMoreAndCollapseLinkOnAnnouncement</b><br>Test class: com.deere.TestCasesFactory.Announcement_TestCase<br/>
+<a href="#Output-1009313206" onClick='toggleBox("Output-1009313206", this, "Show output", "Hide output");'>Show output</a>
+
+<a href="#Output-1009313206" onClick="toggleAllBoxes();">Show all outputs</a>
+<div class='log' id="Output-1009313206">
+<tr id=TC13_Announcement_Portlet><td width=15%>TC13_Announcement_Portlet</td><td width=15%>Verify <B>[Read More] & [Collapse]</B> links are displayed on Announcement portlet</td><td width=15%>NA</td><td width=15%>If 'ReadMore & Collapse' link is present then it should work as expected</td><td width=15%><B>[Read More]</B> link is displayed for Announcement portlet and working as expected</td><TD align=center BGCOLOR= #00ff00 > Pass</td><br/>
+</div>
+</td>
+<td></td>
+<td>0</td>
+<td>com.deere.TestCasesFactory.Announcement_TestCase@75181b50</td></tr>
+</table><p>
+</body>
+</html>
