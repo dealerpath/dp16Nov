@@ -842,7 +842,11 @@ public class Homepage_POF extends BaseClass {
 	}
 
 	public static void verifyNewEmployee(String rackfId, String region, String strTCID) throws Throwable {
+		
+		String userRacfIDOld=strUserRACFID;
+		
 		Thread.sleep(5000);
+		
 		GenericFactory.EndImpersonateUSER();
 		WaitFactory.waitForPageLoaded();
 		if (GenericFactory.impersonateUser(rackfId)) {
@@ -911,6 +915,7 @@ public class Homepage_POF extends BaseClass {
 							Thread.sleep(5000);
 							GenericFactory.EndImpersonateUSER();
 							WaitFactory.waitForPageLoaded();
+							strUserRACFID=userRacfIDOld;
 							System.out.println("Re-impoersonating Dealer:" + IterationTest.strUserRACFID);
 							GenericFactory.impersonateUser(strUserRACFID);
 						} catch (Exception e) {
