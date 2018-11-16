@@ -81,7 +81,7 @@ public static String strWCMInput = strWorkingDir + "\\TestData\\WCMInput.xlsx";
 	public static String strScreenshotDir;
 	public static String ENABLE_SCREENSHOT;
 	public static boolean errorUserFound = false;
-	public static int totalCount;
+	public static int totalCount=0;
 	public static int subDepartmentNumbers=0;
 	public static String includeAllContent;
 	public static String Region;
