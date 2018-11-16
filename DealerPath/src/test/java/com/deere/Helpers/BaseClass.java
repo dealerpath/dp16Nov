@@ -73,7 +73,7 @@ public class BaseClass {
 										// ".xlsx";
 	public static String strDataOutputPath = strWorkingDir + "\\ExportToExcel\\ExportToExcel";
 	public static String wcmDataOutputPath;
-public static String strWCMInput = strWorkingDir + "\\TestData\\WCMInput.xlsx";
+	public static String strWCMInput = strWorkingDir + "\\TestData\\WCMInput.xlsx";
 	public static String dateformat = "";// = "yyyy-dd-MM";
 	public static String strUserRACFID = "";
 	public static Properties propConfig = null;
@@ -121,8 +121,11 @@ public static String strWCMInput = strWorkingDir + "\\TestData\\WCMInput.xlsx";
 	 */
 
 	public static List<String> headerList;
+	public static List<String> headerListWCM;
+	public static HashMap<String, String> excelListWCM;
 	public static HashMap<String, String> excelList;
 	public static List<HashMap<String, String>> finalResultforExcel = new ArrayList<>();
+	public static List<HashMap<String, String>> finalResultforExcelWCM = new ArrayList<>();
 	// pages objects
 	public static Login_Page_POF loginPageFactory;
 	public static Homepage_POF homePageFactory;
@@ -195,7 +198,7 @@ public static WCMInput wcmFactory;
 		BaseClass.globalCountries.put("R4_CONTENT_fr_CA", "R4-MRU-Country");
 		BaseClass.globalCountries.put("R3_CONTENT_en_US", "R3-Hispano-MRU-Country");
 		BaseClass.globalCountries.put("R3_CONTENT_es_MX", "R3-Hispano-MRU-Country");
-	BaseClass.globalCountries.put("R3_CONTENT_pt_BR", "R3-Brasil-MRU-Country");
+		BaseClass.globalCountries.put("R3_CONTENT_pt_BR", "R3-Brasil-MRU-Country");
 		BaseClass.globalCountries.put("R1_CONTENT_en_Asia", "R1-JD Asia-MRU-Country");
 		BaseClass.globalCountries.put("R1_CONTENT_en_SSA", "R1-Sub Saharan Africa-MRU-Country");
 		BaseClass.globalCountries.put("R4_CONTENT_en_AU", "AU_NZ-MRU-Country");
