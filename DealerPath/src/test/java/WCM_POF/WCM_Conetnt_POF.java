@@ -52,7 +52,7 @@ public class WCM_Conetnt_POF extends BaseClass{
 	//static int testcaseNumber=1;
 	
 	static String testCaseID="WCM_TC";
-	public static List<Map<String,String>> finalResultforExcel = new ArrayList<>();
+	
 	
 	
 	
@@ -627,9 +627,9 @@ public static void applyFilterForDate() throws Throwable{
 		try
 		{
 			System.out.println("***Writing final content into WCM Excel***");
-			writeWCMHeader(filename, BaseClass.headerList);
+			writeWCMHeader(filename, BaseClass.headerListWCM);
 
-			writeWCMRow(filename, BaseClass.finalResultforExcel);
+			writeWCMRow(filename, BaseClass.finalResultforExcelWCM);
 
 		}
 		catch(Exception e)
@@ -655,65 +655,66 @@ public static void applyFilterForDate() throws Throwable{
 			Date date = new Date();
 			filename = wcmDataOutputPath + dateFormat.format(date) + ".xlsx";
 	
-			BaseClass.headerList= new  ArrayList<String>();
+			BaseClass.headerListWCM= new  ArrayList<String>();
 			   
-			  BaseClass.headerList.add("Test Case ID"); 
-			  BaseClass.headerList.add("EXECUTE");
-			  BaseClass.headerList.add("URL");
-			  BaseClass.headerList.add("Library");
-			  BaseClass.headerList.add("Multilingual");
-			  BaseClass.headerList.add("DepartmentName");
-			  BaseClass.headerList.add("2ndLevel");
-			  BaseClass.headerList.add("3rdLevelIndexPage");
-			  BaseClass.headerList.add("3rdLevelIndexPageCategories");
-			  BaseClass.headerList.add("3rdLevelIndexPageNestedCategories");
-			  BaseClass.headerList.add("3rdLevelLandingPage");
-			  BaseClass.headerList.add("3rdLevelChildIndexPage");
-			  BaseClass.headerList.add("3rdLevelChildIndexPageCategories");
-			  BaseClass.headerList.add("3rdLevelChildIndexPageNestedCategories");
-			  BaseClass.headerList.add("3rdLevelGrandChildIndexPage");
-			  BaseClass.headerList.add("3rdLevelGrandChildIndexPageCategories");
-			  BaseClass.headerList.add("3rdLevelGrandChildIndexPageNestedCategories");
-			  BaseClass.headerList.add("3rdLevelFolder");
-			  BaseClass.headerList.add("4thLevelIndexPage");
-			  BaseClass.headerList.add("4thLevelIndexPageCategories");
-			  BaseClass.headerList.add("4thLevelIndexPageNestedCategories");
-			  BaseClass.headerList.add("4thLevelLandingPage");
-			  BaseClass.headerList.add("4thLevelChildIndexPage");
-			  BaseClass.headerList.add("4thLevelChildIndexPageCategories");
-			  BaseClass.headerList.add("4thLevelChildIndexPageNestedCategories");
-			  BaseClass.headerList.add("4thLevelGrandChildIndexPage");
-			  BaseClass.headerList.add("4thLevelGrandChildIndexPageCategories");
-			  BaseClass.headerList.add("4thLevelGrandChildIndexPageNestedCategories");
-			  BaseClass.headerList.add("ContentType");
-			  BaseClass.headerList.add("IndexPageContentType");
-			  BaseClass.headerList.add("Title");
-			  BaseClass.headerList.add("Keywords");
+			  BaseClass.headerListWCM.add("Test Case ID"); 
+			  BaseClass.headerListWCM.add("EXECUTE");
+			  BaseClass.headerListWCM.add("URL");
+			  BaseClass.headerListWCM.add("Library");
+			  BaseClass.headerListWCM.add("Multilingual");
+			  BaseClass.headerListWCM.add("DepartmentName");
+			  BaseClass.headerListWCM.add("2ndLevel");
+			  BaseClass.headerListWCM.add("3rdLevelIndexPage");
+			  BaseClass.headerListWCM.add("3rdLevelIndexPageCategories");
+			  BaseClass.headerListWCM.add("3rdLevelIndexPageNestedCategories");
+			  BaseClass.headerListWCM.add("3rdLevelLandingPage");
+			  BaseClass.headerListWCM.add("3rdLevelChildIndexPage");
+			  BaseClass.headerListWCM.add("3rdLevelChildIndexPageCategories");
+			  BaseClass.headerListWCM.add("3rdLevelChildIndexPageNestedCategories");
+			  BaseClass.headerListWCM.add("3rdLevelGrandChildIndexPage");
+			  BaseClass.headerListWCM.add("3rdLevelGrandChildIndexPageCategories");
+			  BaseClass.headerListWCM.add("3rdLevelGrandChildIndexPageNestedCategories");
+			  BaseClass.headerListWCM.add("3rdLevelFolder");
+			  BaseClass.headerListWCM.add("4thLevelIndexPage");
+			  BaseClass.headerListWCM.add("4thLevelIndexPageCategories");
+			  BaseClass.headerListWCM.add("4thLevelIndexPageNestedCategories");
+			  BaseClass.headerListWCM.add("4thLevelLandingPage");
+			  BaseClass.headerListWCM.add("4thLevelChildIndexPage");
+			  BaseClass.headerListWCM.add("4thLevelChildIndexPageCategories");
+			  BaseClass.headerListWCM.add("4thLevelChildIndexPageNestedCategories");
+			  BaseClass.headerListWCM.add("4thLevelGrandChildIndexPage");
+			  BaseClass.headerListWCM.add("4thLevelGrandChildIndexPageCategories");
+			  BaseClass.headerListWCM.add("4thLevelGrandChildIndexPageNestedCategories");
+			  BaseClass.headerListWCM.add("ContentType");
+			  BaseClass.headerListWCM.add("IndexPageContentType");
+			  BaseClass.headerListWCM.add("Title");
+			  BaseClass.headerListWCM.add("Keywords");
 			  
-			  BaseClass.headerList.add("DocPath");
-			  BaseClass.headerList.add("Link");
-			  BaseClass.headerList.add("Description");
-			  BaseClass.headerList.add("Description_RichText");
+			  BaseClass.headerListWCM.add("DocPath");
+			  BaseClass.headerListWCM.add("Link");
+			  BaseClass.headerListWCM.add("Description");
+			  BaseClass.headerListWCM.add("Description_RichText");
 			
 			  
-			  BaseClass.headerList.add("ReleaseDate");
-			  BaseClass.headerList.add("Column 4");   
-			  BaseClass.headerList.add("Column 5");
-			  BaseClass.headerList.add("HeaderName");
-			  BaseClass.headerList.add("FooterName");
+			  BaseClass.headerListWCM.add("ReleaseDate");
+			  BaseClass.headerListWCM.add("Column 4");   
+			  BaseClass.headerListWCM.add("Column 5");
+			  BaseClass.headerListWCM.add("HeaderName");
+			  BaseClass.headerListWCM.add("FooterName");
 		  
-			  BaseClass.headerList.add("Country");
-			  BaseClass.headerList.add("ProductType");
-			  BaseClass.headerList.add("DealerType (Main/Sub)");
-			  BaseClass.headerList.add("Index_Page_Template");
-			  BaseClass.headerList.add("Index_Page_Template_Label");
-			  BaseClass.headerList.add("Sort By");
-			  BaseClass.headerList.add("Sort Order");
-			  BaseClass.headerList.add("Year Grouping Required");
-			  BaseClass.headerList.add("RACFGroups");
-			  BaseClass.headerList.add("CopyToDepartment");
-			  BaseClass.headerList.add("Comments");
+			  BaseClass.headerListWCM.add("Country");
+			  BaseClass.headerListWCM.add("ProductType");
+			  BaseClass.headerListWCM.add("DealerType (Main/Sub)");
+			  BaseClass.headerListWCM.add("Index_Page_Template");
+			  BaseClass.headerListWCM.add("Index_Page_Template_Label");
+			  BaseClass.headerListWCM.add("Sort By");
+			  BaseClass.headerListWCM.add("Sort Order");
+			  BaseClass.headerListWCM.add("Year Grouping Required");
+			  BaseClass.headerListWCM.add("RACFGroups");
+			  BaseClass.headerListWCM.add("CopyToDepartment");
+			  BaseClass.headerListWCM.add("Comments");
 			  
+			  System.out.println();
 					      
 		}
 		catch(Exception e)
@@ -1219,16 +1220,16 @@ public static void applyFilterForDate() throws Throwable{
 		try {
 
 		
-		  BaseClass.excelList = new LinkedHashMap<String,String>();
+		  BaseClass.excelListWCM = new LinkedHashMap<String,String>();
 		  
 		  for(HashMap.Entry<String, String> entry : wcmContentToWrite.entrySet())
 		  {
-			 BaseClass.excelList.put(entry.getKey(), entry.getValue());
+			 BaseClass.excelListWCM.put(entry.getKey(), entry.getValue());
 		  }
 				  
-		  System.out.println("Key Value hashmap: "+BaseClass.excelList);
+		  System.out.println("Key Value hashmap: "+BaseClass.excelListWCM);
 		     
-		  BaseClass.finalResultforExcel.add(BaseClass.excelList);
+		  BaseClass.finalResultforExcelWCM.add(BaseClass.excelListWCM);
 			}
 		
 		catch(Exception e) 
@@ -1249,7 +1250,7 @@ public static void applyFilterForDate() throws Throwable{
 	 */
 	
 	
-	public static String writeWCMHeader(String fileName, List<String> headerList) throws IOException {
+	public static String writeWCMHeader(String fileName, List<String> headerListWCM) throws IOException {
 		try
 		{
 		FileOutputStream fos = new FileOutputStream(new File(fileName));
@@ -1270,7 +1271,7 @@ public static void applyFilterForDate() throws Throwable{
 		
 		CellStyle cellStyle1 = book.createCellStyle();
 
-		for (String header : headerList) {
+		for (String header : headerListWCM) {
 			cellStyle1.setFillForegroundColor(IndexedColors.GREEN.getIndex());
 			cellStyle1.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 			cellStyle1.setFont(font);
@@ -3553,7 +3554,24 @@ public static void applyFilterForDate() throws Throwable{
 					//SUB SALES
 					
 					wcmalrtDriver.findElement(By.xpath("//a[.='"+IsCategoryChild_NestedCategories.get(ncct)+"' and (contains(@title, 'View children'))]")).click();
-					wcmalrtDriver.findElement(By.xpath("//tr[1]//td[2]//img[2]/following::td[1]//a")).click();
+					System.out.println(IsCategoryChild_NestedCategories.get(ncct)+" is clicked");
+					List<WebElement> nestedcategoriesFinalContent=allChildren;
+					List<String> categoryContentc= new ArrayList<String>();
+					for(int nc=1;nc<=nestedcategoriesFinalContent.size();nc++)
+					{
+						
+						String NestedategoryC=wcmalrtDriver.findElement(By.xpath("//tr["+nc+"]//td[2]//img[2]/following::td[1]//a/span")).getText();
+						
+							categoryContentc.add(NestedategoryC);
+						
+					}
+					
+					
+					for(int fc=0;fc<categoryContentc.size();fc++)
+					{
+						if(ValidationFactory.isElementPresent(By.xpath("//a[.='"+categoryContentc.get(fc)+"' and not(contains(@title, 'View children')) and not(contains(@title, 'Navigate to'))]")))
+						{
+						wcmalrtDriver.findElement(By.xpath("//a[.='"+categoryContentc.get(fc)+"' and not(contains(@title, 'View children')) and not(contains(@title, 'Navigate to'))]")).click();
 					
 						String wcmTCID=testCaseID+testcaseNumber;
 						
@@ -3566,6 +3584,11 @@ public static void applyFilterForDate() throws Throwable{
 			    	   writeWCMHeaderContentFinalToExcel();
 			    	   testcaseNumber++;
 			    	   closeContent.click();
+					}
+					else
+					{System.out.println("content in list not found");}
+					}
+					wcmalrtDriver.findElement(By.xpath("//a[.='"+wcmKeyValuePair.get("3rdLevelIndexPageCategories")+"']")).click();
 					}
 					else
 					{LogFactory.info("Unable to find the xpath for title::"+IsCategoryChild_NestedCategories.get(ncct));}
