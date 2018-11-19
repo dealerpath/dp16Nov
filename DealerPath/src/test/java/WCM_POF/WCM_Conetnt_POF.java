@@ -100,6 +100,17 @@ public class WCM_Conetnt_POF extends BaseClass {
 
 	@FindBy(how = How.XPATH, using = "//*[@id='breadcrumb_library']")
 	public static WebElement libraryOnPage;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='keywords']")
+	public static WebElement keywordsPage;
+	
+	@FindBy(how = How.XPATH, using = "//label[.='Users:']//following::div//ul[@class='lotusInlinelist']//a")
+	public static List<WebElement> racfGroupUsersonPage;
+	
+	
+	@FindBy(how = How.XPATH, using = "//div//span[.='Additional Groups']")
+	public static WebElement racfGroupsonPage;
+	
 
 	@FindBy(how = How.XPATH, using = "//label[.='China MRU-Country']/following::span[1]")
 	public static WebElement mruChinaCountry;
@@ -675,6 +686,8 @@ public class WCM_Conetnt_POF extends BaseClass {
 		String column4Text = null;
 		String column5Text = null;
 		String richText = null;
+		String keywords = null;
+		String racfGroups = null;
 
 		try {
 
@@ -685,6 +698,11 @@ public class WCM_Conetnt_POF extends BaseClass {
 			title = titleOnPage.getText();
 			location = locationOnPage.getText();
 			library = libraryOnPage.getText();
+			
+			if(!keywordsPage.getText().isEmpty())
+			{keywords=keywordsPage.getText();}
+			
+			
 
 			if (!conType.equals("AT-Default")) {
 				if (checkForGlobalContent.getText().contains("GLOBAL_CONTENT")) {
@@ -756,6 +774,14 @@ public class WCM_Conetnt_POF extends BaseClass {
 
 						descriptionText = description.getText();
 					}
+					if(ValidationFactory.isElementPresent(racfGroupsonPage)) {
+						String rGroup="";
+						for (int i = 1; i <= racfGroupUsersonPage.size(); i++) {
+						rGroup=rGroup+","+racfGroupUsersonPage.get(i).getText();
+						}
+						racfGroups=rGroup.substring(1);
+					}
+					
 					if (ValidationFactory.isElementPresent(descriptionAlerts)) {
 						wcmalrtDriver.switchTo().frame(descriptionAlerts);
 
@@ -947,6 +973,8 @@ public class WCM_Conetnt_POF extends BaseClass {
 				finalkeyValueWCM.put("ReleaseDate", releaseDateOfContent);
 				finalkeyValueWCM.put("Column 4", column4Text);
 				finalkeyValueWCM.put("Column 5", column5Text);
+				finalkeyValueWCM.put("RACFGroups", racfGroups);
+				finalkeyValueWCM.put("Keywords", keywords);
 
 				finalkeyValueWCM.putAll(valuesToWrite);
 
@@ -3025,8 +3053,8 @@ public class WCM_Conetnt_POF extends BaseClass {
 									GrandChildIndex_CategoriesMap.put("3rdLevelChildIndexPageCategories",
 											childCategoryTitle);
 									// System.out.println(wcmKeyValue1);
-									checkForNestedcategories(GrandChildIndex_CategoriesMap,
-											"3rdLevelChildIndexPageCategories");
+									//checkForNestedcategories(GrandChildIndex_CategoriesMap,"3rdLevelChildIndexPageCategories");
+									checkNestedcategorieForChildIndexPage(GrandChildIndex_CategoriesMap, "3rdLevelChildIndexPageCategories");
 
 									wcmalrtDriver
 											.findElement(By.xpath("//a[contains(.,'" + childIndexPageTitle + "')]"))
@@ -3149,7 +3177,7 @@ public class WCM_Conetnt_POF extends BaseClass {
 											grandChildIndexPageLinkPortletMap.put("3rdLevelChildIndexPage",
 													childIndexPageTitle);
 											grandChildIndexPageLinkPortletMap.put("3rdLevelGrandChildIndexPage",
-													grandchildContents);
+													grandChildIndexPageTitle);
 
 											writeWCMToExcel(grandChildIndexPageLinkPortletMap, "None");
 											writeWCMHeaderContentFinalToExcel();
