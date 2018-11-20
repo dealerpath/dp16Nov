@@ -434,11 +434,11 @@ public class ParentIndex_TestCase extends BaseClass {
 					"No test data provided", "Pass");
 
 		} else {
-		LinkedHashMap indexPage = ExcelFactory.getWCMByTCID(strExpectedValue);
-		GenericFactory.navigateToIndexPage(indexPage);
-		System.out.println(indexPage);
-		String PageName = "AT-Index Page";
-		PortalLeftNavigation_POF.verifyLeftNavigationWithCategories(PageName);
-	}
+			LinkedHashMap indexPage = ExcelFactory.getWCMByTCID(strExpectedValue);
+			GenericFactory.navigateToIndexPage(indexPage);
+			String PageName = "AT-Index Page";
+			PortalLeftNavigation_POF.verifyLeftNavigationWithCategories(PageName);
+		}
 	}
 }
+
