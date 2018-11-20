@@ -789,7 +789,7 @@ public class WCM_Conetnt_POF extends BaseClass {
 								String rGroup="";
 								for (int i = 0; i <= racfGroupUsersonPage.size(); i++) 
 									{
-									rGroup=rGroup+","+racfGroupUsersonPage.get(i).getText();
+									rGroup=rGroup+","+wcmalrtDriver.findElement(By.xpath("//label[.='Users:']//following::div//ul[@class='lotusInlinelist']//li["+i+"]/a")).getText();
 									}
 									racfGroups=rGroup.substring(1);
 							}
