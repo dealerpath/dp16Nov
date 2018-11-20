@@ -1062,7 +1062,8 @@ public class WCM_Conetnt_POF extends BaseClass {
 			if (prodTypeList.length >= 2) {
 				for (int n = 0; n <= prodTypeList.length - 1; n++) {
 
-					String temp = prodTypeList[n].substring(32);
+					String prodt=prodTypeList[n].trim();
+					String temp = prodt.substring(32);
 					productTypeTitle = productTypeTitle + "," + temp.trim();
 				}
 				return productTypeTitle.substring(1);
@@ -4107,7 +4108,8 @@ public class WCM_Conetnt_POF extends BaseClass {
 			String[] prodTypeList = country.split(",");
 			if (prodTypeList.length >= 2) {
 				for (int n = 0; n <= prodTypeList.length - 1; n++) {
-					String temp = prodTypeList[n].substring(35);
+					String ctry=prodTypeList[n].trim();
+					String temp = ctry.substring(35);
 					countryTitle = countryTitle + "," + temp.trim();
 				}
 				return countryTitle.substring(1);
