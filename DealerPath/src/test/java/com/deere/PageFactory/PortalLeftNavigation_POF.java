@@ -53,6 +53,58 @@ public class PortalLeftNavigation_POF extends BaseClass {
 	@FindBy(how = How.XPATH, using = ".//*[@id='linkIndexPageContainer']/h3")
 	public static List<WebElement> listAllSubHeaders;
 
+	
+	
+		/**
+	 * This method verifies Left navigation window link names are in correct order
+	 * 
+	 * @author shrey.choudhary
+	 * @createdAt 15-05-2018
+	 * @param testData
+	 * @param TCID
+	 * @return
+	 * @throws Throwable
+	 * @modifiedAt 21-05-2018
+	 */
+	public static void compareNavigationLinksWithTestDataHomepage(List<String> listTestData, String strTCID) throws Throwable {
+        String strFlag = "Fail";
+        //List<String> listExpectedData = new ArrayList<String>();
+        List<String> listActualData = new ArrayList<String>();
+        String result = "";
+        //Collections.sort(listTestData);
+        try {
+             if (ValidationFactory.isElementPresent(wbelLeftWindowFrame)) {
+                   // swati
+                   
+                   for (int i = 0; i < ListAllActiveLinks.size(); i++) {
+                        String temp = ListAllActiveLinks.get(i).getText();
+                        listActualData.add(temp);
+                   }
+                   if (listTestData.equals(listActualData)) {
+                        strFlag = "Pass";
+                        result = "Left Navigation Links and thier order should be same with input links list : >>> " + listActualData.toString();
+                   }
+                   else
+                   {
+                        strFlag = "Fail";
+                        result = "Actual Portal Left Navigation links are not matching with the expected list " + ", Actual List : " +listActualData;
+                   }
+                   
+                   ReportFactory.reporterOutput(strTCID, "Verify Portal Left Navigation Links names ",
+                              listTestData.toString(),
+                              "Left Navigation  links and their order should match with expected list",
+                              result, strFlag);
+             } else {
+                   ReportFactory.reporterOutput(strTCID, "Verify Portal Left Navigation Links name", listTestData.toString(),
+                              "Verify the order of links name " + listTestData.toString(),
+                              "Portal Left Navigation window is not present", strFlag);
+             }
+        } catch (Exception e) {
+
+             ReportFactory.reporterOutput(strTCID, "Verify Portal Left Navigation Links name",
+                        "Verify Portal Left Navigation Links name", "NA", e.getMessage().toString(), strFlag);
+        }
+  }  
 	/**
 	 * This method verifies Left navigation window link names are in correct order
 	 * 
