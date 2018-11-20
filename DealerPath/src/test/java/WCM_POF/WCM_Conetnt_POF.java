@@ -2368,7 +2368,7 @@ public class WCM_Conetnt_POF extends BaseClass {
 							String landingPageChildType = checkContentType(landingChildPageTitle);
 							if (landingPageChildType.contains("SAT-Table Index Page")) {
 								IsLanding_Child_Tables.add(landingChildPageTitle);
-							} else if (landingPageChildType.contains("SAT-Index Page")) {
+							} else if (landingPageChildType.contains("SAT-Child IndexPage")) {
 								IsLanding_Child_Index_pages.add(landingChildPageTitle);
 							}
 
