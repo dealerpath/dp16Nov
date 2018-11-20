@@ -333,7 +333,7 @@ public class Homepage_TestCase extends BaseClass {
                               if (!listExpectedValue.get(0).equalsIgnoreCase("None") || !listExpectedValue.isEmpty()) {
                               //            strExpectedValue = listExpectedValue.get(0).toString();
                                              LogFactory.beginTestCase("Verify Portal Left Navigation Links Order");
-                                             portalLeftNavFactory.compareNavigationLinksWithTestData(listExpectedValue, strTCID);
+                                             portalLeftNavFactory.compareNavigationLinksWithTestDataHomepage(listExpectedValue, strTCID);
                                              
                               }
                }
