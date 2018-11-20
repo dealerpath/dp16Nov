@@ -82,6 +82,27 @@ public class ValidationFactory {
 			return false;
 		}
 	}
+	public static boolean getListElementIfPresent( List<WebElement> list) {
+		try {
+	
+			if (list.get(0).isDisplayed())
+				return true;
+			else
+				return false;
+		} catch (NoSuchElementException e) {
+			
+			LogFactory.info("Unable to locate the element- No such Element Found");
+			return false;
+	
+		}
+
+		catch (Exception e) {
+			e.printStackTrace();
+			LogFactory.info("Unable to locate the element- No such Element Found");
+			return false;
+		}
+
+	}
 	public static WebElement getElementIfPresent(By by) {
 		try {
 			locator = BaseClass.wbDriver.findElement(by);
