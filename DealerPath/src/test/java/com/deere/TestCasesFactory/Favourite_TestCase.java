@@ -252,17 +252,17 @@ public class Favourite_TestCase extends BaseClass {
      */
                 @Test(priority = 11)
                 public static void verifyToRemoveFavouriteLinkfromlinkportlet() throws Throwable {
-                                String TCID = "TC11_Favourite";
+                                String TCID1 = "TC11_Favourite";
                                 String linkName = "";
                                 
                                 if (BaseClass.markedLinks.size() > 0) {
                                                 
                                                 LogFactory.beginTestCase("Verify removing a favorite from links portlet on Department Page ");
                                                 
-                                                favouritesFactory.verifyRemoveFavouriteLink(TCID);
+                                                favouritesFactory.verifyRemoveFavouriteLink(TCID1);
                                 }
                                 else{
-                                                ReportFactory.reporterOutput(TCID, "verify Remove Favourite Link from Link portlet Department", "NA", "Favourite should get removed and should no more display on 'Favourite' Portlet on homepage", "No Marked link is present for the particular dealer", "FAIL");
+                                                ReportFactory.reporterOutput(TCID1, "verify Remove Favourite Link from Link portlet Department", "NA", "Favourite should get removed and should no more display on 'Favourite' Portlet on homepage", "No Marked link is present for the particular dealer", "FAIL");
                                 }
                 }
 

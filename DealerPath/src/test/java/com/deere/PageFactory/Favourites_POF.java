@@ -255,18 +255,27 @@ public class Favourites_POF extends BaseClass {
 										LogFactory.info(linkname + " is already marked so de-selecting it first");
 
 										WaitFactory.waitForElements(icons, wbDriver);
+										JavascriptExecutor js = (JavascriptExecutor) BaseClass.wbDriver;
+										 js.executeScript("arguments[0].style.border='2px solid red'", links.get(k));
+										 Thread.sleep(900);
 										WaitFactory.waitForElementClickable(icons.get(k)).click();
-
+										Thread.sleep(2000); //Time Difference between Unmarking and Marking a Favourite
+										 
 										if (i % 2 == 0) {
 
 											WaitFactory.waitForElements(icons, wbDriver);
+											
 											WaitFactory.waitForElementClickable(icons.get(k)).click();
 											WaitFactory.waitForElement(favouriteSavebtn);
 											String dropdownVal = addFavFolder.getText();
 											if (dropdownVal.contains("My Fav Folder")) {
 												GenericFactory.selectByVisibleText(addFavFolder, "My Fav Folder");
 												if (ValidationFactory.isElementPresent(favouriteSavebtn))
-													WaitFactory.waitForElementClickable(favouriteSavebtn).click();
+													WaitFactory.WaitForElementToVisible(favouriteSavebtn);
+														WaitFactory.waitForElementClickable(favouriteSavebtn).click();
+														WaitFactory.waitforelementToinvisibile(favouriteSavebtn);
+														BaseClass.wbDriver.findElement(By.xpath(".//*[@id='add-favorite-save']/preceding-sibling::button")).click();
+													
 												WaitFactory.waitForPageLoaded();
 												markedlinkNames.add(linkname);
 												markedLinks.add(TCID);
@@ -276,8 +285,9 @@ public class Favourites_POF extends BaseClass {
 												addFavoriteNewfolder.sendKeys("My Fav Folder");
 												WaitFactory.WaitForTexttoBePresentInElement(addFavoriteNewfolder,"My Fav Folder");
 												if (ValidationFactory.isElementPresent(favouriteSavebtn))
+													WaitFactory.WaitForElementToVisible(favouriteSavebtn);
 													WaitFactory.waitForElementClickable(favouriteSavebtn).click();
-												System.out.println("Test");
+													WaitFactory.waitforelementToinvisibile(favouriteSavebtn);
 												WaitFactory.waitForPageLoaded();
 												markedlinkNames.add(linkname);
 												markedLinks.add(TCID);
@@ -291,6 +301,7 @@ public class Favourites_POF extends BaseClass {
 											WaitFactory.WaitForElementToVisible(favouriteSavebtn);
 											if (ValidationFactory.isElementPresent(favouriteSavebtn)) {
 												WaitFactory.waitForElementClickable(favouriteSavebtn).click();
+												WaitFactory.waitforelementToinvisibile(favouriteSavebtn);
 												LogFactory.info("Click On Save Button ");
 												WaitFactory.WaitForElementToVisible(icons.get(k));
 												markedlinkNames.add(linkname);
@@ -305,12 +316,14 @@ public class Favourites_POF extends BaseClass {
 
 										if (i % 2 == 0) {
 											icons.get(k).click();
+											WaitFactory.WaitForElementToVisible(favouriteSavebtn);
 											WaitFactory.waitForElement(favouriteSavebtn);
 											String dropdownVal1 = addFavFolder.getText();
 											if (dropdownVal1.contains("My Fav Folder")) {
 												GenericFactory.selectByVisibleText(addFavFolder, "My Fav Folder");
 												if (ValidationFactory.isElementPresent(favouriteSavebtn))
 													WaitFactory.waitForElementClickable(favouriteSavebtn).click();
+													WaitFactory.waitforelementToinvisibile(favouriteSavebtn);
 												WaitFactory.waitForPageLoaded();
 												markedlinkNames.add(linkname);
 												markedLinks.add(TCID);
@@ -321,7 +334,9 @@ public class Favourites_POF extends BaseClass {
 												WaitFactory.WaitForTexttoBePresentInElement(addFavoriteNewfolder,"My Fav Folder");
 												
 												if (ValidationFactory.isElementPresent(favouriteSavebtn))
+													WaitFactory.WaitForElementToVisible(favouriteSavebtn);
 													WaitFactory.waitForElementClickable(favouriteSavebtn).click();
+													WaitFactory.waitforelementToinvisibile(favouriteSavebtn);
 												WaitFactory.waitForPageLoaded();
 												markedlinkNames.add(linkname);
 												markedLinks.add(TCID);
@@ -337,6 +352,7 @@ public class Favourites_POF extends BaseClass {
 											WaitFactory.WaitForElementToVisible(favouriteSavebtn);
 											if (favouriteSavebtn.isDisplayed()) {
 												WaitFactory.waitForElementClickable(favouriteSavebtn).click();
+												WaitFactory.waitforelementToinvisibile(favouriteSavebtn);
 												LogFactory.info("Click On Save Button ");
 												WaitFactory.WaitForElementToVisible(icons.get(k));
 												markedlinkNames.add(linkname);
@@ -373,13 +389,15 @@ public class Favourites_POF extends BaseClass {
 						"No titles selected to mark as favourits", "Pass");
 			}
 
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-			System.out.println("test");
+			
 		}
-
+		
+		catch (Exception e) {
+			System.out.println(e.getMessage());
+			System.out.println("t4t");
+		}
+		
 	}
-
 	/**
 	 * @author Shubham Raj This method is used to fetch all the folders present on
 	 *         the Dealer Path homepage @ exception Exception e
@@ -978,7 +996,7 @@ public class Favourites_POF extends BaseClass {
 				subDepartmentLang = GenericFactory.getTranslation(subDepartmentName).toString().replaceAll("^\\[|\\]$",
 						"");
 				title = GenericFactory.getWCMByTCID(markedLinks.get(i)).get("Title").toString().trim();
-				TCID = GenericFactory.getWCMByTCID(markedLinks.get(i)).get("Test Case ID").toString().trim();
+				String WCM_TCID = GenericFactory.getWCMByTCID(markedLinks.get(i)).get("Test Case ID").toString().trim();
 				ThirdlevelFolder = GenericFactory.getWCMByTCID(markedLinks.get(i)).get("3rdLevelFolder").toString()
 						.trim();
 

@@ -2802,11 +2802,16 @@ public class GenericFactory extends BaseClass {
 		String productName = product;
 		String[] productsUncheck = null;
 		List<String> productsUncheckNew = new ArrayList<>();
-		if (product.contains("[") && product.contains("]")) {
+		if (product.contains("[") && product.contains("]") ) {
 			product = product.replaceAll("[\\[\\]]", "");
 			if (product.contains(","))
 				productsUncheck = product.split(",");
-		}
+		}else {
+			
+				if (product.contains(","))
+					productsUncheck = product.split(",");
+			}
+		
 		if (productsUncheck != null) {
 			for (int i = 0; i < productsUncheck.length; i++) {
 				if (productsUncheck[i].contains("/")) {
@@ -2867,10 +2872,12 @@ public class GenericFactory extends BaseClass {
 			}
 		} else {
 			productsUncheckNew.add(product);
+			System.out.println("test");
 		}
 		return productsUncheckNew.toString();
 
 	}
+
 
 	public static List<String> getParentCountryName(List<String> countryName) {
 		Set<String> hs = new HashSet<>();
