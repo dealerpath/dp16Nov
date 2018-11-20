@@ -111,10 +111,9 @@ public class PortalLeftNavigation_POF extends BaseClass {
 
 	public static void verifyLeftNavigationWithCategories(String pageName) throws Throwable {
 		String strFlag = "Fail";
-
 		int counter = (pageName == "AT-ChildIndex Page") ? 4 : (pageName == "AT-GrandChildIndex Page") ? 5 : 3;
 		try {
-			boolean listAllCategoriesBoolean = ValidationFactory.getElementIfPresent(listAllCategories.get(0));
+			boolean listAllCategoriesBoolean = ValidationFactory.getListElementIfPresent(listAllCategories);
 			if (listAllCategoriesBoolean) {
 				List<String> listOfLeftNavigation = new ArrayList<String>();
 				boolean listAllSubCategoriesBoolean = ValidationFactory
@@ -137,18 +136,17 @@ public class PortalLeftNavigation_POF extends BaseClass {
 					strFlag = "Pass";
 				}
 				ReportFactory.reporterOutput("Verify Left Navigation", "Verify Portal Left Navigation Links name",
-						"Verify Portal Left Navigation Links name on " + pageName, "NA",
+						"Verify Portal Left Navigation Links name on " + pageName, "List of left navigation should be same as categories/header",
 						"<B>List of left navigation is :</B> " + listOfLeftNavigation + "<P>"
 								+ " <B>List of Categories/headers is :</B> " + listOfCategories,
 						strFlag);
 
 			} else {
-				boolean listAllHeadersBoolean = ValidationFactory.getElementIfPresent(listAllHeaders.get(0));
-
+				boolean listAllHeadersBoolean = ValidationFactory.getListElementIfPresent(listAllHeaders);
 				if (listAllHeadersBoolean) {
 					List<String> listOfLeftNavigation = new ArrayList<String>();
 					boolean listAllSubCategoriesBoolean = ValidationFactory
-							.getElementIfPresent(listAllSubCategories.get(0));
+							.getListElementIfPresent(listAllSubCategories);
 					if (listAllSubCategoriesBoolean) {
 						for (int i = counter; i <= listAllSubCategories.size(); i++) {
 							String temp = wbDriver.findElement(By.xpath(".//*[@id='leftNav']/li[" + i + "]")).getText()
@@ -161,10 +159,12 @@ public class PortalLeftNavigation_POF extends BaseClass {
 						String temp = listAllHeaders.get(i).getText();
 						listOfCategories.add(temp);
 					}
-					if (listAllSubHeaders.size() > 0) {
-						for (int i = 0; i < listAllSubHeaders.size(); i++) {
-							String temp = listAllSubHeaders.get(i).getText();
-							listOfCategories.add(temp);
+					if (ValidationFactory.getListElementIfPresent(listAllHeaders)) {
+						if (listAllSubHeaders.size() > 0) {
+							for (int i = 0; i < listAllSubHeaders.size(); i++) {
+								String temp = listAllSubHeaders.get(i).getText();
+								listOfCategories.add(temp);
+							}
 						}
 					}
 					System.out.println("list of left navigation is : " + listOfLeftNavigation);
@@ -173,7 +173,7 @@ public class PortalLeftNavigation_POF extends BaseClass {
 						strFlag = "Pass";
 					}
 					ReportFactory.reporterOutput("Verify Left Navigation", "Verify Portal Left Navigation Links name",
-							"Verify Portal Left Navigation Links name on " + pageName, "NA",
+							"Verify Portal Left Navigation Links name on " + pageName, "List of left navigation should be same as categories/header",
 							"<B>List of left navigation is :</B> " + listOfLeftNavigation + "<P>"
 									+ " <B>List of Categories/headers is :</B> " + listOfCategories,
 							strFlag);
@@ -183,7 +183,7 @@ public class PortalLeftNavigation_POF extends BaseClass {
 			}
 		} catch (Exception e) {
 			ReportFactory.reporterOutput("Verify Left Navigation", "Verify Portal Left Navigation Links name",
-					"Verify Portal Left Navigation Links name on " + pageName, "NA", e.getMessage(), strFlag);
+					"Verify Portal Left Navigation Links name on " + pageName, "List of left navigation should be same as categories/header", e.getMessage(), strFlag);
 
 		}
 	}
