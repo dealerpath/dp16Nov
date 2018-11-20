@@ -613,7 +613,6 @@ public class GenericFactory extends BaseClass {
                   filePath = BaseClass.strScreenshotDir +"\\Screenshot\\"+ TCID + "_" + dateFormat.format(date) + ".png";
                   FileHandler.copy(scrFile, new File(filePath));
              } catch (IOException e) {
-                  System.out.println(e.getMessage());
              }
         }
         return filePath;
@@ -1741,7 +1740,11 @@ public class GenericFactory extends BaseClass {
                      String strDeptList = BaseClass.wbDriver
                                    .findElement(By.xpath("//*[@id='analyseUserForm']/table[2]/tbody/tr[" + i + "]/td[2]"))
                                    .getText().toString().trim();
+                     
                      String temp = strDeptList.replaceAll("[\\t\\n\\r]+", ", ");
+                     if(temp.contains("Finance & Incentives")){
+                    	temp= temp.replace("Finance & Incentives","Finance");
+                     }
                      List<String> deptList = GenericFactory.splitString(temp, ",");
                      analyzerUserMap.put("Department", deptList);
                      analyzerUserMapReset.put("Department", deptList);

@@ -62,7 +62,7 @@ public class FileFolderFactory {
 
 					LogFactory.info("Folder " + strNewFolderName + " created successfully on " + strFolderPath);
 				} else {
-					LogFactory.info("Unable to create the folder " + strNewFolderName + " as it's already Exists");
+					//LogFactory.info("Unable to create the folder " + strNewFolderName + " as it's already Exists");
 				}
 				// return strFolderPath + strNewFolderName;
 			}

@@ -27,7 +27,6 @@ import org.testng.Reporter;
 
 import com.deere.Helpers.*;
 
-
 @SuppressWarnings("serial")
 class Elementpresence extends Exception {
 	Elementpresence(String s) {
@@ -41,11 +40,9 @@ class Elementenable extends Exception {
 	}
 }
 
-
-
 public class ValidationFactory {
 	static WebElement locator = null;
-	
+
 	public static boolean isElementPresent(By by) {
 		try {
 			locator = BaseClass.wbDriver.findElement(by);
@@ -55,55 +52,53 @@ public class ValidationFactory {
 			else
 				return false;
 		} catch (NoSuchElementException e) {
-			LogFactory.info("Unable to locate the element- No such Element Found");
-		//	Assert.fail("Unable to locate the element- No such Element Found");
+			// LogFactory.info("Unable to locate the element- No such Element Found");
 			return false;
 		}
 
 		catch (Exception e) {
-			e.printStackTrace();
-			LogFactory.info("Unable to locate the element- No such Element Found");
+			// LogFactory.info("Unable to locate the element- No such Element Found");
 			return false;
 		}
 
 	}
-	
-	
+
 	public static boolean isElementEnabled(WebElement wbelObj) {
 		try {
-			
+
 			if (wbelObj.isEnabled())
 				return true;
 			else
 				return false;
 		} catch (NoSuchElementException e) {
 			return false;
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			return false;
 		}
 	}
-	public static boolean getListElementIfPresent( List<WebElement> list) {
+
+	public static boolean getListElementIfPresent(List<WebElement> list) {
 		try {
-	
+
 			if (list.get(0).isDisplayed())
 				return true;
 			else
 				return false;
 		} catch (NoSuchElementException e) {
-			
-			LogFactory.info("Unable to locate the element- No such Element Found");
+
+			// LogFactory.info("Unable to locate the element- No such Element Found");
 			return false;
-	
+
 		}
 
 		catch (Exception e) {
 			e.printStackTrace();
-			LogFactory.info("Unable to locate the element- No such Element Found");
+			// LogFactory.info("Unable to locate the element- No such Element Found");
 			return false;
 		}
 
 	}
+
 	public static WebElement getElementIfPresent(By by) {
 		try {
 			locator = BaseClass.wbDriver.findElement(by);
@@ -113,50 +108,46 @@ public class ValidationFactory {
 			else
 				return null;
 		} catch (NoSuchElementException e) {
-			
-			LogFactory.info("Unable to locate the element- No such Element Found");
+
+			// LogFactory.info("Unable to locate the element- No such Element Found");
 			return null;
-			
-		//	Assert.fail("Unable to locate the element- No such Element Found");
-	
+
+			// Assert.fail("Unable to locate the element- No such Element Found");
+
 		}
 
 		catch (Exception e) {
 			e.printStackTrace();
-			LogFactory.info("Unable to locate the element- No such Element Found");
+			// LogFactory.info("Unable to locate the element- No such Element Found");
 			return null;
 		}
 
 	}
-	
-	
-	
+
 	public static boolean getElementIfPresent(WebElement locator) {
 		try {
-	
+
 			if (locator.isDisplayed())
 				return true;
 			else
 				return false;
 		} catch (NoSuchElementException e) {
-			
-			LogFactory.info("Unable to locate the element- No such Element Found");
+
 			return false;
-	
+
 		}
 
 		catch (Exception e) {
 			e.printStackTrace();
-			LogFactory.info("Unable to locate the element- No such Element Found");
+			// LogFactory.info("Unable to locate the element- No such Element Found");
 			return false;
 		}
 
 	}
-	
-	
+
 	public static boolean isElementPresent(WebElement wbelObj) {
 		try {
-			
+
 			if (wbelObj.isDisplayed())
 				return true;
 			else
@@ -170,32 +161,6 @@ public class ValidationFactory {
 		}
 
 	}
-	
-
-/*	public static void elementNotPresent(By by, String strLocator, String strErrorMessage) {
-		Boolean present = false;
-		try {
-			BaseClass.wbDriver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
-			if (!(strLocator).isEmpty())
-				throw new noLocatorexceptions(strLocator);
-			else {
-				locator = BaseClass.wbDriver.findElement(by);
-				locator.isDisplayed();
-				if (present)
-					throw new Elementpresence(strLocator);
-			}
-		} catch (noLocatorexceptions e) {
-			LogFactory.info(strErrorMessage);
-		//	Assert.fail("nmkli0op");
-		} catch (Elementpresence e1) {
-			screenShot(strLocator);
-		//	Assert.fail(strErrorMessage);
-		} catch (NoSuchElementException e) {
-			;
-		} catch (Exception e) {
-			;
-		}
-	}*/
 
 	public static void screenShot(String strName) {
 		String name1 = System.getProperty("user.dir") + "/test-output/" + strName + ".png";
@@ -226,7 +191,7 @@ public class ValidationFactory {
 		} catch (Elementpresence e) {
 			LogFactory.info(strErrorMessage);
 			ValidationFactory.screenShot(strExpected);
-			//Assert.fail(strErrorMessage);
+			// Assert.fail(strErrorMessage);
 		} catch (Exception e) {
 			;
 		}
@@ -247,7 +212,7 @@ public class ValidationFactory {
 		} catch (Elementpresence e) {
 			LogFactory.info(strErrorMessage);
 			ValidationFactory.screenShot(strExpected);
-		//	Assert.fail(strErrorMessage);
+			// Assert.fail(strErrorMessage);
 		} catch (Exception e) {
 			;
 		}
@@ -265,7 +230,7 @@ public class ValidationFactory {
 				throw new Elementpresence("");
 		} catch (Elementpresence e) {
 			LogFactory.info(strErrorMessage);
-	//		Assert.fail(strErrorMessage);
+			// Assert.fail(strErrorMessage);
 		}
 
 		catch (Exception e) {
@@ -285,7 +250,7 @@ public class ValidationFactory {
 				throw new Elementpresence("");
 		} catch (Elementpresence e) {
 			LogFactory.info(strErrorMessage);
-		//	Assert.fail(strErrorMessage);
+			// Assert.fail(strErrorMessage);
 		} catch (Exception e) {
 			;
 		}
@@ -316,11 +281,11 @@ public class ValidationFactory {
 		} catch (NoSuchElementException e) {
 			LogFactory.info(locator + "");
 			screenShot("Screenshotlink");
-		//	Assert.fail(locator + "");
+			// Assert.fail(locator + "");
 		} catch (Exception e) {
 			LogFactory.info(locator + e.getMessage());
 			screenShot("Screenshotlink");
-	//		Assert.fail(e.getMessage());
+			// Assert.fail(e.getMessage());
 		}
 	}
 
@@ -333,20 +298,16 @@ public class ValidationFactory {
 				return true;
 			throw new Elementenable("");
 		} catch (NoSuchElementException e) {
-			LogFactory.info("Unable to locate the element- No such Element Found");
-		//	Assert.fail("Unable to locate the element- No such Element Found");
 			return false;
 		}
 
 		catch (Exception e) {
 			e.printStackTrace();
-			LogFactory.info("Unable to locate the element- No such Element Found");
+			// LogFactory.info("Unable to locate the element- No such Element Found");
 			return false;
 		}
 
 	}
-	
-
 
 	public static boolean validateButtonEnable(By by) throws Exception {
 		boolean value = false;
@@ -357,47 +318,16 @@ public class ValidationFactory {
 				return true;
 			throw new Elementenable("");
 		} catch (NoSuchElementException e) {
-			LogFactory.info("Unable to locate the element- No such Element Found");
-		//	Assert.fail("Unable to locate the element- No such Element Found");
 			return false;
 		}
 
 		catch (Exception e) {
 			e.printStackTrace();
-			LogFactory.info("Unable to locate the element- No such Element Found");
+			// LogFactory.info("Unable to locate the element- No such Element Found");
 			return false;
 		}
 
 	}
-	
-/*	public static void validateButtonEnable(By by, String Locator, String errorMessage) throws Exception {
-		Boolean value = false;
-		try {
-			if (!(Locator).isEmpty())
-				throw new noLocatorexceptions(Locator);
-			else {
-				locator = BaseClass.wbDv.findElement(by);
-				value = locator.isEnabled();
-				if (!value)
-					throw new Elementenable("");
-			}
-		} catch (Elementenable e) {
-			LogFactory.info(errorMessage);
-			screenShot(errorMessage);
-			Assert.fail(errorMessage);
-		} catch (noLocatorexceptions e) {
-			LogFactory.info(errorMessage + " ID/Xpath not found ");
-			screenShot(errorMessage);
-			Assert.fail("ID/Xpath not found");
-		} catch (NoSuchElementException e) {
-			LogFactory.info(errorMessage);
-			screenShot(errorMessage);
-			Assert.fail(errorMessage);
-		} catch (Exception e) {
-			e.printStackTrace();
-			LogFactory.info(errorMessage);
-		}
-	}*/
 
 	public boolean checkBooleanNotSame(Boolean actual, Boolean expected, String ErrorMessage) {
 		boolean result = false;
@@ -410,31 +340,23 @@ public class ValidationFactory {
 				throw new Elementpresence("");
 		} catch (Elementpresence e) {
 			LogFactory.info(ErrorMessage);
-	//		Assert.fail(ErrorMessage);
-		}
-
-		catch (Exception e) {
-			;
+		} catch (Exception e) {
 		}
 
 		return result;
 	}
-	
-	
-	
+
 	public static String reverseString(String StrName)
-	 
-	 {
-	  Object each=null;
-	  String reversestring="";
-	  for(int i=StrName.length()-1;i>=0;i--)
-	  {
-	  each=StrName.charAt(i);
-	  reversestring=reversestring+each;
-	  }
-	  
-	  return reversestring.trim();
-	 }
-	
+
+	{
+		Object each = null;
+		String reversestring = "";
+		for (int i = StrName.length() - 1; i >= 0; i--) {
+			each = StrName.charAt(i);
+			reversestring = reversestring + each;
+		}
+
+		return reversestring.trim();
+	}
 
 }
