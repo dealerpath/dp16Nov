@@ -104,6 +104,9 @@ public class WCM_Conetnt_POF extends BaseClass {
 	@FindBy(how = How.XPATH, using = "//*[@id='keywords']")
 	public static WebElement keywordsPage;
 	
+	@FindBy(how = How.XPATH, using = "//label[.='Keywords:']")
+	public static WebElement keywordsLabel;
+	
 	@FindBy(how = How.XPATH, using = "//label[.='Users:']//following::div//ul[@class='lotusInlinelist']//a")
 	public static List<WebElement> racfGroupUsersonPage;
 	
@@ -699,10 +702,8 @@ public class WCM_Conetnt_POF extends BaseClass {
 			location = locationOnPage.getText();
 			library = libraryOnPage.getText();
 			
-			if(!keywordsPage.getText().isEmpty())
+			if (ValidationFactory.isElementPresent(keywordsLabel) && !(keywordsPage.getText().isEmpty())) 
 			{keywords=keywordsPage.getText();}
-			
-			
 
 			if (!conType.equals("AT-Default")) {
 				if (checkForGlobalContent.getText().contains("GLOBAL_CONTENT")) {
