@@ -107,7 +107,7 @@ public class WCM_Conetnt_POF extends BaseClass {
 	@FindBy(how = How.XPATH, using = "//label[.='Keywords:']")
 	public static WebElement keywordsLabel;
 	
-	@FindBy(how = How.XPATH, using = "//label[.='Users:']//following::div//ul[@class='lotusInlinelist']//a")
+	@FindBy(how = How.XPATH, using = "//label[.='Users:']//following::div//ul[@class='lotusInlinelist']//li")
 	public static List<WebElement> racfGroupUsersonPage;
 	
 	
@@ -782,18 +782,30 @@ public class WCM_Conetnt_POF extends BaseClass {
 						{
 							if(racfGroupUsersonPage.size()==1)
 							{
-							racfGroups=wcmalrtDriver.findElement(By.xpath("//label[.='Users:']//following::div//ul[@class='lotusInlinelist']//a")).getText();
+								if(!(wcmalrtDriver.findElement(By.xpath("//label[.='Users:']//following::div//ul[@class='lotusInlinelist']//li")).getText().contains("None")))
+										{
+							
+							racfGroups=wcmalrtDriver.findElement(By.xpath("//label[.='Users:']//following::div//ul[@class='lotusInlinelist']//li")).getText();
+										}
+								else
+								{
+									racfGroups=null;
+									
+								}
 							}
 							else
 							{
 								String rGroup="";
 								for (int i = 1; i <= racfGroupUsersonPage.size(); i++) 
 									{
-									rGroup=rGroup+","+wcmalrtDriver.findElement(By.xpath("//label[.='Users:']//following::div//ul[@class='lotusInlinelist']//li["+i+"]/a")).getText();
+									
+									rGroup=rGroup+","+wcmalrtDriver.findElement(By.xpath("//label[.='Users:']//following::div//ul[@class='lotusInlinelist']//li["+i+"]")).getText();
+									
 									}
 									racfGroups=rGroup.substring(1);
 							}
 						}
+					
 					
 					}
 					
