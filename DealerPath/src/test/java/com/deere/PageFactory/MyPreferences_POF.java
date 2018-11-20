@@ -372,8 +372,8 @@ public class MyPreferences_POF extends BaseClass {
 			}
 
 		} catch (Exception e) {
-			LogFactory.info("catch block : resetMyPreferenceSettings");
-
+			String er = e.getMessage().substring(0, 60).toString().trim();
+			LogFactory.info("catch block : resetMyPreferenceSettings"+er);
 		}
 	}
 	/**
@@ -423,9 +423,11 @@ public class MyPreferences_POF extends BaseClass {
 						strTestData + " link is Not present under Utility Links menu.", strFlag);
 			}
 		} catch (Exception e) {
+			strFlag = "Fail";
+			String er = e.getMessage().substring(0, 60).toString().trim();
 			ReportFactory.reporterOutput(strTCID, "Verify " + strTestData + " link exists under Utility Links. ",
 					strTestData, strTestData + " link should exists under Utility Links. ",
-					strTestData + " link is present under Utility Links menu.Catch block", strFlag);
+					strTestData + " link is present under Utility Links menu.Exception :" +er, strFlag);
 		}
 	}
 	/**
@@ -474,8 +476,10 @@ public class MyPreferences_POF extends BaseClass {
 				System.out.println("Navigated to Home page successfully.");
 			}
 		} catch (Exception e) {
+			strFlag = "Fail";
+			String er = e.getMessage().substring(0, 60).toString().trim();
 			ReportFactory.reporterOutputMerge(strTCID, "Verify " + strTestData + " link exists in utility links ",
-					"Verify " + strTestData + " link exists in utility links ", "NA", e.getMessage().toString(),
+					"Verify " + strTestData + " link exists in utility links ", "NA", er,
 					strFlag, true, 8);
 			navigateToHomepage();
 			System.out.println("Navigated to Home page successfully from catch block.");
@@ -513,6 +517,8 @@ public class MyPreferences_POF extends BaseClass {
 			navigateToHomepage();
 			System.out.println("Navigated to Home page.");
 		} catch (Exception e) {
+			strFlag = "Fail";
+			String er = e.getMessage().substring(0, 60).toString().trim();
 			ReportFactory.reporterOutputMerge(strTCID + " : X button",
 					"Verify 'X' icon is available in 'My Preferences' modal window", "NA ",
 					"'X' icon  should be available in 'My Preferences' modal window", "X button is not displayed.",
@@ -541,6 +547,8 @@ public class MyPreferences_POF extends BaseClass {
 			navigateToHomepage();
 			System.out.println("Navigated to Home page.");
 		} catch (Exception e) {
+			strFlag = "Fail";
+			String er = e.getMessage().substring(0, 60).toString().trim();
 			ReportFactory.reporterOutputMerge(strTCID,
 					"Verify 'Save' button is available in 'My Preferences' modal window", "NA ",
 					"Verify 'Save' button should be available in 'My Preferences' modal window ", result, strFlag,
@@ -569,9 +577,11 @@ public class MyPreferences_POF extends BaseClass {
 			navigateToHomepage();
 			System.out.println("Navigated to Home page.");
 		} catch (Exception e) {
+			strFlag = "Fail";
+			String er = e.getMessage().substring(0, 60).toString().trim();
 			ReportFactory.reporterOutputMerge(strTCID,
 					"Verify 'Cancel' button is available in 'My Preferences' modal window", "NA ",
-					"Verify 'Cancel' button should be available in 'My Preferences' modal window ", result, strFlag,
+					"Verify 'Cancel' button should be available in 'My Preferences' modal window ", result+".Exception : "+er, strFlag,
 					false, 8);
 			navigateToHomepage();
 			System.out.println("Navigated to Home page from catch block.");
@@ -644,14 +654,17 @@ public class MyPreferences_POF extends BaseClass {
 			navigateToHomepage();
 			System.out.println("Navigated to My Home Page.");
 		} catch (Exception e) {
+			strFlag = "Fail";
+			String er = e.getMessage().substring(0, 60).toString().trim();
 			ReportFactory.reporterOutput(strTCID,
 					"Verify the departments available in the department section of the modal window",
 					"Departments displaying to user are based Prefered Depertments retrieved from 'Analyze User' : "
 							+ strDept,
 					"All accessible departments should be displayed in the department section of the My Preference modal  window after  analyzing the user"
 							+ listExpectedData,
-					e.getMessage().toString(), strFlag);
-			navigateToHomepage();
+							er, strFlag);
+//			navigateToHomepage();
+			GenericFactory.navigateToHomePage();
 			System.out.println("Navigated to My Home Page from catch block.");
 		}
 	}
@@ -674,6 +687,7 @@ public class MyPreferences_POF extends BaseClass {
 		String result = "Theme for exists in My Preference Modal Window should be present. ";
 		String value = "";
 		try {
+//			GenericFactory.navigateToHomePage();
 			if (onDept && (isIndex == false)) {
 				if (ListAllActiveLinks.get(0).isEnabled()) {
 					ListAllActiveLinks.get(0).click();
@@ -686,7 +700,9 @@ public class MyPreferences_POF extends BaseClass {
 					System.out.println("No department is active");
 				}
 			}
+			Thread.sleep(1000);
 			navigateToMyPreferences();
+			Thread.sleep(1000);
 			System.out.println("Navigated to My Preferences.");
 
 			// get analyze user Theme value
@@ -715,6 +731,7 @@ public class MyPreferences_POF extends BaseClass {
 								result + "</br><b>Theme in Analyse User : </b>" + themeFromAnalyse
 										+ ".</br><b>Theme in My Preferences Modal window : </b>" + value,
 								strFlag, merger, 4);
+				GenericFactory.navigateToHomePage();
 			} else {
 				ReportFactory
 						.reporterOutputMerge(strTCID,
@@ -723,16 +740,21 @@ public class MyPreferences_POF extends BaseClass {
 								result + "</br><b>Theme in Analyse User : </b>" + themeFromAnalyse
 										+ ".</br><b>Theme in My Preferences Modal window : </b>" + value,
 								strFlag, merger, 4);
+				GenericFactory.navigateToHomePage();
 			}
 		} catch (Exception e) {
+			String er = e.getMessage().substring(0, 60).toString().trim();
+			strFlag = "Fail";
 			if (!onDept) {
 				ReportFactory.reporterOutputMerge(strTCID, "Verify Themes are displayed from department page.",
-						"Verify Themes are NOT displayed ", "NA", e.getMessage().toString(), strFlag, merger, 4);
+						 "NA","Verify Themes are NOT displayed ", er, strFlag, merger, 4);
+				GenericFactory.navigateToHomePage();
 			} else {
 				ReportFactory.reporterOutputMerge(strTCID, "Verify Themes are displayed ",
-						"Verify Themes are NOT displayed ", "NA", e.getMessage().toString(), strFlag, merger, 4);
+						 "NA","Verify Themes are NOT displayed ", er, strFlag, merger, 4);
 				homepageDealerPath.click();
 				System.out.println("Navigated to Home page.");
+				GenericFactory.navigateToHomePage();
 			}
 		}
 	}
@@ -790,8 +812,8 @@ public class MyPreferences_POF extends BaseClass {
 				break;
 			}
 		} catch (Exception e) {
-			
-			System.out.println("catch block : regoinWiseLangChangeVerification "+e.getMessage());
+			String er = e.getMessage().substring(0, 60).toString().trim();
+			System.out.println("catch block : regoinWiseLangChangeVerification "+er);
 		}
 	}
 
@@ -1106,6 +1128,7 @@ public class MyPreferences_POF extends BaseClass {
 				}
 			}
 		} catch (Exception e) {
+			String er = e.getMessage().substring(0, 60).toString().trim();
 			strFlag = "Fail";
 			if (onDept) {
 				System.out.println("Failed on department page");
@@ -1113,7 +1136,7 @@ public class MyPreferences_POF extends BaseClass {
 						"Verify that expected changes are reflected on changing the language from My Preferences modal window from department page.",
 						"NA",
 						"Verify that expected changes are reflected on changing the language from My Preferences modal window.",
-						"Element Not Found", strFlag);
+						er, strFlag);
 				navigateToHomepage.click();
 				System.out.println("navigateToHomepage is clicked");
 			} else {
@@ -1122,8 +1145,9 @@ public class MyPreferences_POF extends BaseClass {
 						"Verify that expected changes are reflected on changing the language from My Preferences modal window.",
 						"NA",
 						"Verify that expected changes are reflected on changing the language from My Preferences modal window.",
-						"Element Not Found", strFlag);
-				navigateToHomepage.click();
+						er, strFlag);
+//				navigateToHomepage.click();
+				GenericFactory.navigateToHomePage();
 				System.out.println("navigateToHomepage is clicked");
 			}
 		}
@@ -1278,11 +1302,12 @@ public class MyPreferences_POF extends BaseClass {
 			}
 		} catch (Exception e) {
 			strFlag = "Fail";
+			String er = e.getMessage().substring(0, 60).toString().trim();
 			ReportFactory.reporterOutputMerge(strTCID,
 					"Verify by the changing the preferred language and save then all accessible departments should be displayed and checked in the department section of the modal window should also be reflected in the Left Navigation  on Home page.",
 					"NA",
 					"All accessible departments checked on My Preference modal window should be active and displayed on Left Naviagtion on Home page.",
-					"The department those are checked on My Preference modal window are NOT active and displayed  on Home page.",
+					"The department those are checked on My Preference modal window are NOT active and displayed  on Home page.OR Exception occured : " +er,
 					strFlag, merger, 2);
 			navigateToHomepage();
 //			Thread.sleep(2000);
@@ -1329,6 +1354,7 @@ public class MyPreferences_POF extends BaseClass {
 				Thread.sleep(500);
 			}
 		} catch (Exception e) {
+			String er = e.getMessage().substring(0, 60).toString().trim();
 			return null;
 		}
 		return Languaguage;
@@ -1371,8 +1397,9 @@ public class MyPreferences_POF extends BaseClass {
 			}
 			return listhomepage;
 		} catch (Exception e) {
+			String er = e.getMessage().substring(0, 60).toString().trim();
 			List<String> listhomepage = new ArrayList<String>();
-			System.out.println("Exception block of MyPreferencesCheckboxValidation1");
+			System.out.println("Exception block of MyPreferencesCheckboxValidation1"+er);
 			return listhomepage;
 		}
 	}
@@ -1434,10 +1461,11 @@ public class MyPreferences_POF extends BaseClass {
 			}
 		} catch (Exception e) {
 			strFlag = "Fail";
+			String er = e.getMessage().substring(0, 60).toString().trim();
 			ReportFactory.reporterOutput(strTCID,
 					"Verify Departments present on Analyse user should be displayed in My Preference Modal Window ",
 					"NA", "The List of departments for My Preference modal window should be as expected ",
-					"List of departments for Analyze user is NOT as expected", strFlag);
+					"List of departments for Analyze user is NOT as expected.OR Exception Occured : "+er, strFlag);
 			WaitFactory.FluentWaitByWebElement(strHomeDealer);
 			strHomeDealer.click();
 		}
@@ -1500,6 +1528,7 @@ public class MyPreferences_POF extends BaseClass {
 				}
 			} catch (Exception e) {
 				return null;
+				
 			}
 		}
 		return returnedLang;
@@ -1520,7 +1549,7 @@ public class MyPreferences_POF extends BaseClass {
 
 	public static String selectLanguagebyCodeMap(String code) throws Exception {
 		Map<String, String> mp = new HashMap<String, String>();
-		mp.put("fr_FR", "Français");
+		mp.put("fr_FR", "Franï¿½ais");
 		mp.put("en_US", "English");
 		mp.put("en_GB", "English");
 		mp.put("es_MX", "Spanish");
@@ -1530,7 +1559,7 @@ public class MyPreferences_POF extends BaseClass {
 		mp.put("de_DE", "German");
 		mp.put("en_AU", "English");
 		mp.put("zh_CN", "China");
-		mp.put("fr_CA","Français");
+		mp.put("fr_CA","Franï¿½ais");
 
 		languagebyCode = mp.get(code);
 		return languagebyCode;
@@ -1635,11 +1664,13 @@ public class MyPreferences_POF extends BaseClass {
 					"From any department, if the same department is unchecked & saved from 'My Preferences' for any user then the system should redirect to the homepage.",
 					result, strFlag);
 		} catch (Exception e) {
+			strFlag = "Fail";
+			String er = e.getMessage().substring(0, 60).toString().trim();
 			ReportFactory.reporterOutput(strTCID,
 					"Verify that on any department if the same department is unchecked & saved from 'My Preferences' for any user, the system should redirect to the homepage.",
 					"NA ",
 					"From any department, if the same department is unchecked & saved from 'My Preferences' for any user then the system should redirect to the homepage.",
-					result + "Catch block", strFlag);
+					result + "Exception : "+er, strFlag);
 			if(!ValidationFactory.isElementPresent(wbelHomeFav)) {
 				navigateToHomepage();
 				System.out.println("Navigated to Home page.");
@@ -1717,8 +1748,10 @@ public class MyPreferences_POF extends BaseClass {
 				WaitFactory.FluentWaitByWebElement(wbelHomeFav);
 			}
 		} catch (Exception e) {
+			strFlag = "Fail";
+			String er = e.getMessage().substring(0, 60).toString().trim();
 			ReportFactory.reporterOutput(strTCID, "Verify that the List of language is displayed", "NA",
-					"Verify that the List of language is displayed", e.getMessage().toString(), strFlag);
+					"Verify that the List of language is displayed", er, strFlag);
 			if(!ValidationFactory.isElementPresent(wbelHomeFav)) {
 				navigateToHomepage();
 				System.out.println("Navigated to Home page.");
@@ -1810,15 +1843,17 @@ public class MyPreferences_POF extends BaseClass {
 						"The respective default language is selected and the dropdown is not displayed ", result,
 						strFlag, true, colspan);
 				// navigate to home page
-				wbelLeftHeader.click();
-				System.out.println("Navigated to Home page.");
+				
+					navigateToHomepage();
+					System.out.println("Navigated to Home page.");
 			}
 		} catch (Exception e) {
 			strFlag = "Pass";
+			String er = e.getMessage().substring(0, 60).toString().trim();
 			ReportFactory.reporterOutput(strTCID,
 					"Verify that the default language is selected and the dropdown wont be displayed", "NA",
 					"The respective default language is selected and the dropdown is not displayed ",
-					"The default language is selected.", strFlag);
+					"The default language is selected.OR exception occured : "+er, strFlag);
 			if(!ValidationFactory.isElementPresent(wbelHomeFav)) {
 				navigateToHomepage();
 				System.out.println("Navigated to Home page.");
@@ -2109,14 +2144,14 @@ public class MyPreferences_POF extends BaseClass {
 				if (onDept) {
 					ReportFactory.reporterOutputMerge(strTCID,
 							"Verify that by changing the preferred site from the preferred site drop down of My Preferences modal window from department page, Url changes accordingly",
-							"NA ", "The respective URL for should be displayed ", result, strFlag, merger, 4);
+							"NA ", "The respective URL for should be displayed ", result, strFlag, merger, 2);
 					navigateToHomepage();
 					System.out.println("navigateToHomepage");
 					counterfail++;
 				} else {
 					ReportFactory.reporterOutputMerge(strTCID,
 							"Verify that by changing the preferred site from the preferred site drop down of My Preferences modal window, Url changes accordingly",
-							"NA ", "The respective URL for should be displayed ", result, strFlag, merger, 4);
+							"NA ", "The respective URL for should be displayed ", result, strFlag, merger, 2);
 					navigateToHomepage();
 					System.out.println("navigateToHomepage");
 					counterfail++;
@@ -2125,6 +2160,7 @@ public class MyPreferences_POF extends BaseClass {
 		} catch (Exception e) {
 			strFlag = "Fail";
 			System.out.println(e.getMessage().toString());
+			String er = e.getMessage().substring(0, 60).toString().trim();
 			// GenericFactory.navigateToHomePage();
 			WaitFactory.WaitForElementToVisible(navigateToHomepage);
 			navigateToHomepage.click();
@@ -2133,12 +2169,12 @@ public class MyPreferences_POF extends BaseClass {
 				ReportFactory.reporterOutputMerge(strTCID,
 						"Verify that the URL is displayed with the expected contents from department page.",
 						list.toString(), "Verify that the URL is displayed with the expected contents",
-						"Element is not visible.URL Verification failed for : " + RunningURL, strFlag, merger, colspan);
+						"Element is not visible.URL Verification failed for : " + RunningURL+".Exception :"+er, strFlag, merger, colspan);
 			} else {
 				ReportFactory.reporterOutputMerge(strTCID,
 						"Verify that the URL is displayed with the expected contents", list.toString(),
 						"Verify that the URL is displayed with the expected contents",
-						"Element is not visible.URL Verification failed for : " + RunningURL, strFlag, merger, colspan);
+						"Element is not visible.URL Verification failed for : " + RunningURL+".Exception :"+er, strFlag, merger, colspan);
 			}
 		}
 	}
@@ -2246,11 +2282,13 @@ public class MyPreferences_POF extends BaseClass {
 						"Alert Pop up with the Error message: 'At least one department should be selected' is displayed on uncheck of all the departments on My Preference modal window.",
 						strFlag);
 			} catch (Exception e) {
+				String er = e.getMessage().substring(0, 60).toString().trim();
+				strFlag = "Fail";
 				ReportFactory.reporterOutput(strTCID,
 						"Verify that at least one department needs to be selected in My Preferences window  and pop up should be displayed on unchecking all the department.",
 						"NA",
 						"Pop up with the Error message: 'At least one department should be selected' should be displayed on unchecking all the department on My Preference modal window.",
-						"Alert Pop up with the Error message: 'At least one department should be selected' is NOT displayed on uncheck of all the departments on My Preference modal window.",
+						"Alert Pop up with the Error message: 'At least one department should be selected' is NOT displayed on uncheck of all the departments on My Preference modal window.Exception>>"+er,
 						strFlag);
 				if(!ValidationFactory.isElementPresent(wbelHomeFav)) {
 					navigateToHomepage();
@@ -2259,11 +2297,13 @@ public class MyPreferences_POF extends BaseClass {
 				}
 			}
 		} catch (Exception e) {
+			strFlag = "Fail";
+			String er = e.getMessage().substring(0, 60).toString().trim();
 			ReportFactory.reporterOutput(strTCID,
 					"Verify that at least one department needs to be selected in My Preferences window  and pop up should be displayed on unchecking all the department.",
 					"NA",
 					"Pop up with the Error message: 'At least one department should be selected' should be displayed on unchecking all the department on My Preference modal window.",
-					"Alert Pop up with the Error message: 'At least one department should be selected' is NOT displayed on uncheck of all the departments on My Preference modal window.",
+					er,
 					strFlag);
 			if(!ValidationFactory.isElementPresent(wbelHomeFav)) {
 				navigateToHomepage();
@@ -2318,7 +2358,8 @@ public class MyPreferences_POF extends BaseClass {
 					myPreferenceLangVerification(strTCID, "English,FranÃ§ais,EspaÃ±ol");
 				}
 		} catch (Exception e) {
-			System.out.println("I am in catch block");
+			String er = e.getMessage().substring(0, 60).toString().trim();
+			System.out.println("Catch block : "+er);
 		}
 	}
 
@@ -2425,7 +2466,9 @@ public class MyPreferences_POF extends BaseClass {
 			// Thread.sleep(5000);
 			// }
 		} catch (Exception e) {
-			System.out.println("Exception Occurred>>>>>>>>" + e);
+			String er = e.getMessage().substring(0, 60).toString().trim();
+			
+			System.out.println("Exception Occurred>>>>>>>>" + er);
 		}
 	}
 	/**
