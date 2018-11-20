@@ -24,8 +24,8 @@ import com.deere.Helpers.ValidationFactory;
 import com.deere.Helpers.WaitFactory;
 
 /**
- * @author shrey.choudhary 
- * This class having all test cases related to Announcement Portal.
+ * @author shrey.choudhary This class having all test cases related to
+ *         Announcement Portal.
  * @version 1.0
  */
 public class Announcements_POF extends BaseClass {
@@ -117,11 +117,9 @@ public class Announcements_POF extends BaseClass {
 	@FindBy(how = How.XPATH, using = "//*[@id='productSegmentsError']")
 	public static WebElement wblProdSegmentError;
 
-	
-
 	/**
-	 * @author shrey.choudhary
-	 * This method is used to verify the announcement table(frame) is present on Homepage.
+	 * @author shrey.choudhary This method is used to verify the announcement
+	 *         table(frame) is present on Homepage.
 	 * @param TCID
 	 * @throws Throwable
 	 */
@@ -150,8 +148,8 @@ public class Announcements_POF extends BaseClass {
 	}
 
 	/**
-	 * @author shrey.choudhary
-	 * This method is verifying the announcement content on homepage
+	 * @author shrey.choudhary This method is verifying the announcement content on
+	 *         homepage
 	 * @param strTCID
 	 * @throws Throwable
 	 */
@@ -238,8 +236,8 @@ public class Announcements_POF extends BaseClass {
 
 	// verify Announcement in detail
 	/**
-	 * @author shrey.choudhary
-	 * This method is verifying the announcement detail on Homepage.
+	 * @author shrey.choudhary This method is verifying the announcement detail on
+	 *         Homepage.
 	 * @throws Throwable
 	 */
 	public static void verifyAnnouncementInDetail_Homepage() throws Throwable {
@@ -376,13 +374,14 @@ public class Announcements_POF extends BaseClass {
 					"Announcement Date order should display in new to old. ", strResult, strFlag);
 		}
 	}
+
 	/**
-	 * @author shrey.choudhary
-	 * This method is verifying the title & description of Announcement portlet based on User's Country, Products, language etc.
-	 * @return Test output that title & description is present or not. 
+	 * @author shrey.choudhary This method is verifying the title & description of
+	 *         Announcement portlet based on User's Country, Products, language etc.
+	 * @return Test output that title & description is present or not.
 	 * @throws Throwable
 	 */
-	public  void verifyAnnouncementsOnTheAnnouncementPortlet(String strWCMTCID, String userDefinedCountry,
+	public void verifyAnnouncementsOnTheAnnouncementPortlet(String strWCMTCID, String userDefinedCountry,
 			String wcmCountry, String departmentName, String copyToDepartment, String wcmDealerType,
 			String userDefinedProducts, String wcmProducts, String contentType, String announcementTitle,
 			String description) throws Throwable {
@@ -577,18 +576,7 @@ public class Announcements_POF extends BaseClass {
 				description = StringUtils.normalizeSpace(description);
 				descriptionWCM = StringUtils.normalizeSpace(descriptionWCM);
 
-				System.out.println("WCM title is :" + Title);
-				System.out.println("WCM description is :" + descriptionWCM);
-
-				System.out.println("Actual title is :" + titleOfAnnouncement);
-				System.out.println("Actual description is :" + description);
-
 				if (titleOfAnnouncement.equals(Title) && description.equals(descriptionWCM)) {
-					System.out.println("WCM title is :" + Title);
-					System.out.println("WCM description is :" + descriptionWCM);
-
-					System.out.println("Actual title is :" + Title);
-					System.out.println("Actual description is :" + descriptionWCM);
 					return true;
 				}
 			}
@@ -598,9 +586,10 @@ public class Announcements_POF extends BaseClass {
 			return false;
 		}
 	}
+
 	/**
-	 * @author shrey.choudhary 
-	 * This method is verifying announcement header format is correct or not.
+	 * @author shrey.choudhary This method is verifying announcement header format
+	 *         is correct or not.
 	 * @return Test output that header format is correct or not.
 	 * @throws Throwable
 	 */
@@ -646,10 +635,12 @@ public class Announcements_POF extends BaseClass {
 					"NA", "NA", er, strFlag);
 		}
 	}
+
 	/**
-	 * @author shrey.choudhary 
-	 * This method is verifying that any announcement which is having embedded links should not be broken.
-	 * @return Test output that embeded links are broken or not, if broken test case would be failed.
+	 * @author shrey.choudhary This method is verifying that any announcement which
+	 *         is having embedded links should not be broken.
+	 * @return Test output that embeded links are broken or not, if broken test case
+	 *         would be failed.
 	 * @throws Throwable
 	 */
 	public static void verifyEmbededlinks(String strTCID) throws Throwable {
@@ -709,10 +700,12 @@ public class Announcements_POF extends BaseClass {
 					"Fail");
 		}
 	}
+
 	/**
-	 * @author shrey.choudhary 
-	 * This method is verifying that all announcement should be order as per their published date.
-	 * @return Test output that all announcements are sorted as per their published date, if not test case is getting failed.
+	 * @author shrey.choudhary This method is verifying that all announcement should
+	 *         be order as per their published date.
+	 * @return Test output that all announcements are sorted as per their published
+	 *         date, if not test case is getting failed.
 	 * @throws Throwable
 	 */
 	public static void verifyAnnouncemntsShowingInDescendingOrderOnDateTime(String strTCID,
@@ -812,12 +805,13 @@ public class Announcements_POF extends BaseClass {
 		}
 
 	}
+
 	/**
-	 * @author shrey.choudhary 
-	 * This method is verifying the title & description of
-	 * Announcement portlet should not visible to user when a particular
-	 * department is unchecked given in test data sheet.
-	 * @return Test output that title & description is present or not if related department is unchecked.
+	 * @author shrey.choudhary This method is verifying the title & description of
+	 *         Announcement portlet should not visible to user when a particular
+	 *         department is unchecked given in test data sheet.
+	 * @return Test output that title & description is present or not if related
+	 *         department is unchecked.
 	 * @throws Throwable
 	 */
 	@SuppressWarnings("unlikely-arg-type")
@@ -940,11 +934,11 @@ public class Announcements_POF extends BaseClass {
 	}
 
 	/**
-	 * @author shrey.choudhary 
-	 * This method is verifying the title & description of
-	 * Announcement portlet should not visible to user when a particular
-	 * product is unchecked given in test data sheet.
-	 * @return Test output that title & description is present or not if related product is unchecked.
+	 * @author shrey.choudhary This method is verifying the title & description of
+	 *         Announcement portlet should not visible to user when a particular
+	 *         product is unchecked given in test data sheet.
+	 * @return Test output that title & description is present or not if related
+	 *         product is unchecked.
 	 * @throws Throwable
 	 */
 	public static void verifyAnnouncementTitleOnProductUncheck(String UserProductName, String WcmProducts,
@@ -996,10 +990,12 @@ public class Announcements_POF extends BaseClass {
 		}
 
 	}
+
 	/**
-	 * @author shrey.choudhary 
-	 * This method is verifying that announcement having read more & collapse link is working properly.
-	 * @return Test output that announcement having read more & collapse link is working properly, if not test case is getting failed.
+	 * @author shrey.choudhary This method is verifying that announcement having
+	 *         read more & collapse link is working properly.
+	 * @return Test output that announcement having read more & collapse link is
+	 *         working properly, if not test case is getting failed.
 	 * @throws Throwable
 	 */
 	public static boolean checkReadMoreAndCollapseLinkForAnnouncement(String strTCID) throws Throwable {
@@ -1074,10 +1070,12 @@ public class Announcements_POF extends BaseClass {
 		}
 		return booFlagCollapse && booFlagReadmore;
 	}
+
 	/**
-	 * @author shrey.choudhary 
-	 * This method is verifying that announcement having Expand & collapse link is working properly.
-	 * @return Test output that announcement having Expand & collapse link is working properly, if not test case is getting failed.
+	 * @author shrey.choudhary This method is verifying that announcement having
+	 *         Expand & collapse link is working properly.
+	 * @return Test output that announcement having Expand & collapse link is
+	 *         working properly, if not test case is getting failed.
 	 * @throws Throwable
 	 */
 	public static void verifyExpandAndCollapseLinkOnAnnuoncementPortlet(String strTCID) throws Throwable {
@@ -1142,12 +1140,13 @@ public class Announcements_POF extends BaseClass {
 
 		}
 	}
+
 	/**
-	 * @author shrey.choudhary 
-	 * This method is verifying the title & description of
-	 * Announcement portlet should not visible to user when a particular
-	 * country is unchecked given in test data sheet.
-	 * @return Test output that title & description is present or not if related country is unchecked.
+	 * @author shrey.choudhary This method is verifying the title & description of
+	 *         Announcement portlet should not visible to user when a particular
+	 *         country is unchecked given in test data sheet.
+	 * @return Test output that title & description is present or not if related
+	 *         country is unchecked.
 	 * @throws Throwable
 	 */
 	public static void verifyCountryUncheckOnHomepage(String wcmCountry, String announcementTitle, String strTCID,
