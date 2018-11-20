@@ -35,6 +35,7 @@ import com.deere.Helpers.BaseClass;
 import com.deere.Helpers.LogFactory;
 import com.deere.Helpers.ValidationFactory;
 import com.deere.Helpers.WaitFactory;
+import com.google.j2objc.annotations.ReflectionSupport.Level;
 
 public class WCM_Conetnt_POF extends BaseClass {
 
@@ -101,11 +102,11 @@ public class WCM_Conetnt_POF extends BaseClass {
 	@FindBy(how = How.XPATH, using = "//*[@id='breadcrumb_library']")
 	public static WebElement libraryOnPage;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='keywords']")
-	public static WebElement keywordsPage;
-	
 	@FindBy(how = How.XPATH, using = "//label[.='Keywords:']")
 	public static WebElement keywordsLabel;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='keywords']")
+	public static WebElement keywordsPage;
 	
 	@FindBy(how = How.XPATH, using = "//label[.='Users:']//following::div//ul[@class='lotusInlinelist']//li")
 	public static List<WebElement> racfGroupUsersonPage;
@@ -703,7 +704,11 @@ public class WCM_Conetnt_POF extends BaseClass {
 			library = libraryOnPage.getText();
 			
 			if (ValidationFactory.isElementPresent(keywordsLabel) && !(keywordsPage.getText().isEmpty())) 
-			{keywords=keywordsPage.getText();}
+			{
+			
+			keywords=keywordsPage.getText();
+			
+			}
 
 			if (!conType.equals("AT-Default")) {
 				if (checkForGlobalContent.getText().contains("GLOBAL_CONTENT")) {
@@ -777,7 +782,6 @@ public class WCM_Conetnt_POF extends BaseClass {
 					}
 					if(ValidationFactory.isElementPresent(racfGroupsonPage)) {
 						
-						
 						if(ValidationFactory.isElementPresent(By.xpath("//label[.='Users:']//following::div//ul[@class='lotusInlinelist']"))) 
 						{
 							if(racfGroupUsersonPage.size()==1)
@@ -805,8 +809,6 @@ public class WCM_Conetnt_POF extends BaseClass {
 									racfGroups=rGroup.substring(1);
 							}
 						}
-					
-					
 					}
 					
 					if (ValidationFactory.isElementPresent(descriptionAlerts)) {
@@ -1061,7 +1063,7 @@ public class WCM_Conetnt_POF extends BaseClass {
 
 			if (prodTypeList.length >= 2) {
 				for (int n = 0; n <= prodTypeList.length - 1; n++) {
-
+						
 					String prodt=prodTypeList[n].trim();
 					String temp = prodt.substring(32);
 					productTypeTitle = productTypeTitle + "," + temp.trim();
@@ -1395,7 +1397,7 @@ public class WCM_Conetnt_POF extends BaseClass {
 
 					System.out.println("Total children for Subdepartment are:" + allSubDeptChildrenImages.size()
 							+ " but content actually to check are:" + totalCount);
-					for (int sdc = 1; sdc <= totalCountAfterComparison; sdc++) {
+					for (int sdc = 1; sdc <= allSubDeptChildrenImages.size(); sdc++) {
 						String subDeptImageTitle = wcmalrtDriver
 								.findElement(By.xpath("//tr[" + sdc + "]//td[2]//img[2]")).getAttribute("title");
 
@@ -1589,6 +1591,8 @@ public class WCM_Conetnt_POF extends BaseClass {
 			throws Throwable {
 		try {
 			HashMap<String, String> tableRowDataFromWCM = new HashMap<String, String>();
+			HashMap<String, String> tableChildIsCategory = new HashMap<String, String>();
+			List<String> table_ChildCategoriesList = new ArrayList<String>();
 			wcmalrtDriver.findElement(By.xpath("//a[.='" + tableName + "' and contains(@title,'View children')]"))
 					.click();
 
@@ -1616,6 +1620,68 @@ public class WCM_Conetnt_POF extends BaseClass {
 
 			}
 
+			if(tableRows.size()==0)
+			{
+				System.out.println("Checking Categories for Table index page::" + tableName);
+
+				for (int checkTableCategory = 1; checkTableCategory <= totalCountAfterComparisonz; checkTableCategory++) {
+					WebElement tableCategories = wcmalrtDriver.findElement(
+							By.xpath("//tr[" + checkTableCategory + "]//td[2]//img[2]/following::td[1]//a/span"));
+					String childCategoryTitleGCIP = tableCategories.getText();
+
+					String childType = checkContentType(childCategoryTitleGCIP);
+					if (childType.contains("SAT-Default Sub-Site Area")) {
+						table_ChildCategoriesList.add(childCategoryTitleGCIP);
+					}
+				}
+
+			}
+			//fetchContentForGrandChildIndexPage(tableChildIsChildIndexPage, Level);
+			
+			for(int tcc=0;tcc<table_ChildCategoriesList.size();tcc++)
+			{
+				if (ValidationFactory.isElementPresent(By.xpath("//a[.='" + table_ChildCategoriesList.get(tcc)
+				+ "' and starts-with(@title,'View children')]"))) {
+			WebElement tableChildCategory = wcmalrtDriver
+					.findElement(By.xpath("//a[.='" + table_ChildCategoriesList.get(tcc)
+							+ "' and starts-with(@title,'View children')]"));
+
+			String tableChildCategoryTitle = tableChildCategory.getText();
+				
+			tableChildCategory.click();
+			List<WebElement> categoriesContentFinal = allChildren;
+			int totalCountAfterComparisonz1 = totalCount;
+			if (categoriesContentFinal.size() < totalCount) {
+				totalCountAfterComparisonz1 = categoriesContentFinal.size();
+			}
+			for(int nccfc = 1; nccfc <= totalCountAfterComparisonz1; nccfc++)
+			{
+				if (ValidationFactory.isElementPresent(By.xpath("//tr[" + nccfc + "]//td[2]//img[2]/following::td[1]//a")))
+				{
+				wcmalrtDriver.findElement(By.xpath("//tr[" + nccfc + "]//td[2]//img[2]/following::td[1]//a"))
+				.click();
+
+
+			String wcmTCID = testCaseID + testcaseNumber;
+			tableChildIsCategory.put("Test Case ID", wcmTCID);
+			tableChildIsCategory.put("3rdLevelIndexPageCategories", tableChildCategoryTitle);
+			tableChildIsCategory.putAll(tableStructure);
+			writeWCMToExcel(tableChildIsCategory, "Table");
+			writeWCMHeaderContentFinalToExcel();
+			testcaseNumber++;
+			closeContent.click();
+				}
+				else
+					{LogFactory.info("Unable to find the xpath for title");}
+				}
+			
+			wcmalrtDriver.findElement(By.xpath("//a[.='"+tableName+"']")).click();
+			
+			} 
+				else {LogFactory.info("Unable to find the xpath for title");}
+			}
+			
+			
 			if (tableRows.size() > 0) {
 				for (int rtr = 0; rtr < tableRows.size(); rtr++) {
 
@@ -1660,12 +1726,12 @@ public class WCM_Conetnt_POF extends BaseClass {
 
 					System.out.println("Now fetching Child Index page's content for Table index page::" + tableName);
 					List<String> table_ChildIndexPagesList = new ArrayList<String>();
-					List<String> table_ChildCategoriesList = new ArrayList<String>();
+					
 					List<String> table_ChildTablesList = new ArrayList<String>();
 
 					HashMap<String, String> tableChildIsChildIndexPage = new HashMap<String, String>();
 					HashMap<String, String> tableChildIsTables = new HashMap<String, String>();
-					HashMap<String, String> tableChildIsCategory = new HashMap<String, String>();
+					//HashMap<String, String> tableChildIsCategory = new HashMap<String, String>();
 
 					for (int tip = 0; tip < otherTableData.size(); tip++) {
 						String tableChildName = otherTableData.get(tip); // Business Continuation
@@ -1678,9 +1744,9 @@ public class WCM_Conetnt_POF extends BaseClass {
 								table_ChildIndexPagesList.add(tableChildName);
 							} else if (tableChildContentType.contains("SAT-Table Index Page")) {
 								table_ChildTablesList.add(tableChildName);
-							} else if (tableChildContentType.contains("SAT-Default Sub-Site Area")) {
+							} /*else if (tableChildContentType.contains("SAT-Default Sub-Site Area")) {
 								table_ChildCategoriesList.add(tableChildName);
-							}
+							}*/
 						} else {
 							LogFactory.info("Unable to find the xpath for title::" + tableChildName);
 						}
@@ -1735,7 +1801,7 @@ public class WCM_Conetnt_POF extends BaseClass {
 
 					/// Fetching content for Child index page's categories
 
-					for (int tipc = 0; tipc < numberOfContentsToFetch(table_ChildCategoriesList); tipc++) {
+					/*for (int tipc = 0; tipc < numberOfContentsToFetch(table_ChildCategoriesList); tipc++) {
 						System.out.println("Reading content for Category " + table_ChildCategoriesList.get(tipc)
 								+ " of Table Index Page::" + tableName);// SALES
 
@@ -1765,10 +1831,18 @@ public class WCM_Conetnt_POF extends BaseClass {
 							LogFactory
 									.info("Unable to find the xpath for title::" + table_ChildCategoriesList.get(tipc));
 						}
-					}
+					}*/
 
 					for (int tcip = 0; tcip < table_ChildIndexPagesList.size(); tcip++) {
-						tableChildIsChildIndexPage.put("3rdLevelChildIndexPage", table_ChildIndexPagesList.get(tcip));
+						if (Level.contains("3rdLevelIndexPage")) {
+							tableChildIsChildIndexPage.put("3rdLevelIndexPage", tableName);
+							tableChildIsChildIndexPage.put("3rdLevelChildIndexPage", table_ChildIndexPagesList.get(tcip));
+						} else {
+							tableChildIsChildIndexPage.put("4thLevelIndexPage", tableName);
+							tableChildIsChildIndexPage.put("4thLevelChildIndexPage", table_ChildIndexPagesList.get(tcip));
+						}
+						
+						//tableChildIsChildIndexPage.put("3rdLevelChildIndexPage", table_ChildIndexPagesList.get(tcip));
 
 						if (ValidationFactory.isElementPresent(By.xpath("//a[.='" + table_ChildIndexPagesList.get(tcip)
 								+ "' and starts-with(@title,'View children')]"))) {
@@ -1820,6 +1894,8 @@ public class WCM_Conetnt_POF extends BaseClass {
 			List<WebElement> allChildRowsimages = allChildren;
 			List<String> allChildTableRows = new ArrayList<String>();
 			List<String> otherChildTableData = new ArrayList<String>();
+			List<String> childtable_CategoriesList = new ArrayList<String>();
+			HashMap<String,String> childTableChildIsCategory= new HashMap<String,String>();
 
 			int totalCountAfterComparisonf = totalCount;
 			if (allChildRowsimages.size() < totalCount) {
@@ -1839,7 +1915,69 @@ public class WCM_Conetnt_POF extends BaseClass {
 				}
 
 			}
+			
+			
+			if(allChildTableRows.size()==0)
+			{
+				System.out.println("Checking Categories for Child Table index page::" + childTablename);
 
+				for (int checkTableCategory = 1; checkTableCategory <= totalCountAfterComparisonf; checkTableCategory++) {
+					WebElement childTableCategories = wcmalrtDriver.findElement(
+							By.xpath("//tr[" + checkTableCategory + "]//td[2]//img[2]/following::td[1]//a/span"));
+					String childCategoryTitleGCIP = childTableCategories.getText();
+
+					String childType = checkContentType(childCategoryTitleGCIP);
+					if (childType.contains("SAT-Default Sub-Site Area")) {
+						childtable_CategoriesList.add(childCategoryTitleGCIP);
+					}
+				}
+
+			}
+			
+			
+			for(int tcc=0;tcc<childtable_CategoriesList.size();tcc++)
+			{
+				if (ValidationFactory.isElementPresent(By.xpath("//a[.='" + childtable_CategoriesList.get(tcc)
+				+ "' and starts-with(@title,'View children')]"))) {
+			WebElement tableChildCategory = wcmalrtDriver
+					.findElement(By.xpath("//a[.='" + childtable_CategoriesList.get(tcc)
+							+ "' and starts-with(@title,'View children')]"));
+
+			String tableChildCategoryTitle = tableChildCategory.getText();
+			tableChildCategory.click();
+			List<WebElement> categoriesContentFinal = allChildren;
+			int totalCountAfterComparisonyv1 = totalCount;
+			if (categoriesContentFinal.size() < totalCount) {
+				totalCountAfterComparisonyv1 = categoriesContentFinal.size();
+			}
+			for(int nccfc = 1; nccfc <= totalCountAfterComparisonyv1; nccfc++)
+			{
+				if (ValidationFactory.isElementPresent(By.xpath("//tr["+nccfc+"]//td[2]//img[2]/following::td[1]//")))
+				{
+				wcmalrtDriver.findElement(By.xpath("//tr[" + nccfc + "]//td[2]//img[2]/following::td[1]//a"))
+				.click();
+
+
+			String wcmTCID = testCaseID + testcaseNumber;
+			childTableChildIsCategory.put("Test Case ID", wcmTCID);
+			childTableChildIsCategory.put("3rdLevelChildIndexPageCategories", tableChildCategoryTitle);
+			childTableChildIsCategory.putAll(childTableStructure);
+			writeWCMToExcel(childTableChildIsCategory, "Table");
+			writeWCMHeaderContentFinalToExcel();
+			testcaseNumber++;
+			closeContent.click();
+				}
+				else
+					{LogFactory.info("Unable to find the xpath for title");}
+				}
+			
+			wcmalrtDriver.findElement(By.xpath("//a[.='"+childTablename+"']")).click();
+		} else {
+			LogFactory.info("Unable to find the xpath for title");
+		}
+			}
+			
+	
 			if (allChildTableRows.size() > 0) {
 				for (int ctr = 0; ctr < allChildTableRows.size(); ctr++) {
 					if (ValidationFactory.isElementPresent(By.xpath("//a[.='" + allChildTableRows.get(ctr)
@@ -1902,9 +2040,9 @@ public class WCM_Conetnt_POF extends BaseClass {
 							childTable_grandChildIndexPages.add(childTableChildName);
 						} else if (tableChildContentType.contains("SAT-Table Index Page")) {
 							ChildTable_grandChildTables.add(childTableChildName);
-						} else if (tableChildContentType.contains("SAT-Default Sub-Site Area")) {
+						} /*else if (tableChildContentType.contains("SAT-Default Sub-Site Area")) {
 							ChildTable_grandChildCategories.add(childTableChildName);
-						}
+						}*/
 					} else {
 						LogFactory.info("Unable to find the xpath for title::" + childTableChildName);
 					}
@@ -1957,7 +2095,7 @@ public class WCM_Conetnt_POF extends BaseClass {
 				}
 
 				/// Fetching content for Child index page's categories
-				if (ChildTable_grandChildCategories.size() > 0) {
+				/*if (ChildTable_grandChildCategories.size() > 0) {
 					HashMap<String, String> childtableGrandChildCategory = new HashMap<String, String>();
 					for (int ctgcc = 0; ctgcc < numberOfContentsToFetch(ChildTable_grandChildCategories); ctgcc++) {
 						System.out.println("Reading content for Category " + ChildTable_grandChildCategories.get(ctgcc)
@@ -2000,7 +2138,7 @@ public class WCM_Conetnt_POF extends BaseClass {
 									+ ChildTable_grandChildCategories.get(ctgcc));
 						}
 					}
-				}
+				}*/
 
 				if (childTable_grandChildIndexPages.size() > 0) {
 					HashMap<String, String> childTableGrandChildIsIndexPage = new HashMap<String, String>();
@@ -2085,6 +2223,9 @@ public class WCM_Conetnt_POF extends BaseClass {
 	private static void fetchTableRowsContentForGrandChildTable(String grandChildTableName,
 			HashMap<String, String> grandChildTableStructure, String nextestLevel) throws Throwable {
 		HashMap<String, String> grandChildTableContent = new HashMap<String, String>();
+		
+		HashMap<String,String> grandChildTableChildIsCategory=new HashMap<String,String>();
+		ArrayList<String> grandChildtable_CategoriesList=new ArrayList<String>();
 		try {
 
 			if (ValidationFactory.isElementPresent(
@@ -2102,7 +2243,7 @@ public class WCM_Conetnt_POF extends BaseClass {
 				if (allGrandChildTableChildContent.size() < totalCount) {
 					totalCountAfterComparisony = allGrandChildTableChildContent.size();
 				}
-				for (int gctc = 1; gctc <= totalCountAfterComparisony; gctc++) {
+				for (int gctc = 1; gctc <= allGrandChildTableChildContent.size(); gctc++) {
 					String grandChildTableImageTitle = wcmalrtDriver
 							.findElement(By.xpath("//tr[" + gctc + "]//td[2]//img[2]")).getAttribute("title");
 					if (!(grandChildTableImageTitle.contains("View children"))) {
@@ -2118,8 +2259,69 @@ public class WCM_Conetnt_POF extends BaseClass {
 					}
 
 				}
+				
+				
+				if(grandChildTableRowContent.size()==0)
+				{
+					System.out.println("Checking Categories for grand Child Table index page::" + grandChildTableName);
 
-				if (grandChildTableRowContent.size() > 0) {
+					for (int checkTableCategory = 1; checkTableCategory <= totalCountAfterComparisony; checkTableCategory++) {
+						WebElement tableCategories = wcmalrtDriver.findElement(
+								By.xpath("//tr[" + checkTableCategory + "]//td[2]//img[2]/following::td[1]//a/span"));
+						String childCategoryTitleGCIP = tableCategories.getText();
+
+						String childType = checkContentType(childCategoryTitleGCIP);
+						if (childType.contains("SAT-Default Sub-Site Area")) {
+							grandChildtable_CategoriesList.add(childCategoryTitleGCIP);
+						}
+					}
+
+				}
+				
+			for(int tcc=0;tcc<grandChildtable_CategoriesList.size();tcc++)
+				{
+					if (ValidationFactory.isElementPresent(By.xpath("//a[.='" + grandChildtable_CategoriesList.get(tcc)
+					+ "' and starts-with(@title,'View children')]"))) {
+				WebElement tableChildCategory = wcmalrtDriver
+						.findElement(By.xpath("//a[.='" + grandChildtable_CategoriesList.get(tcc)
+								+ "' and starts-with(@title,'View children')]"));
+
+				String tableChildCategoryTitle = tableChildCategory.getText();
+				tableChildCategory.click();
+				List<WebElement> categoriesContentFinal = allChildren;
+				int totalCountAfterComparisonyv = totalCount;
+				if (categoriesContentFinal.size() < totalCount) {
+					totalCountAfterComparisonyv = categoriesContentFinal.size();
+				}
+				for(int nccfc = 1; nccfc <= totalCountAfterComparisonyv; nccfc++)
+				{
+					if (ValidationFactory.isElementPresent(By.xpath("//tr["+nccfc+"]//td[2]//img[2]/following::td[1]//a")))
+					{
+					wcmalrtDriver.findElement(By.xpath("//tr["+nccfc+"]//td[2]//img[2]/following::td[1]//a"))
+					.click();
+
+
+				String wcmTCID = testCaseID + testcaseNumber;
+				grandChildTableChildIsCategory.put("Test Case ID", wcmTCID);
+				
+				grandChildTableChildIsCategory.put(nextestLevel+"Categories", tableChildCategoryTitle);
+				grandChildTableChildIsCategory.putAll(grandChildTableStructure);
+				writeWCMToExcel(grandChildTableChildIsCategory, "Table");
+				writeWCMHeaderContentFinalToExcel();
+				testcaseNumber++;
+				closeContent.click();
+					}
+					else
+						{LogFactory.info("Unable to find the xpath for title");}
+					}
+				
+				wcmalrtDriver.findElement(By.xpath("//a[.='"+grandChildTableName+"']")).click();	
+			} else {
+				LogFactory.info("Unable to find the xpath for title");
+			}
+				}
+				
+		if (grandChildTableRowContent.size() > 0) {
 					for (int gctrc = 0; gctrc < grandChildTableRowContent.size(); gctrc++) {
 
 						if (ValidationFactory.isElementPresent(By.xpath("//a[.='" + grandChildTableRowContent.get(gctrc)
@@ -2129,7 +2331,7 @@ public class WCM_Conetnt_POF extends BaseClass {
 									.click();
 
 							// checking for Index page inside the link
-							String contentType = contentTypeOnPage.getText();
+							/*String contentType = contentTypeOnPage.getText();
 							String[] cType = contentType.split("/");
 							String conType = cType[cType.length - 1].trim();
 
@@ -2142,7 +2344,7 @@ public class WCM_Conetnt_POF extends BaseClass {
 										- 1].trim();
 
 								grandChildTableIndexPageContent.add(grandChildTableContentOtherThenRow);
-							}
+							}*/
 
 							String wcmTCID = testCaseID + testcaseNumber;
 							grandChildTableContent.put("Test Case ID", wcmTCID);
@@ -2162,14 +2364,14 @@ public class WCM_Conetnt_POF extends BaseClass {
 							+ " is fetched successfully ");
 
 					// now fetching table data apart from ROWS
-					System.out.println("Grand Child Table::" + grandChildTableName
+					/*System.out.println("Grand Child Table::" + grandChildTableName
 							+ " has index page type content of size::" + grandChildTableIndexPageContent.size());
 					System.out.println("Now reading Grand Child Table's index page content ::" + grandChildTableName);
+*/
+					//List<String> grandChildTableCategories = new ArrayList<String>();
 
-					List<String> grandChildTableCategories = new ArrayList<String>();
-
-					HashMap<String, String> grandChildTableCategoryIndexPages = new HashMap<String, String>();
-
+					//HashMap<String, String> grandChildTableCategoryIndexPages = new HashMap<String, String>();
+/*
 					for (int tip = 0; tip < grandChildTableIndexPageContent.size(); tip++) {
 						String grandChildTableCategory = grandChildTableIndexPageContent.get(tip);
 						if (ValidationFactory.isElementPresent(By.xpath(
@@ -2184,8 +2386,8 @@ public class WCM_Conetnt_POF extends BaseClass {
 						} else {
 							LogFactory.info("Unable to find the xpath for title::" + grandChildTableCategory);
 						}
-					}
-
+					}*/
+/*
 					for (int gctcc = 0; gctcc < grandChildTableCategories.size(); gctcc++) {
 						System.out.println("Reading content for Category " + grandChildTableCategories.get(gctcc)
 								+ " of Grand Child Table Index Page:" + grandChildTableName);// SALES
@@ -2234,7 +2436,7 @@ public class WCM_Conetnt_POF extends BaseClass {
 							LogFactory.info(
 									"Unable to find the xpath for title::" + grandChildTableCategories.get(gctcc));
 						}
-					}
+					}*/
 
 				}
 			} else {
@@ -3687,7 +3889,7 @@ public class WCM_Conetnt_POF extends BaseClass {
 
 			// fetching content for Child index page's tables
 			for (int gct = 0; gct < numberOfContentsToFetch(IsGrandChild_Tables); gct++) {
-				System.out.println("Fetching Grand Child Table:: " + IsGrandChild_Tables.get(gct) + " Content");// Child
+				System.out.println("Fetching Grand Child Table:: " + IsGrandChild_Tables.get(gct) + " Contents");// Child
 																												// Table
 
 				if (ValidationFactory.isElementPresent(By.xpath(
@@ -3712,6 +3914,8 @@ public class WCM_Conetnt_POF extends BaseClass {
 
 					writeWCMHeaderContentFinalToExcel();
 					testcaseNumber++;
+					
+					fetchTableRowsContentForGrandChildTable(grandChildtableTitle, tableChildIsChildIndexPage, Level);
 
 				} else {
 					LogFactory.info("Unable to find the xpath for title::" + IsGrandChild_Tables.get(gct));
@@ -4108,6 +4312,7 @@ public class WCM_Conetnt_POF extends BaseClass {
 			String[] prodTypeList = country.split(",");
 			if (prodTypeList.length >= 2) {
 				for (int n = 0; n <= prodTypeList.length - 1; n++) {
+					
 					String ctry=prodTypeList[n].trim();
 					String temp = ctry.substring(35);
 					countryTitle = countryTitle + "," + temp.trim();
