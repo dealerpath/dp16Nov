@@ -787,7 +787,7 @@ public class WCM_Conetnt_POF extends BaseClass {
 							else
 							{
 								String rGroup="";
-								for (int i = 0; i <= racfGroupUsersonPage.size(); i++) 
+								for (int i = 1; i <= racfGroupUsersonPage.size(); i++) 
 									{
 									rGroup=rGroup+","+wcmalrtDriver.findElement(By.xpath("//label[.='Users:']//following::div//ul[@class='lotusInlinelist']//li["+i+"]/a")).getText();
 									}
