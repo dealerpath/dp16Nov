@@ -776,11 +776,25 @@ public class WCM_Conetnt_POF extends BaseClass {
 						descriptionText = description.getText();
 					}
 					if(ValidationFactory.isElementPresent(racfGroupsonPage)) {
-						String rGroup="";
-						for (int i = 1; i <= racfGroupUsersonPage.size(); i++) {
-						rGroup=rGroup+","+racfGroupUsersonPage.get(i).getText();
+						
+						
+						if(ValidationFactory.isElementPresent(By.xpath("//label[.='Users:']//following::div//ul[@class='lotusInlinelist']"))) 
+						{
+							if(racfGroupUsersonPage.size()==1)
+							{
+							racfGroups=wcmalrtDriver.findElement(By.xpath("//label[.='Users:']//following::div//ul[@class='lotusInlinelist']//a")).getText();
+							}
+							else
+							{
+								String rGroup="";
+								for (int i = 1; i <= racfGroupUsersonPage.size(); i++) 
+									{
+									rGroup=rGroup+","+racfGroupUsersonPage.get(i).getText();
+									}
+									racfGroups=rGroup.substring(1);
+							}
 						}
-						racfGroups=rGroup.substring(1);
+					
 					}
 					
 					if (ValidationFactory.isElementPresent(descriptionAlerts)) {
