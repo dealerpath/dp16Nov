@@ -2073,7 +2073,6 @@ public class GenericFactory extends BaseClass {
 		DepartmentName = translatedText.get(0);
 
 		switch (ContentType) {
-
 		case "AT-Index Page":
 			try {
 				if (!DepartmentName.equalsIgnoreCase("NA") && !secondLevelIndex.equalsIgnoreCase("NA")
@@ -2190,7 +2189,7 @@ public class GenericFactory extends BaseClass {
 				System.out.println("Link not found on UI");
 			}
 
-		case "AT-ChildIndex Page":
+		case "AT-Child Index Page":
 			try {
 				if (!DepartmentName.equalsIgnoreCase("NA") && !secondLevelIndex.equalsIgnoreCase("NA")
 						&& !thirdLevelIndexPage.equalsIgnoreCase("NA")

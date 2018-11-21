@@ -43,7 +43,6 @@ public class ChildIndex_TestCase extends BaseClass {
 
 		LinkedHashMap indexPage = ExcelFactory.getWCMByTCID(strExpectedValue);
 		GenericFactory.navigateToIndexPage(indexPage);
-		System.out.println(indexPage);
 		if (!strExpectedValue.equalsIgnoreCase("None") && !strExpectedValue.isEmpty()
 				&& !strExpectedValue.equals("NA")) {
 			if (!indexPage.isEmpty()) {
