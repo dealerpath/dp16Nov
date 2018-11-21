@@ -398,7 +398,7 @@ public class ExcelFactory extends BaseClass {
 				if (portletLinkArea.equalsIgnoreCase(portletlinks) && !contenttype.equalsIgnoreCase("AT_Alerts")
 						&& !contenttype.equalsIgnoreCase("AT_Announcement") && !depertment.equalsIgnoreCase("NA")
 						&& !secondndlevel.equalsIgnoreCase("NA") && !contenttype.equalsIgnoreCase("AT-Index page")
-						&& !contenttype.equalsIgnoreCase("AT-ChildIndex Page")
+						&& !contenttype.equalsIgnoreCase("AT-Child Index Page")
 						&& !contenttype.equalsIgnoreCase("AT-GrandChild Index Page")) {
 					// System.out.println(rowdata);
 					rowDataList.add(rowdata);
@@ -899,6 +899,22 @@ public class ExcelFactory extends BaseClass {
 	}
 
 	public static LinkedHashMap getWCMByTCID(String TCID) {
+		if (TCID.equalsIgnoreCase("IndexPage")) {
+			LinkedHashMap wcmRow = ExcelFactory.getUserWcmDetailsAfterFilteringCountryAndProduct("AT-Index Page")
+					.get(0);
+			return wcmRow;
+		}
+		else if(TCID.equalsIgnoreCase("ChildIndexPage")) {
+			LinkedHashMap wcmRow = ExcelFactory.getUserWcmDetailsAfterFilteringCountryAndProduct("AT-Child Index Page")
+					.get(0);
+			return wcmRow;
+		}
+		else if(TCID.equalsIgnoreCase("GrandChildIndexPage")) {
+			LinkedHashMap wcmRow = ExcelFactory.getUserWcmDetailsAfterFilteringCountryAndProduct("AT-GrandChild Index Page")
+					.get(0);
+			return wcmRow;
+		}
+		
 		LinkedHashMap rowdata = null;
 		for (int i = 0; i < userWCMData.size(); i++) {
 			rowdata = userWCMData.get(i);

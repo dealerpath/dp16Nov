@@ -55,8 +55,6 @@ public class IterationTest extends BaseClass {
 						tng.setTestSuites(suites);
 						tng.run(); // run test suite	
 						
-					//System.out.println("Test");
-						
 						}
 						else 
 						{

@@ -428,6 +428,13 @@ public class ParentIndex_TestCase extends BaseClass {
 		strTCID = "TC07_ParentIndexPage";
 		strExpectedValue = getExcelDataByTestCaseID(strTCID);
 		if (strExpectedValue.isEmpty() || strExpectedValue.equalsIgnoreCase("NA")) {
+			LinkedHashMap indexPage = ExcelFactory.getUserWcmDetailsAfterFilteringCountryAndProduct("AT-Index Page")
+					.get(0);
+			GenericFactory.navigateToIndexPage(indexPage);
+		} else {
+			
+		}
+		if (strExpectedValue.isEmpty() || strExpectedValue.equalsIgnoreCase("NA")) {
 			ReportFactory.reporterOutput(strTCID, "Verify Portal Left Navigation Links name",
 					"Verify Portal Left Navigation Links name on AT-Index Page",
 					"Left navigation window should having same links as visible in all header/categories",
