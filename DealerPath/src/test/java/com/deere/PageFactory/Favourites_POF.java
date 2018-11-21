@@ -270,11 +270,12 @@ public class Favourites_POF extends BaseClass {
 											String dropdownVal = addFavFolder.getText();
 											if (dropdownVal.contains("My Fav Folder")) {
 												GenericFactory.selectByVisibleText(addFavFolder, "My Fav Folder");
+												Thread.sleep(1000);
 												if (ValidationFactory.isElementPresent(favouriteSavebtn))
+													
 													WaitFactory.WaitForElementToVisible(favouriteSavebtn);
 														WaitFactory.waitForElementClickable(favouriteSavebtn).click();
 														WaitFactory.waitforelementToinvisibile(favouriteSavebtn);
-														BaseClass.wbDriver.findElement(By.xpath(".//*[@id='add-favorite-save']/preceding-sibling::button")).click();
 													
 												WaitFactory.waitForPageLoaded();
 												markedlinkNames.add(linkname);
@@ -285,6 +286,7 @@ public class Favourites_POF extends BaseClass {
 												addFavoriteNewfolder.sendKeys("My Fav Folder");
 												WaitFactory.WaitForTexttoBePresentInElement(addFavoriteNewfolder,"My Fav Folder");
 												if (ValidationFactory.isElementPresent(favouriteSavebtn))
+													Thread.sleep(1000);
 													WaitFactory.WaitForElementToVisible(favouriteSavebtn);
 													WaitFactory.waitForElementClickable(favouriteSavebtn).click();
 													WaitFactory.waitforelementToinvisibile(favouriteSavebtn);
@@ -298,6 +300,7 @@ public class Favourites_POF extends BaseClass {
 											icons.get(k).click();
 											WaitFactory.waitForElements(icons, wbDriver);
 											LogFactory.info("Clicked on the link to mark favourite = " + linkname);
+											Thread.sleep(1000);
 											WaitFactory.WaitForElementToVisible(favouriteSavebtn);
 											if (ValidationFactory.isElementPresent(favouriteSavebtn)) {
 												WaitFactory.waitForElementClickable(favouriteSavebtn).click();
@@ -316,6 +319,7 @@ public class Favourites_POF extends BaseClass {
 
 										if (i % 2 == 0) {
 											icons.get(k).click();
+											Thread.sleep(1000);
 											WaitFactory.WaitForElementToVisible(favouriteSavebtn);
 											WaitFactory.waitForElement(favouriteSavebtn);
 											String dropdownVal1 = addFavFolder.getText();
@@ -332,7 +336,7 @@ public class Favourites_POF extends BaseClass {
 											} else if (ValidationFactory.isElementPresent(addFavoriteNewfolder)) {
 												addFavoriteNewfolder.sendKeys("My Fav Folder");
 												WaitFactory.WaitForTexttoBePresentInElement(addFavoriteNewfolder,"My Fav Folder");
-												
+												Thread.sleep(1000);
 												if (ValidationFactory.isElementPresent(favouriteSavebtn))
 													WaitFactory.WaitForElementToVisible(favouriteSavebtn);
 													WaitFactory.waitForElementClickable(favouriteSavebtn).click();
@@ -349,6 +353,7 @@ public class Favourites_POF extends BaseClass {
 
 											WaitFactory.waitForElements(icons, wbDriver);
 											LogFactory.info("Clicked on the link to mark favourite = " + linkname);
+											Thread.sleep(1000);
 											WaitFactory.WaitForElementToVisible(favouriteSavebtn);
 											if (favouriteSavebtn.isDisplayed()) {
 												WaitFactory.waitForElementClickable(favouriteSavebtn).click();
@@ -371,8 +376,7 @@ public class Favourites_POF extends BaseClass {
 				}
 			}
 
-			LogFactory.info("Total marked liks on link portlet are: " + markedlinkNames);
-			System.out.println("test");
+			LogFactory.info("Total marked links on link portlet are: " + markedlinkNames);
 			if (ValidationFactory.isElementPresent(favouriteSavebtn)) {
 				WaitFactory.waitForElementClickable(favouriteSavebtn).click();
 			}
@@ -386,7 +390,7 @@ public class Favourites_POF extends BaseClass {
 						"Marked Favourites are : " + markedlinkNames, "Pass");
 			} else {
 				ReportFactory.reporterOutput("TC01_Favourite", "To mark the titles as Favourites", "NA", "NA",
-						"No titles selected to mark as favourits", "Pass");
+						"No titles selected to mark as favourite", "Pass");
 			}
 
 			
@@ -394,7 +398,6 @@ public class Favourites_POF extends BaseClass {
 		
 		catch (Exception e) {
 			System.out.println(e.getMessage());
-			System.out.println("t4t");
 		}
 		
 	}
@@ -1069,10 +1072,7 @@ public class Favourites_POF extends BaseClass {
 
 			List<WebElement> Quick_icons_name = BaseClass.wbDriver.findElements(By.xpath(
 					"//div[@class='link-group']//span[@class='icon fav-star is-selected']/following-sibling::a"));
-			// WebElement Folder_present_Quick =
-			// BaseClass.wbDriver.findElement(By.xpath("//div[@class='link-col
-			// col-xs-12 no-actions']//div[@class='link-item folder-space' and
-			// contains(.,'My Fav Folder')]//span[@class='icon folder']"));
+			
 			if (ValidationFactory.isElementPresent(By.xpath(
 					"//div[@class='link-group-container']//div[@class='link-item folder-space' and contains(.,'My Fav Folder')]//span[@class='icon folder closed']"))) {
 
@@ -1090,19 +1090,24 @@ public class Favourites_POF extends BaseClass {
 			}
 			LogFactory.info("Links present after deleting on QuickModal window are: " + QuickLinks);
 			if (!QuickLinks.contains(deletedLink_list) && !QuickLinks.isEmpty() && !deletedLink_list.isEmpty()) {
-				// String flag1="";
 				ReportFactory.reporterOutput(TCID, "verify Remove Favourite Link from Link portlet page ",
 						"Selected links to be removed from link portlet page= " + deletedLink_list.toString(),
 						"Favourite should get removed and should no more display on quick favourite modal window page",
 						"Links successfully removed from <b>Quick favourite modal window page</b>", "PASS");
 
-			} else {
+			} else if(QuickLinks.contains(deletedLink_list) && !QuickLinks.isEmpty() && !deletedLink_list.isEmpty()){
 				ReportFactory.reporterOutput(TCID, "verify Remove Favourite Link from Link portlet page ",
 						"Selected links are not being removed: " + deletedLink_list.toString(),
 						"Favourite should be removed and should no more display on quick favourite modal window page",
 						"Links are not being removed from <b>quick favourite modal window page</b>", "FAIL");
 			}
-
+			else if(deletedLink_list.isEmpty()) {
+				ReportFactory.reporterOutput(TCID, "verify Remove Favourite Link from Link portlet page ",
+						"Favourite Links are not present " + deletedLink_list.toString(),
+						"Favourite should be removed and should no more display on quick favourite modal window page",
+						"No sufficient favourites are present to execute  this test case</b>", "FAIL");
+			}
+			
 			BrowserFactory.RefreshBrowser();
 			LogFactory.info("The deleted links from Quick modal windows are: " + deletedLink_list);
 			JavascriptExecutor js = (JavascriptExecutor) BaseClass.wbDriver;
@@ -1131,12 +1136,19 @@ public class Favourites_POF extends BaseClass {
 						"Favourite should get removed and should no more display on Favourite portlet on homepage",
 						"Links successfully removed from <b>Favourite portlet on homepage</b>", "PASS");
 
-			} else {
+			} else if(Homepage_link_names.contains(deletedLink_list) && !Homepage_link_names.isEmpty()
+					&& !deletedLink_list.isEmpty()) {
 				ReportFactory.reporterOutput(TCID, "verify Remove Favourite Link from Link portlet page ",
 						"Selected links are not being removed from Favourite portlet on homepage: "
 								+ deletedLink_list.toString(),
 						"Favourite should be removed and should no more display on Favourite portlet on homepage",
 						"Links are not being removed from <b>Favourite portlet on homepage</b>", "FAIL");
+			}
+			else if(deletedLink_list.isEmpty()) {
+				ReportFactory.reporterOutput(TCID, "verify Remove Favourite Link from Link portlet page ",
+						"Favourite Links are not present " + deletedLink_list.toString(),
+						"Favourite should be removed and should no more display on quick Favourite portlet on homepage",
+						"No sufficient favourites are present to execute  this test case</b>", "FAIL");
 			}
 			GenericFactory.navigateToHomePage();
 			WaitFactory.waitForPageLoaded();
@@ -1344,66 +1356,50 @@ public class Favourites_POF extends BaseClass {
 	 *            Describe the test case ID to be executed from the excel sheet
 	 */
 	public static void verifyQuickModalWindowOnHomepage(String TCID) throws Throwable {
-		String flag = "Fail";
-		String result = "Favourite Links under Quick on Home page and on Departmnet page are not same   ";
+		String Deptflag = "Fail";
+		String Deptresult = "Favourite Links under Quick on Home page and on Departmnet page are not same   ";
 		ArrayList<String> favouriteListHomePage = new ArrayList<String>();
 		ArrayList<String> favouriteListHomePage_QuickModal = new ArrayList<String>();
 		ArrayList<String> QuickMOdalfavouriteListOfDepartment = new ArrayList<String>();
 		List<WebElement> departmentListCount;
 		String departmentName = "";
 		try {
-			// To Get Fav List from Homepage -1
-
-			favouriteListHomePage = ToGetMarkedFavouriteslink_HomePage();
-
-			// to Get Fav List from Quick Search- 2
+			
 			favouriteListHomePage_QuickModal = ToGetMarkedFavouriteslinkQuickModal();
-			/*
-			 * GenericFactory.navigateToHomePage(); BrowserFactory.RefreshBrowser();
-			 */
-
-			// To get all Active department
 			departmentListCount = ActivedepartmentList;
 			for (int i = 1; i < departmentListCount.size(); i++) {
-				// to click on department one by one
 				departmentName = departmentListCount.get(i).getText().toString().trim();
 
 				if (GenericFactory.toClickonDeptOnFavourite(departmentName)) {
 					QuickMOdalfavouriteListOfDepartment = ToGetMarkedFavouriteslinkQuickModal();
-
-					if ((favouriteListHomePage.equals(QuickMOdalfavouriteListOfDepartment)
-							&& favouriteListHomePage_QuickModal.equals(favouriteListHomePage))) {
-						flag = "Pass";
-						result = "Favourite Links under Quick on Home page and on Departmnet page are same  ";
-						LogFactory.info("Favorite link on  quick modal on " + departmentName + " = "
-								+ QuickMOdalfavouriteListOfDepartment + " are  same as  "
-								+ favouriteListHomePage_QuickModal);
+					
+					if ((favouriteListHomePage_QuickModal.equals(QuickMOdalfavouriteListOfDepartment))) {
+						Deptflag = "Pass";
+						Deptresult = "Links under Favourite Quick link Modal on Home Page and on Departmnet page are same  ";
+						break;
 					}
 
 					else {
 
-						flag = "Fail";
-						result = "Favourite Links under Quick on Home page and on Departmnet page are not same  ";
-						LogFactory.info("Favorite link on of quick modal on " + departmentName + " = "
-								+ QuickMOdalfavouriteListOfDepartment + " are not same as  "
-								+ favouriteListHomePage_QuickModal);
+						Deptflag = "Fail";
+						Deptresult = "Links under Favourite Quick link Modal on Home Page and on Departmnet page are not same  ";
 						break;
 
 					}
 
 				}
 			}
-			//
-			ReportFactory.reporterOutput(TCID, "Verify quick Modal favouite Link On homepage and On Departmnet Page",
-					"NA", "Favourite link under Quick Modal on Home Page and On Departmnet page must be same", result,
-					flag);
+			//GenericFactory.navigateToIndexPage(userWCMContent);
+			ReportFactory.reporterOutput(TCID, "Verify quick favourite link Modal and on Quick Link favourite Modal Departmnet Page are same or not",
+					"NA", "Favourite link under Favourite Quick link Modal on Home Page and On Departmnet page must be same", Deptresult,
+					Deptflag);
 			GenericFactory.navigateToHomePage();
 			WaitFactory.waitForPageLoaded();
 		} catch (Exception e) {
 			String er = e.getMessage().substring(0, 160).toString().trim();
 
 			ReportFactory.reporterOutput(TCID, "Verify quick Modal favouite Link On homepage and On Departmnet Page ",
-					"NA", "NA", er, flag);
+					"NA", "NA", er, Deptflag);
 		}
 
 		// To click on dealerpath homepge
@@ -1729,7 +1725,7 @@ public class Favourites_POF extends BaseClass {
 		try {
 
 			BaseClass.errorUserFound = false;
-			if (!GenericFactory.isNull(RACFID)) {
+			if (!GenericFactory.isNull(RACFID)) {System.out.println("test");
 				if (ValidationFactory
 						.isElementPresent(WaitFactory.explicitWaitByXpath("//b[text() = 'Admin Links']"))) {
 					// BrowserFactory.RefreshBrowser();
@@ -1779,6 +1775,7 @@ public class Favourites_POF extends BaseClass {
 			}
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
+			System.out.println("test");
 		}
 		return true;
 	}
@@ -1886,11 +1883,11 @@ public class Favourites_POF extends BaseClass {
 			String FinalResult = "";
 			
 			ExcelFactory.getUserWCMContentnew(RACFID);
-
+			GenericFactory.navigateToHomePage();
 			if (flagDealerType != "NA") {
 
 				if (impersonateFavUser(RACFID)) {
-
+System.out.println("test");
 					if (ValidationFactory.isElementPresent(By.xpath("//div[@class='section-header-actions']/a"))) {
 						JavascriptExecutor js = (JavascriptExecutor) BaseClass.wbDriver;
 						js.executeScript("window.scrollBy(0,500)");
@@ -1934,7 +1931,6 @@ public class Favourites_POF extends BaseClass {
 					CountryCode_2ndUser = userFavWCMData.get(0).get("Dealer_Country").toString().trim();
 					DealerProduct_type_2ndUser = userFavWCMData.get(0).get("Dealer_ProductType").toString().trim();
 					dealerType_2nduser = userFavWCMData.get(0).get("Dealer_Type").toString().trim();
-					System.out.println("7");
 
 					if (ValidationFactory.isElementPresent(By.xpath(
 							"//div[@class='fav-link-body' and contains(.,'My Fav Folder')]//span[@class='icon folder  closed']"))) {
@@ -1964,12 +1960,8 @@ public class Favourites_POF extends BaseClass {
 						countryFlag = GenericFactory.userAndWCMCountryComparison(CountryCode_2ndUser, CountryCode);
 						productFlag = GenericFactory.userAndWCMProductTypeComparison(DealerProduct_type_2ndUser,
 								Product_type);
-						// wcmDealerType=
-						// GenericFactory.verifyDealerType(dealerType_2nduser);
 						racfFlag = GenericFactory.verifyRacfGroupMatched(RACFGroup_2ndUser);
-						// List<String> DepartmentList = new
-						// ArrayList<String>(Arrays.asList(Department_2ndUser.split("
-						// , ")));
+						
 
 						if (Department_2ndUser.contains("Finance & Incentives")) {
 							department_new_flag = true;
@@ -1986,23 +1978,19 @@ public class Favourites_POF extends BaseClass {
 						if (countryFlag && productFlag && racfFlag && department_new_flag) {
 
 							if (Homepage_link_names.contains(title)) {
-								// copy = Homepage_link_names.get(i);
 								Allflag_true_copied.add(title);
 							} else {
-								// Noncopy = Homepage_link_names.get(i);
 								Allflag_true_nonCopied.add(title);
 							}
 
 						} else if (!countryFlag) {
 
 							if (Homepage_link_names.contains(title)) {
-								// copy = Homepage_link_names.get(i);
 								CountryFalse_copiedtrue.add(title);
 							}
 						} else if (!productFlag) {
 
 							if (Homepage_link_names.contains(title)) {
-								// copy = Homepage_link_names.get(i);
 								productfalse_copiedTrue.add(title);
 							}
 						} else if (!racfFlag) {
@@ -2010,14 +1998,12 @@ public class Favourites_POF extends BaseClass {
 							if (!RACFGroup.equals("NA")) {
 
 								if (Homepage_link_names.contains(title)) {
-									// copy = Homepage_link_names.get(i);
 									RacfGroup_copiedTrue.add(title);
 								}
 							}
 						} else if (!department_new_flag) {
 
 							if (Homepage_link_names.contains(title)) {
-								// copy = Homepage_link_names.get(i);
 								DepFalse_copiedTrue.add(title);
 							}
 						}
@@ -2271,18 +2257,24 @@ public class Favourites_POF extends BaseClass {
 
 		}
 		LogFactory.info("Links present after deleting on Homepage are: " + Homepage_link_names);
-		if (!Homepage_link_names.contains(Deleted_Linkitems)) {
+		if (!Homepage_link_names.contains(Deleted_Linkitems) && !Deleted_Linkitems.isEmpty()) {
 			// String flag1="";
 			ReportFactory.reporterOutput(TCID, "verify Remove Favourite Link On QuickModal window ",
 					"Selected links to be removed from QuickModal window = " + Deleted_Linkitems.toString(),
-					"Favourite should get removed and should no more display on quick favourite modal window page and Favourite portlet on homepage",
+					"Favourite should be removed from Quick Modal and should no more display on Favourite portlet on homepage",
 					"Links successfully removed from Quick Link", "PASS");
 
-		} else {
+		} else if(Homepage_link_names.contains(Deleted_Linkitems) && !Deleted_Linkitems.isEmpty()) {
 			ReportFactory.reporterOutput(TCID, "verify Remove Favourite Link On QuickModal window ",
 					"Selected links are not being removed from the HomePage: " + Deleted_Linkitems.toString(),
-					"Favourite should be removed and should no more display on quick favourite modal window page and Favourite portlet on homepage",
+					"Favourite should be removed from Quick Modal and should no more display on Favourite portlet on homepage",
 					"Links are not being removed from HomePage", "FAIL");
+		}
+		else if(Deleted_Linkitems.isEmpty()) {
+			ReportFactory.reporterOutput(TCID, "verify Remove Favourite Link On QuickModal window ",
+					"Favourite links are not present " + Deleted_Linkitems.toString(),
+					"Favourite should be removed from Quick Modal and should no more display on Favourite portlet on homepage",
+					"No sufficient favourite links found to execute this test case", "FAIL");
 		}
 		GenericFactory.navigateToHomePage();
 		WaitFactory.waitForPageLoaded();
@@ -2442,18 +2434,24 @@ public class Favourites_POF extends BaseClass {
 				}
 			}
 			LogFactory.info("Links present after deleting on QuickModal window are: " + QuickLinks);
-			if (!QuickLinks.contains(DeletedLinks)) {
+			if (!QuickLinks.contains(DeletedLinks) && !DeletedLinks.isEmpty()) {
 				// String flag1="";
 				ReportFactory.reporterOutput(TCID, "verify Remove Favourite Link On Favorites portlet on homepage ",
 						"Selected links to be removed from Favourite Portlet = " + DeletedLinks.toString(),
 						"Favourite should get removed and should no more display on 'Favourite' portlet on homepage, quick favourite modal window page",
 						"Links successfully removed from Favorite portlet homepage", "PASS");
 
-			} else {
+			} else if (QuickLinks.contains(DeletedLinks) && !DeletedLinks.isEmpty()){
 				ReportFactory.reporterOutput(TCID, "verify Remove Favourite Link On Favorites portlet on homepage ",
 						"Selected links are not being removed: " + DeletedLinks.toString(),
 						"Favourite should be removed and should no more display on 'Favourite' portlet on homepage, quick favourite modal window page",
 						"Links successfully removed from Favorite portlet homepage", "FAIL");
+			}
+			else if(DeletedLinks.isEmpty()){
+				ReportFactory.reporterOutput(TCID, "verify Remove Favourite Link On Favorites portlet on homepage ",
+						"Favourite links are not present " + DeletedLinks.toString(),
+						"Favourite should be removed and should no more display on 'Favourite' portlet on homepage, quick favourite modal window page",
+						"No sufficient favourite links found to execute this test case", "FAIL");
 			}
 			GenericFactory.navigateToHomePage();
 			WaitFactory.waitForPageLoaded();
@@ -2778,7 +2776,7 @@ public class Favourites_POF extends BaseClass {
 
 			}
 			ReportFactory.reporterOutput(strTCID,
-					"Verify Favorites Quick Link header should be displayed in the preferred language of the dealer.",
+					"Verify Favourites Quick Link header should be displayed in the preferred language of the dealer.",
 					strExpectedHeaderName, "Quick Link Icon with content is displayed", strResult, strFlag);
 
 		} catch (Exception e) {
