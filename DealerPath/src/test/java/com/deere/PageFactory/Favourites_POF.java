@@ -1883,7 +1883,7 @@ public class Favourites_POF extends BaseClass {
 			String FinalResult = "";
 			
 			ExcelFactory.getUserWCMContentnew(RACFID);
-			GenericFactory.navigateToHomePage();
+			//GenericFactory.navigateToHomePage();
 			if (flagDealerType != "NA") {
 
 				if (impersonateFavUser(RACFID)) {

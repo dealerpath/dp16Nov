@@ -73,7 +73,7 @@ public class Favourite_TestCase extends BaseClass {
      * @ exception       Description of exception you are handling
      * @ throws          Description of exception that the method throws 
      */
-/*
+
                 @Test(priority = 2)
                 public static void verifyToFavouriteOnChanginProductType() throws Throwable {
                                 strTCID = "TC02_Favourite";
@@ -103,13 +103,13 @@ public class Favourite_TestCase extends BaseClass {
                 }
                 
                 
-                *//**
+     /**
      * @author                     Shubham Raj
      * Verify Favourite for non-preferred deaprtment
      
      */
 
-              /*  @Test(priority = 3)
+               @Test(priority = 3)
                 public static void VerifyToFavouriteOnNonPrefferedDepartment() throws Throwable {
                                 strTCID = "TC03_Favourite";
                                 List<String> listOfTitle = new ArrayList<String>();
@@ -125,12 +125,12 @@ public class Favourite_TestCase extends BaseClass {
                                 favouritesFactory.VerifyFavouriteForNonPreffredDept(strTCID, Depname, listOfTitle);
                                 
                 }
-                */
-                /**
+              
+     /**
      * @author      Shubham Raj
      * This case describe that favourites will be displayed irrespective of languages selected  
      * @ throws          Description of exception that the method throws 
-     *//*
+     */
 
                 @Test(priority = 4)
                 public static void VerifyToFavouriteDifferentLanguagesOnHomepage() throws Throwable {
@@ -140,12 +140,12 @@ public class Favourite_TestCase extends BaseClass {
                 }
                 
                 
-                *//**
+    /**
      * @author      Shubham Raj
      * This case describe that folder should be created with the folder name given in Excel,
      * if folder name is 'NA' it will create a by default folder named 'Test Folder'  
       
-     *//*
+     */
                 @Test(priority = 5)
                 public static void verifyToCreateFolder() throws Throwable {
                                 String strTCID = "TC05_Favourite";
@@ -158,12 +158,12 @@ public class Favourite_TestCase extends BaseClass {
                 }
 
 
-                *//**
+    /**
      * @author      Shubham Raj
      * This case describe that created favourite folder should be deleted from the Homepage as well as
      * from the Quick modal window
       
-     *//*
+     */
                 @Test(priority = 6)
                 public static void verifyToDeleteFavouriteFolder() throws Throwable {
                                 String strTCID = "TC06_Favourite";
@@ -173,11 +173,11 @@ public class Favourite_TestCase extends BaseClass {
                                 favouritesFactory.verifyDeleteFavouriteFolder(strTCID, folderName);
                 }
 
-                *//**
+      /**
      * @author      Shubham Raj
      * This case describes moving/dragging the favourite folder from the top position to last 
       
-     *//*
+     */
                 
                 @Test(priority = 7)
                 public static void verifyToMovingFavouriteFolderandLink() throws Throwable {
@@ -186,12 +186,12 @@ public class Favourite_TestCase extends BaseClass {
                                 favouritesFactory.verifyMovingFavouriteFolderandLink(TCID);
                 }
 
-                *//**
+       /**
      * @author      Shubham Raj
      * This case describes that upon clicking on the favourite folder it should expand and should show the
      * marked links
       
-     *//*
+     */
                 
                 @Test(priority = 8)
                 public static void verifyToExpandAndCollapseFavroiteFolder() throws Throwable {
@@ -199,28 +199,28 @@ public class Favourite_TestCase extends BaseClass {
                                 LogFactory.beginTestCase("verify Expand And Collapse Favroite Folder ");
                                 favouritesFactory.verifyExpandAndCollapseFavroiteFolder(TCID);
                 }
-                */
-                /**
+       
+        /**
      * @author      Shubham Raj
      * This case describes that Quick Favorite modal window should be available on homepage, 
      * department and all levels of index pages as applicable
       
      */
-           /*     
+            
                 @Test(priority = 9)
                 public static void VerifyToQuickModalonHomeDepartmentandalllevelsofIndexpages() throws Throwable {
                                 String TCID = "TC09_Favourite";
                                 LogFactory.beginTestCase("Verify Quick Favorite modal window on Homepage, Department pages and Index page");
                                 favouritesFactory.verifyQuickModalWindowOnHomepage(TCID);
                 }
-*/
-                /**
+
+    /**
      * @author      Shubham Raj
      * This case describes that user type some random text in the Filter 
      * text box that does not exist in any folder name nor any favorite link.
       
      */
-/*                @Test(priority = 10)
+                @Test(priority = 10)
                 public static void verifySearchFilteringOnHomepage() throws Throwable {
                                 
                                 String TCID = "TC10_Favourite";
@@ -244,12 +244,12 @@ public class Favourite_TestCase extends BaseClass {
                                 }
                 }
 
-                *//**
+     /**
      * @author      Shubham Raj
      * This case describes that user should be able to deleted a favourite from link portlet
      * and it should not be further displayed on Homepage and Quick modal window 
            
-     *//*
+     */
                 @Test(priority = 11)
                 public static void verifyToRemoveFavouriteLinkfromlinkportlet() throws Throwable {
                                 String TCID1 = "TC11_Favourite";
@@ -266,12 +266,12 @@ public class Favourite_TestCase extends BaseClass {
                                 }
                 }
 
-                *//**
+     /**
      * @author      Shubham Raj
      * This case describes that user should be able to deleted a favourite from Quick modal window
      * and it should not be further displayed on Homepage 
            
-     *//*
+     */
                 
                 @Test(priority = 12)
                 public static void verifyToRemoveFavouriteLinkfromQuickmodalwindow() throws Throwable {
@@ -288,12 +288,12 @@ public class Favourite_TestCase extends BaseClass {
                     }              
                 }
                 
-                *//**
+     /**
      * @author      Shubham Raj
      * This case describes that user should be able to deleted a favourite from homepage portlet
      * and it should not be further displayed on Quick modal window 
            
-     *//*
+     */
                 @Test(priority = 13)
                 public static void verifyToRemoveFavLinkfromFavoritesPortlethomepage() throws Throwable {
                                 String TCID = "TC13_Favourite";
@@ -306,7 +306,7 @@ public class Favourite_TestCase extends BaseClass {
                                 else {
                                 	 ReportFactory.reporterOutput(TCID, "Verify remove favourite Link from 'Favorites Portlet' on homepage", "NA", "Favourite should get removed and should no more display on quick favourite modal window page and Favourite portlet on homepage", "No Marked link is present for the particular dealer", "PASS");
                                 }
-                }*/
+                }
 
                 /**
      * @author      Shubham Raj
@@ -346,7 +346,8 @@ public class Favourite_TestCase extends BaseClass {
      */
     @SuppressWarnings("static-access")
     @Test(priority= 15)
-/*public static void verifyToFavouritesOnchangingCountryGroupingType() throws Throwable
+    
+    public static void verifyToFavouritesOnchangingCountryGroupingType() throws Throwable
   { 
        String TCID = "TC16_Favourite";
    //String WCMcountryGrouplist = "";
@@ -379,7 +380,7 @@ public class Favourite_TestCase extends BaseClass {
              e.printStackTrace();
        }
    LogFactory.endTestCase(" ");
-  }*/
+  }
 
                 @AfterClass
                 public void getReportFooter() throws InterruptedException {
