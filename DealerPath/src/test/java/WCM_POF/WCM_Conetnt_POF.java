@@ -1437,13 +1437,13 @@ public class WCM_Conetnt_POF extends BaseClass {
 								String contentType = contentTypeOnPage.getText();
 								String[] cType = contentType.split("/");
 								String conType = cType[cType.length - 1].trim();
-
+								
 								if (conType.equals("AT-Link") && ValidationFactory.isElementPresent(webContentElement)
 										&& !(webContentLinkText.getText().contains("None"))) {
 									System.out.println("This is an index page link");
 									String[] indexPageTitleArray = webContentLinkText.getText().split("/");
 									String indexPageTitle = indexPageTitleArray[indexPageTitleArray.length - 1].trim();
-
+										
 									SubDeptHasChildren.add(indexPageTitle);
 								}
 
@@ -5603,8 +5603,9 @@ public class WCM_Conetnt_POF extends BaseClass {
 										.click();
 
 								String wcmTCID = testCaseID + testcaseNumber;
+								String[] Key = levelToFwd.split("Categories");
 								newWcmKeyValue.put("Test Case ID", wcmTCID);
-								newWcmKeyValue.put("3rdLevelIndexPageNestedCategories", nestedcategoryTitle);
+								newWcmKeyValue.put(Key[0] + "NestedCategories", nestedcategoryTitle);
 								newWcmKeyValue.putAll(wcmKeyValuePair);
 								writeWCMToExcel(newWcmKeyValue, "None");
 								writeWCMHeaderContentFinalToExcel();
@@ -5790,7 +5791,7 @@ public class WCM_Conetnt_POF extends BaseClass {
 				}
 			}
 			// creating list for Child index page content apart from link portlets
-			for (int gcct = 0; gcct < grandChildContentForChildIndexPage.size(); gcct++) {
+			/*for (int gcct = 0; gcct < grandChildContentForChildIndexPage.size(); gcct++) {
 				String gccfci = grandChildContentForChildIndexPage.get(gcct);
 				if (ValidationFactory.isElementPresent(
 						By.xpath("//a[.='" + gccfci + "' and starts-with(@title,'View children')]"))) {
@@ -5803,7 +5804,7 @@ public class WCM_Conetnt_POF extends BaseClass {
 				} else {
 					LogFactory.info("Unable to find the xpath for title::" + gccfci);
 				}
-			}
+			}*/
 			System.out.println("Grand Child Index page::" + tableChildIsChildIndexPage.get(Level) + " has total::"
 					+ IsGrandChild_Tables.size() + " tables, and " + IsGrandChildIndex_Categories.size()
 					+ " categories");
