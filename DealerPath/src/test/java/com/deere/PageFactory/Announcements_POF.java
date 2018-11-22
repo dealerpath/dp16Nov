@@ -15,6 +15,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.deere.Helpers.BaseClass;
 import com.deere.Helpers.GenericFactory;
@@ -548,12 +550,13 @@ public class Announcements_POF extends BaseClass {
 				.findElements(By.xpath(".//div[@class='section']//div[@class='list-item hide-overflow']"));
 		try {
 			for (int i = 0; i < AnnouncementTitleContents.size(); i++) {
-				System.out.println(i);
 				String temp = AnnouncementTitleContents.get(i).getText().toString().trim();
-				String titleOfAnnouncement = temp.substring(12, temp.length()).toString().trim();
+				int colonIndex=temp.indexOf(':');
+				String titleOfAnnouncement = temp.substring(colonIndex+1, temp.length()).toString().trim();
 				String description = "";
 				boolean readMoreLink = false;
 				try {
+					System.out.println();
 					WebElement singleFrame = BaseClass.wbDriver.findElement(By
 							.xpath(".//div[@class='section']//div[@class='list-item hide-overflow'][" + (i + 1) + "]"));
 					readMoreLink = ValidationFactory.getElementIfPresent(
@@ -567,9 +570,15 @@ public class Announcements_POF extends BaseClass {
 							.getText().toString().trim();
 					description = temp.substring(temp.indexOf("\n") + 1, temp.length());
 				} else {
-					framePath.get(i).findElement(By.xpath(".//div[@class='secondary-action-container']")).click();
-					String temp1 = framePath.get(i).findElement(By.xpath(".//div[@class='list-item-body is-expanded']"))
-							.getText().toString().trim();
+					WebDriverWait wait = new WebDriverWait(BaseClass.wbDriver, 300);
+
+					 WebElement readMoreLinkPresent = wait.until(ExpectedConditions.elementToBeClickable(framePath.get(i).findElement(By.xpath(".//div[@class='secondary-action-container']"))));
+					//WebElement readMoreLinkPresent = WaitFactory.WaitForElementToVisible(framePath.get(i).findElement(By.xpath(".//div[@class='secondary-action-container']")));
+					readMoreLinkPresent.click();
+					Thread.sleep(2000);
+					WebElement textAfterReadMoreLinkClick = wait.until(ExpectedConditions.visibilityOf(framePath.get(i).findElement(By.xpath(".//div[@class='list-item-body is-expanded']"))));
+					//WebElement textAfterReadMoreLinkClick = WaitFactory.WaitForElementToVisible(framePath.get(i).findElement(By.xpath(".//div[@class='list-item-body is-expanded']")));
+					String temp1 = textAfterReadMoreLinkClick.getText().toString().trim();
 					description = temp1.substring(temp1.indexOf("\n") + 1, temp1.length());
 					framePath.get(i).findElement(By.xpath(".//div[@class='secondary-action-container']")).click();
 				}

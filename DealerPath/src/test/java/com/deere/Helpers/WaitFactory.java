@@ -1,12 +1,12 @@
 package com.deere.Helpers;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
@@ -27,7 +27,7 @@ public class WaitFactory extends BaseClass {
 			try {
 				Wait<WebDriver> waitobj = new FluentWait<WebDriver>(BaseClass.wbDriver)
 								.withTimeout(15, TimeUnit.SECONDS)
-						       .pollingEvery(1, TimeUnit.SECONDS)
+						       .pollingEvery(2, TimeUnit.SECONDS)
 						 
 						       .ignoring(NoSuchElementException.class);
 					elem = (WebElement) waitobj.until(ExpectedConditions.visibilityOf(element));

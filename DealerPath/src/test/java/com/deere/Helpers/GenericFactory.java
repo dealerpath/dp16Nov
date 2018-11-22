@@ -2541,6 +2541,7 @@ public class GenericFactory extends BaseClass {
 
 	public static boolean clickOnDepartmentByName(String DepartmentNameInEnglish) throws IOException, Exception {
 		try {
+			System.out.println();
 			String translatedDepartmentName = GenericFactory.getTranslation(DepartmentNameInEnglish).get(0);
 			// LogFactory.info("Translated Department : "+translatedDepartmentName);
 			boolean leftNavigationActiveDepartment = ValidationFactory.isElementPresent(By.xpath(
@@ -2798,84 +2799,84 @@ public class GenericFactory extends BaseClass {
 	 */
 
 	public static String getParentProductSegmnentList(String product) {
-		String productName = product;
-		String[] productsUncheck = null;
-		List<String> productsUncheckNew = new ArrayList<>();
-		if (product.contains("[") && product.contains("]") ) {
-			product = product.replaceAll("[\\[\\]]", "");
-			if (product.contains(","))
-				productsUncheck = product.split(",");
-		}else {
-			
-				if (product.contains(","))
-					productsUncheck = product.split(",");
-			}
-		
-		if (productsUncheck != null) {
-			for (int i = 0; i < productsUncheck.length; i++) {
-				if (productsUncheck[i].contains("/")) {
-					List<String> temp = splitString(productsUncheck[i], "/");
-					productName = temp.get(1).trim();
-				} else {
-					productName = productsUncheck[i].trim();
-				}
+        String productName = product;
+        String[] productsUncheck = null;
+        List<String> productsUncheckNew = new ArrayList<>();
+        if (product.contains("[") && product.contains("]")) {
+               product = product.replaceAll("[\\[\\]]", "");
+               if (product.contains(","))
+                     productsUncheck = product.split(",");
+        }
+        else {
+               if (product.contains(","))
+                     productsUncheck = product.split(",");
+               
+        }
+        if (productsUncheck != null) {
+               for (int i = 0; i < productsUncheck.length; i++) {
+                     if (productsUncheck[i].contains("/")) {
+                            List<String> temp = splitString(productsUncheck[i], "/");
+                            productName = temp.get(1).trim();
+                     } else {
+                            productName = productsUncheck[i].trim();
+                     }
 
-				if (productName.matches("(?i)Construction|Utility")) {
-					if (productsUncheckNew.contains("Construction"))
-						continue;
-					else
-						productsUncheckNew.add("Construction");
-				} else if (productName.matches("(?i)Forestry")) {
+                     if (productName.matches("(?i)Construction|Utility")) {
+                            if (productsUncheckNew.contains("Construction"))
+                                   continue;
+                            else
+                                   productsUncheckNew.add("Construction");
+                     } else if (productName.matches("(?i)Forestry")) {
 
-					if (productsUncheckNew.contains("Forestry"))
-						continue;
-					else
-						productsUncheckNew.add("Forestry");
-				} else if (productName.matches("(?i)Homeowner")) {
-					if (productsUncheckNew.contains("Homeowner"))
-						continue;
-					else
-						productsUncheckNew.add("Homeowner");
-				} else if (productName.matches("(?i)CWP")) {
-					if (productsUncheckNew.contains("CWP"))
-						continue;
-					else
-						productsUncheckNew.add("CWP");
-				} else if (productName.matches("(?i)Hitachi|Mining")) {
-					if (productsUncheckNew.contains("Hitachi"))
-						continue;
-					else
-						productsUncheckNew.add("Hitachi");
-				} else if (productName.matches(
-						"(?i)Agriculture|Ag Equipment|Sprayers & Nutrient Applicators|Scraper and Scraper Tractor|Forage Harvester"))
-					if (productsUncheckNew.contains("Agriculture"))
-						continue;
-					else
-						productsUncheckNew.add("Agriculture");
-				else if (productName.matches("(?i)Turf|Commercial|Residential")) {
-					if (productsUncheckNew.contains("Turf"))
-						continue;
-					else
-						productsUncheckNew.add("Turf");
-				} else if (productName.matches("(?i)Golf")) {
-					if (productsUncheckNew.contains("Golf"))
-						continue;
-					else
-						productsUncheckNew.add("Golf");
-				} else if (productName.matches("(?i)JDPS|JDPS Distributor|Direct OEM")) {
-					if (productsUncheckNew.contains("JDPS"))
-						continue;
-					else
-						productsUncheckNew.add("JDPS");
-				}
-			}
-		} else {
-			productsUncheckNew.add(product);
-			System.out.println("test");
-		}
-		return productsUncheckNew.toString();
+                            if (productsUncheckNew.contains("Forestry"))
+                                   continue;
+                            else
+                                   productsUncheckNew.add("Forestry");
+                     } else if (productName.matches("(?i)Homeowner")) {
+                            if (productsUncheckNew.contains("Homeowner"))
+                                   continue;
+                            else
+                                   productsUncheckNew.add("Homeowner");
+                     } else if (productName.matches("(?i)CWP")) {
+                            if (productsUncheckNew.contains("CWP"))
+                                   continue;
+                            else
+                                   productsUncheckNew.add("CWP");
+                     } else if (productName.matches("(?i)Hitachi|Mining")) {
+                            if (productsUncheckNew.contains("Hitachi"))
+                                   continue;
+                            else
+                                   productsUncheckNew.add("Hitachi");
+                     } else if (productName.matches(
+                                   "(?i)Agriculture|Ag Equipment|Sprayers & Nutrient Applicators|Scraper and Scraper Tractor|Forage Harvester"))
+                            if (productsUncheckNew.contains("Agriculture"))
+                                   continue;
+                            else
+                                   productsUncheckNew.add("Agriculture");
+                     else if (productName.matches("(?i)Turf|Commercial|Residential")) {
+                            if (productsUncheckNew.contains("Turf"))
+                                   continue;
+                            else
+                                   productsUncheckNew.add("Turf");
+                     } else if (productName.matches("(?i)Golf")) {
+                            if (productsUncheckNew.contains("Golf"))
+                                   continue;
+                            else
+                                   productsUncheckNew.add("Golf");
+                     } else if (productName.matches("(?i)JDPS|JDPS Distributor|Direct OEM")) {
+                            if (productsUncheckNew.contains("JDPS"))
+                                   continue;
+                            else
+                                   productsUncheckNew.add("JDPS");
+                     }
+               }
+        } else {
+               productsUncheckNew.add(getParentProduct(productName));
+        }
+        return productsUncheckNew.toString();
 
-	}
+ }
+
 
 
 	public static List<String> getParentCountryName(List<String> countryName) {

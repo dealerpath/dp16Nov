@@ -21,7 +21,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
@@ -4127,12 +4126,10 @@ public class PortletLinksPage_POF {
 			Thread.sleep(1000);
 			PortletLinksPage_POF.applyFilter.click();
 		}
-
 		catch (Exception e) {
 			ReportFactory.reporterOutput(wcmTestCaseID, "Verify Product Segment functionality on Index Pages.", "NA",
 					"Preferred Product preference should work.", e.getMessage().toString().substring(0, 250), "Fail");
 		}
-
 	}
 
 	// This is for country Grouping.
