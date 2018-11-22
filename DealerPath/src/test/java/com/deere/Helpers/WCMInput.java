@@ -113,7 +113,7 @@ public class WCMInput extends BaseClass {
 
 			WCMRowDataList = new ArrayList<LinkedHashMap>();
 
-			for (int i = 2; i <4; i++) {
+			for (int i = 2; i <=totalRows; i++) {
 
 				regionValue = dataFormatter.formatCellValue(dataWCMInputSheet.getRow(i).getCell(flagRegion)).trim();
 				libraryValue = dataFormatter.formatCellValue(dataWCMInputSheet.getRow(i).getCell(flagLibrary)).trim();
