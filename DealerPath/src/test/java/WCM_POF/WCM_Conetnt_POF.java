@@ -1571,8 +1571,9 @@ public class WCM_Conetnt_POF extends BaseClass {
 					if (ValidationFactory.isElementPresent(removeFilterForLastSavedDate)) {
 						removeFilterForLastSavedDate.click();
 					}
-
-					wcmalrtDriver.findElement(By.xpath("//a[.='" + departmentName + "']")).click();
+					
+					if(ValidationFactory.isElementPresent(By.xpath("//a[.='"+departmentName+"']")))
+					wcmalrtDriver.findElement(By.xpath("//a[.='"+departmentName+"']")).click();
 				} else {
 					LogFactory.info("Unable to find the xpath for SubDepartment::" + subDeptsUnderDeptName);
 				}
@@ -1874,7 +1875,8 @@ public class WCM_Conetnt_POF extends BaseClass {
 
 			}
 
-			wcmalrtDriver.findElement(By.xpath("//a[.='" + tableStructure.get("2ndLevel") + "']")).click();
+			if(ValidationFactory.isElementPresent(By.xpath("//a[.='"+tableStructure.get("2ndLevel")+"']")))
+				wcmalrtDriver.findElement(By.xpath("//a[.='"+tableStructure.get("2ndLevel")+"']")).click();
 
 		} catch (Exception e) {
 			System.out
