@@ -21,7 +21,6 @@ import com.deere.PageFactory.Announcements_POF;
  *
  */
 public class Announcement_TestCase extends BaseClass {
-
 	WebDriver driver;
 	static String strExpectedValue;
 	static String strTCID;
@@ -34,9 +33,8 @@ public class Announcement_TestCase extends BaseClass {
 	}
 
 	/**
-	 * @author shrey.choudhary 
-	 * This method is verifying the title & description of
-	 * Announcement portlet based on User's Country, Products, language etc.
+	 * @author shrey.choudhary This method is verifying the title & description of
+	 *         Announcement portlet based on User's Country, Products, language etc.
 	 * @return Test output that title & description is present or not.
 	 * @throws Throwable
 	 */
@@ -72,11 +70,11 @@ public class Announcement_TestCase extends BaseClass {
 	}
 
 	/**
-	 * @author shrey.choudhary 
-	 * This method is verifying the title & description of
-	 * Announcement portlet should not visible to user when a particular
-	 * department is unchecked given in test data sheet.
-	 * @return Test output that title & description is present or not if related department is unchecked.
+	 * @author shrey.choudhary This method is verifying the title & description of
+	 *         Announcement portlet should not visible to user when a particular
+	 *         department is unchecked given in test data sheet.
+	 * @return Test output that title & description is present or not if related
+	 *         department is unchecked.
 	 * @throws Throwable
 	 */
 	@Test(priority = 2)
@@ -102,12 +100,13 @@ public class Announcement_TestCase extends BaseClass {
 		}
 
 	}
+
 	/**
-	 * @author shrey.choudhary 
-	 * This method is verifying the title & description of
-	 * Announcement portlet should not visible to user when a particular
-	 * product is unchecked given in test data sheet.
-	 * @return Test output that title & description is present or not if related product is unchecked.
+	 * @author shrey.choudhary This method is verifying the title & description of
+	 *         Announcement portlet should not visible to user when a particular
+	 *         product is unchecked given in test data sheet.
+	 * @return Test output that title & description is present or not if related
+	 *         product is unchecked.
 	 * @throws Throwable
 	 */
 	@Test(priority = 3)
@@ -137,9 +136,10 @@ public class Announcement_TestCase extends BaseClass {
 					wcmTestCaseID, description);
 		}
 	}
+
 	/**
-	 * @author shrey.choudhary 
-	 * This method is verifying announcement header format is correct or not.
+	 * @author shrey.choudhary This method is verifying announcement header format
+	 *         is correct or not.
 	 * @return Test output that header format is correct or not.
 	 * @throws Throwable
 	 */
@@ -156,9 +156,10 @@ public class Announcement_TestCase extends BaseClass {
 	}
 
 	/**
-	 * @author shrey.choudhary 
-	 * This method is verifying that any announcement which is having embedded links should not be broken.
-	 * @return Test output that embeded links are broken or not, if broken test case would be failed.
+	 * @author shrey.choudhary This method is verifying that any announcement which
+	 *         is having embedded links should not be broken.
+	 * @return Test output that embeded links are broken or not, if broken test case
+	 *         would be failed.
 	 * @throws Throwable
 	 */
 	@Test(priority = 5)
@@ -170,10 +171,12 @@ public class Announcement_TestCase extends BaseClass {
 			announcementFactory.verifyEmbededlinks(strTCID);
 		}
 	}
+
 	/**
-	 * @author shrey.choudhary 
-	 * This method is verifying that all announcement should be order as per their published date.
-	 * @return Test output that all announcements are sorted as per their published date, if not test case is getting failed.
+	 * @author shrey.choudhary This method is verifying that all announcement should
+	 *         be order as per their published date.
+	 * @return Test output that all announcements are sorted as per their published
+	 *         date, if not test case is getting failed.
 	 * @throws Throwable
 	 */
 	@Test(priority = 6)
@@ -186,10 +189,12 @@ public class Announcement_TestCase extends BaseClass {
 			announcementFactory.verifyAnnouncemntsShowingInDescendingOrderOnDateTime(strTCID, strExpectedValue);
 		}
 	}
+
 	/**
-	 * @author shrey.choudhary 
-	 * This method is verifying that announcement count is showing correct on header.
-	 * @return Test output that all announcements count is showing correct on header or not, if not test case is getting failed.
+	 * @author shrey.choudhary This method is verifying that announcement count is
+	 *         showing correct on header.
+	 * @return Test output that all announcements count is showing correct on header
+	 *         or not, if not test case is getting failed.
 	 * @throws Throwable
 	 */
 	@Test(priority = 7)
@@ -201,10 +206,12 @@ public class Announcement_TestCase extends BaseClass {
 			announcementFactory.verifyAnnouncementHeaderCount(strTCID);
 		}
 	}
+
 	/**
-	 * @author shrey.choudhary 
-	 * This method is verifying that announcement having read more & collapse link is working properly.
-	 * @return Test output that announcement having read more & collapse link is working properly, if not test case is getting failed.
+	 * @author shrey.choudhary This method is verifying that announcement having
+	 *         read more & collapse link is working properly.
+	 * @return Test output that announcement having read more & collapse link is
+	 *         working properly, if not test case is getting failed.
 	 * @throws Throwable
 	 */
 	@Test(priority = 8)
@@ -217,10 +224,12 @@ public class Announcement_TestCase extends BaseClass {
 			announcementFactory.checkReadMoreAndCollapseLinkForAnnouncement(strTCID);
 		}
 	}
+
 	/**
-	 * @author shrey.choudhary 
-	 * This method is verifying that announcement having Expand & collapse link is working properly.
-	 * @return Test output that announcement having Expand & collapse link is working properly, if not test case is getting failed.
+	 * @author shrey.choudhary This method is verifying that announcement having
+	 *         Expand & collapse link is working properly.
+	 * @return Test output that announcement having Expand & collapse link is
+	 *         working properly, if not test case is getting failed.
 	 * @throws Throwable
 	 */
 	@Test(priority = 9)
@@ -233,12 +242,13 @@ public class Announcement_TestCase extends BaseClass {
 			announcementFactory.verifyExpandAndCollapseLinkOnAnnuoncementPortlet(strTCID);
 		}
 	}
+
 	/**
-	 * @author shrey.choudhary 
-	 * This method is verifying the title & description of
-	 * Announcement portlet should not visible to user when a particular
-	 * country is unchecked given in test data sheet.
-	 * @return Test output that title & description is present or not if related country is unchecked.
+	 * @author shrey.choudhary This method is verifying the title & description of
+	 *         Announcement portlet should not visible to user when a particular
+	 *         country is unchecked given in test data sheet.
+	 * @return Test output that title & description is present or not if related
+	 *         country is unchecked.
 	 * @throws Throwable
 	 */
 	@Test(priority = 10)
@@ -254,7 +264,6 @@ public class Announcement_TestCase extends BaseClass {
 			wcmCountry = (String) userWCMContent.get(i).get("Country").toString().trim();
 			titleName = (String) userWCMContent.get(i).get("Title").toString().trim();
 			strTCID = (String) userWCMContent.get(i).get("Test Case ID").toString().trim();
-
 			String wcmMultilingual = (String) userWCMContent.get(i).get("Multilingual").toString().trim();
 			String library = (String) userWCMContent.get(i).get("Library").toString().trim();
 			GenericFactory.multilingualSwitch(library, wcmMultilingual);

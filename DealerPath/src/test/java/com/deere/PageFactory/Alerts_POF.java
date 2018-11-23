@@ -22,6 +22,7 @@ import javax.xml.xpath.XPath;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -1111,12 +1112,7 @@ public class Alerts_POF extends BaseClass {
 							department = GenericFactory.getDeptname(deptVal);
 						}
 						// department = GenericFactory.getDeptname(liDepartmentNameFromExcel.get(j));
-
-						if (department != null) {
-							department.click();
-						} else {
-							GenericFactory.clickOnFlyOutDeptMenu(liDepartmentNameFromExcel.get(j));
-						}
+						GenericFactory.clickOnDepartmentByName(liDepartmentNameFromExcel.get(j));
 						/***********
 						 * Get list of Announcement and verify if sorted according to date
 						 ***************/
@@ -1870,7 +1866,8 @@ public class Alerts_POF extends BaseClass {
 			for (int i = 0; i < listItemTitlehomepage.size(); i++) {
 				System.out.println(i);
 				String temp = listItemTitlehomepage.get(i).getText().toString().trim();
-				String titleOfAlert = temp.substring(12, temp.length()).toString().trim();
+				int colonIndex = temp.indexOf(':');
+				String titleOfAlert = temp.substring(colonIndex + 1, temp.length()).toString().trim();
 				String description = "";
 				boolean readMoreLink = false;
 				try {
@@ -1893,23 +1890,12 @@ public class Alerts_POF extends BaseClass {
 					String temp1 = framePath.get(i).findElement(By.xpath(".//div[@class='list-item-body is-expanded']"))
 							.getText().toString().trim();
 					description = temp1.substring(temp1.indexOf("\n") + 1, temp1.length());
-					framePath.get(i).findElement(By.xpath(".//div[@class='secondary-action-container']")).click();
+					((JavascriptExecutor) wbDriver).executeScript("arguments[0].click();",framePath.get(i).findElement(By.xpath(".//div[@class='secondary-action-container']")));
 				}
 				description = StringUtils.normalizeSpace(description);
 				descriptionWCM = StringUtils.normalizeSpace(descriptionWCM);
 
-				System.out.println("WCM alert title is :" + Title);
-				System.out.println("WCM alert description is :" + descriptionWCM);
-
-				System.out.println("Actual alert title is :" + titleOfAlert);
-				System.out.println("Actual alert description is :" + description);
-
 				if (titleOfAlert.equals(Title) && description.equals(descriptionWCM)) {
-					System.out.println("WCM alert title is :" + Title);
-					System.out.println("WCM alert description is :" + descriptionWCM);
-
-					System.out.println("Actual alert title is :" + Title);
-					System.out.println("Actual alert description is :" + descriptionWCM);
 					return true;
 				}
 			}

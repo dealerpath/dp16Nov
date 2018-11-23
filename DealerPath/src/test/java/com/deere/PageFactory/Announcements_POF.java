@@ -11,12 +11,12 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.deere.Helpers.BaseClass;
 import com.deere.Helpers.GenericFactory;
@@ -414,6 +414,7 @@ public class Announcements_POF extends BaseClass {
 		}
 
 		if (flagActiveDepartment == true) {
+			WaitFactory.waitForPageLoaded();
 			flagTitle = verifyAnnouncementHeader(announcementTitle, description);
 			if (country && product && flagTitle) {
 
@@ -532,18 +533,6 @@ public class Announcements_POF extends BaseClass {
 
 		}
 	}
-	/*
-	 * public static boolean verifyAnnouncementTitleOnDepartment(String
-	 * UserDeptName, String titleName) throws Throwable {
-	 * 
-	 * if (!UserDeptName.equalsIgnoreCase("General")) {
-	 * 
-	 * if (GenericFactory.clickOnDepartmentByName(UserDeptName)) { if
-	 * (verifyAnnouncementHeader(titleName)) return true; } } else { if
-	 * (verifyAnnouncementHeader(titleName)) return true; }
-	 * LogFactory.info("Announcement title "+ titleName
-	 * +" is not present on the announcement portlet"); return false; }
-	 */
 
 	public static boolean verifyAnnouncementHeader(String Title, String descriptionWCM) throws Throwable {
 		List<WebElement> framePath = BaseClass.wbDriver
@@ -551,12 +540,11 @@ public class Announcements_POF extends BaseClass {
 		try {
 			for (int i = 0; i < AnnouncementTitleContents.size(); i++) {
 				String temp = AnnouncementTitleContents.get(i).getText().toString().trim();
-				int colonIndex=temp.indexOf(':');
-				String titleOfAnnouncement = temp.substring(colonIndex+1, temp.length()).toString().trim();
+				int colonIndex = temp.indexOf(':');
+				String titleOfAnnouncement = temp.substring(colonIndex + 1, temp.length()).toString().trim();
 				String description = "";
 				boolean readMoreLink = false;
 				try {
-					System.out.println();
 					WebElement singleFrame = BaseClass.wbDriver.findElement(By
 							.xpath(".//div[@class='section']//div[@class='list-item hide-overflow'][" + (i + 1) + "]"));
 					readMoreLink = ValidationFactory.getElementIfPresent(
@@ -570,17 +558,15 @@ public class Announcements_POF extends BaseClass {
 							.getText().toString().trim();
 					description = temp.substring(temp.indexOf("\n") + 1, temp.length());
 				} else {
-					WebDriverWait wait = new WebDriverWait(BaseClass.wbDriver, 300);
-
-					 WebElement readMoreLinkPresent = wait.until(ExpectedConditions.elementToBeClickable(framePath.get(i).findElement(By.xpath(".//div[@class='secondary-action-container']"))));
-					//WebElement readMoreLinkPresent = WaitFactory.WaitForElementToVisible(framePath.get(i).findElement(By.xpath(".//div[@class='secondary-action-container']")));
-					readMoreLinkPresent.click();
-					Thread.sleep(2000);
-					WebElement textAfterReadMoreLinkClick = wait.until(ExpectedConditions.visibilityOf(framePath.get(i).findElement(By.xpath(".//div[@class='list-item-body is-expanded']"))));
-					//WebElement textAfterReadMoreLinkClick = WaitFactory.WaitForElementToVisible(framePath.get(i).findElement(By.xpath(".//div[@class='list-item-body is-expanded']")));
+						WaitFactory.waitForElement(framePath.get(i).findElement(By.xpath(".//div[@class='secondary-action-container']")));
+						WaitFactory.WaitForElementToVisible(framePath.get(i).findElement(By.xpath(".//div[@class='secondary-action-container']")));
+						((JavascriptExecutor) wbDriver).executeScript("arguments[0].click();",framePath.get(i).findElement(By.xpath(".//div[@class='secondary-action-container']")));
+						WebElement textAfterReadMoreLinkClick = WaitFactory.WaitForElementToVisible(
+							framePath.get(i).findElement(By.xpath(".//div[@class='list-item-body is-expanded']")));
 					String temp1 = textAfterReadMoreLinkClick.getText().toString().trim();
 					description = temp1.substring(temp1.indexOf("\n") + 1, temp1.length());
-					framePath.get(i).findElement(By.xpath(".//div[@class='secondary-action-container']")).click();
+					((JavascriptExecutor) wbDriver).executeScript("arguments[0].click();",framePath.get(i).findElement(By.xpath(".//div[@class='secondary-action-container']")));
+					//framePath.get(i).findElement(By.xpath(".//div[@class='secondary-action-container']")).click();
 				}
 				description = StringUtils.normalizeSpace(description);
 				descriptionWCM = StringUtils.normalizeSpace(descriptionWCM);

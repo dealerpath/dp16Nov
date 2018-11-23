@@ -339,6 +339,8 @@ public class GenericFactory extends BaseClass {
 					.findElement(By.xpath("//div[contains (@class,'user-info') and @id ='js-user-info']")));
 			if (userelement != null) {
 
+				Thread.sleep(3000);
+
 				userelement.click();
 				Thread.sleep(1000);
 				LogFactory.info("Utility Menu Clicked.....");
@@ -1388,11 +1390,14 @@ public class GenericFactory extends BaseClass {
 	 * @createdAt 02-07-2018
 	 * @param strSecondlevelDepartment
 	 * @param strIndexPage
+	 * @throws InterruptedException 
 	 * @ModifiedBy Neeraja.mantri
 	 */
 
 	public static boolean clickOnIndexPageLinkOnSecondLevelDepartment(String strSecondlevelDepartment,
-			String strIndexPage) {
+			String strIndexPage) throws InterruptedException {
+
+		Thread.sleep(3000);
 
 		List<WebElement> liActualSubDepartmentsFrame = BaseClass.wbDriver
 				.findElements(By.xpath(".//*[@id='links-target']/div"));
@@ -1404,20 +1409,21 @@ public class GenericFactory extends BaseClass {
 			String strSubDepartment = liActualSubDepartmentsFrame.get(j).getText().trim();
 			String[] lines = strSubDepartment.split("\n");
 			String strheadername = lines[0];
-			// System.out.println(strheadername);
 			WebElement weSecondLevelLinks = liActualSubDepartmentsFrame.get(j);
-			// System.out.println(liActualSubDepartmentsFrame.get(j).getText());
-
 			if (strSecondlevelDepartment.equalsIgnoreCase(strheadername)) {
 				strHeaderNameFlag = "Pass";
-
 				List<WebElement> links = weSecondLevelLinks.findElements(By.tagName("a"));
 
 				for (WebElement we : links) {
+
+					Thread.sleep(1000);
+
 					if (we.getText().equalsIgnoreCase(strIndexPage)) {
 						LogFactory.info("Index page link is present in the subdepartment :" + strSecondlevelDepartment);
 						WebElement weThirdLevelIndexLink = BaseClass.wbDriver.findElement(By.linkText(strIndexPage));
 						weThirdLevelIndexLink.click();
+						WaitFactory.waitForPageLoaded();
+						Thread.sleep(2000);
 						returnFlag = true;
 						break;
 					} else {
@@ -1428,13 +1434,13 @@ public class GenericFactory extends BaseClass {
 					}
 
 				}
-				break;
+			//	break;
 			} else {
 
 				LogFactory.info("Secondlevel department name is not matching with expected");
 			}
 
-			break;
+		//	break;
 		}
 
 		return returnFlag;
@@ -1476,7 +1482,7 @@ public class GenericFactory extends BaseClass {
 		}
 
 		BaseClass.wbDriver.findElement(By.xpath(".//*[@id='js-segments-popover']/div[2]/div[3]/button")).click();
-
+		Thread.sleep(2000);
 		String errorMessage = BaseClass.wbDriver
 				.findElement(By.xpath("//div[@class='popover-content']//p[@id='productSegmentsError']")).getText();
 
@@ -1542,13 +1548,14 @@ public class GenericFactory extends BaseClass {
 				}
 			}
 			WaitFactory
-					.waitforelementToBeClickable(BaseClass.wbDriver.findElement(By.xpath("//*[@id='preference-save']")))
-					.click();
+			.waitforelementToBeClickable(BaseClass.wbDriver.findElement(By.xpath("//*[@id='preference-save']")));
 			WaitFactory
 					.WaitForElementToVisible(BaseClass.wbDriver.findElement(By.xpath(".//*[@id='preference-save']")));
+			
 			BaseClass.wbDriver.findElement(By.xpath(".//*[@id='preference-save']")).click();
 			WaitFactory.waitforelementToinvisibile(
 					BaseClass.wbDriver.findElement(By.xpath(".//*[@id='preference-save']")));
+			Thread.sleep(2000);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -1625,6 +1632,8 @@ public class GenericFactory extends BaseClass {
 			if (deptNameListValue.equalsIgnoreCase(deptName)) {
 				if (deptNameList.get(i).isEnabled()) {
 					deptNameList.get(i).click();
+					Thread.sleep(2000);
+					WaitFactory.waitForPageLoaded();
 					LogFactory.info("Clicked on desired deparment name. " + deptName);
 					Flag = true;
 				}
@@ -1668,6 +1677,8 @@ public class GenericFactory extends BaseClass {
 				}
 			}
 			alertPageFactory.ApplyFilterButton.click();
+			Thread.sleep(2000);
+			WaitFactory.waitForPageLoaded();
 			WaitFactory.WaitForinvisibilityOfElement(alertPageFactory.ApplyFilterButton);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -2159,93 +2170,167 @@ public class GenericFactory extends BaseClass {
 						&& !thirdLevelIndexPage.equalsIgnoreCase("NA")
 						&& !thirdLevelChildIndexPage.equalsIgnoreCase("NA")
 						&& !thirdLevelGrandChildIndexPage.equalsIgnoreCase("NA")) {
+
 					clickOnDepartmentByName(DepartmentName);
+
 					clickOnIndexPageLinkOnSecondLevelDepartment(secondLevelIndex, thirdLevelIndexPage);
 					clickOnIndexPageLinkOnChildLevelDepartment(thirdLevelChildIndexPage, thirdLevelIndexPageCategories,
 							thirdLevelIndexPageNestedCategories);
+
 					clickOnIndexPageLinkOnChildLevelDepartment(thirdLevelGrandChildIndexPage,
+
 							thirdLevelChildIndexPageCategories, thirdLevelChildIndexPageNestedCategories);
 					break;
 				} else if (thirdLevelIndexPage.equalsIgnoreCase("NA") && !thirdLevelFolder.equalsIgnoreCase("NA")
 						&& forthLevelIndexPage.equalsIgnoreCase("NA")) {
+
 					clickOnDepartmentByName(DepartmentName);
+
 					toClickOnFolder(thirdLevelFolder, secondLevelIndex);
+
 					BaseClass.wbDriver.findElement(By.xpath("//a[text()='" + fourthLevelLandingPage + "']")).click();
+
 					LogFactory.info("Navigated to index page successfully ");
+
 					break;
+
 				} else if (thirdLevelIndexPage.equalsIgnoreCase("NA") && !thirdLevelFolder.equalsIgnoreCase("NA")
+
 						&& !forthLevelIndexPage.equalsIgnoreCase("NA")
+
 						&& !forthLevelChildIndexPage.equalsIgnoreCase("NA")) {
+
 					clickOnDepartmentByName(DepartmentName);
+
 					toClickOnFolder(thirdLevelFolder, secondLevelIndex);
+
 					BaseClass.wbDriver.findElement(By.xpath("//a[text()='" + forthLevelIndexPage + "']")).click();
 					clickOnIndexPageLinkOnChildLevelDepartment(forthLevelChildIndexPage, forthLevelIndexPageCategories,
 							forthLevelIndexPageNestedCategories);
 					break;
+
 				} else
+
 					System.out.println("Invalid test data");
+
 				break;
+
 			} catch (Exception e) {
+
 				System.out.println("Link not found on UI");
+
 			}
 
-		case "AT-Child Index Page":
+		case "AT-ChildIndex Page":
+
 			try {
+
 				if (!DepartmentName.equalsIgnoreCase("NA") && !secondLevelIndex.equalsIgnoreCase("NA")
+
 						&& !thirdLevelIndexPage.equalsIgnoreCase("NA")
+
 						&& !thirdLevelChildIndexPage.equalsIgnoreCase("NA")) {
+
 					clickOnDepartmentByName(DepartmentName);
+
 					clickOnIndexPageLinkOnSecondLevelDepartment(secondLevelIndex, thirdLevelIndexPage);
+
 					clickOnIndexPageLinkOnChildLevelDepartment(thirdLevelChildIndexPage, thirdLevelIndexPageCategories,
+
 							thirdLevelIndexPageNestedCategories);
+
 					break;
+
 				}
+
 				// Code Added by Archana
+
 				else if (thirdLevelIndexPage.equalsIgnoreCase("NA") && !thirdLevelFolder.equalsIgnoreCase("NA")
+
 						&& !forthLevelIndexPage.equalsIgnoreCase("NA")) {
+
 					clickOnDepartmentByName(DepartmentName);
+
 					toClickOnFolder(thirdLevelFolder, secondLevelIndex);
+
 					BaseClass.wbDriver.findElement(By.xpath("//a[text()='" + forthLevelIndexPage + "']")).click();
+
 					BaseClass.wbDriver.findElement(By.xpath("//a[text()='" + forthLevelChildIndexPage + "']")).click();
+
 					LogFactory.info("Navigated to index page successfully");
+
 					break;
+
 				} else
+
 					System.out.println("Invalid test data");
+
 				break;
 
 			} catch (Exception e) {
+
 				LogFactory.info("Link is not visible in AT-ChildIndex Page");
+
 			}
 
 		case "AT-GrandChild Index Page":
+
 			try {
+
 				if (!DepartmentName.equalsIgnoreCase("NA") && !secondLevelIndex.equalsIgnoreCase("NA")
+
 						&& !thirdLevelIndexPage.equalsIgnoreCase("NA")
+
 						&& !thirdLevelChildIndexPage.equalsIgnoreCase("NA")
+
 						&& !thirdLevelGrandChildIndexPage.equalsIgnoreCase("NA")) {
+
 					clickOnDepartmentByName(DepartmentName);
+
 					clickOnIndexPageLinkOnSecondLevelDepartment(secondLevelIndex, thirdLevelIndexPage);
+
 					clickOnIndexPageLinkOnChildLevelDepartment(thirdLevelChildIndexPage, thirdLevelIndexPageCategories,
+
 							thirdLevelIndexPageNestedCategories);
+
 					clickOnIndexPageLinkOnChildLevelDepartment(thirdLevelGrandChildIndexPage,
+
 							thirdLevelChildIndexPageCategories, thirdLevelChildIndexPageNestedCategories);
+
 					break;
+
 				} else if (thirdLevelIndexPage.equalsIgnoreCase("NA") && !thirdLevelFolder.equalsIgnoreCase("NA")
+
 						&& forthLevelIndexPage.equalsIgnoreCase("NA")) {
+
 					clickOnDepartmentByName(DepartmentName);
+
 					toClickOnFolder(thirdLevelFolder, secondLevelIndex);
+
 					BaseClass.wbDriver.findElement(By.xpath("//a[text()='" + fourthLevelLandingPage + "']")).click();
+
 					LogFactory.info("Navigated to index page successfully ");
+
 					break;
+
 				} else if (thirdLevelIndexPage.equalsIgnoreCase("NA") && !thirdLevelFolder.equalsIgnoreCase("NA")
+
 						&& !forthLevelIndexPage.equalsIgnoreCase("NA")
+
 						&& !forthLevelChildIndexPage.equalsIgnoreCase("NA")) {
+
 					clickOnDepartmentByName(DepartmentName);
+
 					toClickOnFolder(thirdLevelFolder, secondLevelIndex);
+
 					BaseClass.wbDriver.findElement(By.xpath("//a[text()='" + forthLevelIndexPage + "']")).click();
+
 					clickOnIndexPageLinkOnChildLevelDepartment(forthLevelChildIndexPage, forthLevelIndexPageCategories,
+
 							forthLevelIndexPageNestedCategories);
+
 					break;
+
 				} else {
 					LogFactory.info("Given data for AT-GrandChild Index Page is incorrect.");
 					break;
@@ -2317,6 +2402,8 @@ public class GenericFactory extends BaseClass {
 					// Code change by Archana
 					if (links.get(i).getText().equalsIgnoreCase(childIndexPageTitle)) {
 						links.get(i).click();
+						WaitFactory.waitForPageLoaded();
+						Thread.sleep(2000);
 						LogFactory.info("Navigated to index page successfully 4");
 						return;
 					}
@@ -2340,6 +2427,8 @@ public class GenericFactory extends BaseClass {
 						for (int j = 0; j < links.size(); j++) {
 							if (links.get(j).getText().equals(childIndexPageTitle)) {
 								links.get(j).click();
+								WaitFactory.waitForPageLoaded();
+								Thread.sleep(2000);
 								LogFactory.info("Navigated to index page successfully 5");
 								return;
 							}
@@ -2361,6 +2450,8 @@ public class GenericFactory extends BaseClass {
 						for (int j = 0; j < links.size(); j++) {
 							if (links.get(j).getText().equals(childIndexPageTitle)) {
 								links.get(j).click();
+								WaitFactory.waitForPageLoaded();
+								Thread.sleep(2000);
 								LogFactory.info("Navigated to index page successfully 6");
 								return;
 							}
@@ -2464,7 +2555,7 @@ public class GenericFactory extends BaseClass {
 		}
 	}
 
-	public static boolean selectProductsFromProductSegment(String strProductName) {
+	public static boolean selectProductsFromProductSegment(String strProductName) throws InterruptedException {
 		int i;
 		String eachProductName = "";
 		WebElement eachProductCheckbox;
@@ -2493,6 +2584,7 @@ public class GenericFactory extends BaseClass {
 		}
 
 		ValidationFactory.getElementIfPresent(By.xpath(".//*[@id='js-segments-popover']/div[2]/div[3]/button")).click();
+		Thread.sleep(2000);
 		WaitFactory.waitForPageLoaded();
 		LogFactory.info("Checked all given product segment name checkbox ");
 
@@ -2541,7 +2633,7 @@ public class GenericFactory extends BaseClass {
 
 	public static boolean clickOnDepartmentByName(String DepartmentNameInEnglish) throws IOException, Exception {
 		try {
-			System.out.println();
+
 			String translatedDepartmentName = GenericFactory.getTranslation(DepartmentNameInEnglish).get(0);
 			// LogFactory.info("Translated Department : "+translatedDepartmentName);
 			boolean leftNavigationActiveDepartment = ValidationFactory.isElementPresent(By.xpath(
@@ -2552,6 +2644,8 @@ public class GenericFactory extends BaseClass {
 				if (leftNavigationActiveDepartment) {
 					WaitFactory.WaitForElementToVisible(BaseClass.wbDriver.findElement(By.xpath(".//*[@id='leftNav']/li/a[contains(text(),'"
 							+ translatedDepartmentName + "')][@class='active']"))).click();
+					WaitFactory.waitForPageLoaded();
+					Thread.sleep(2000);					
 					return true;
 				}
 				return false;
@@ -2566,6 +2660,8 @@ public class GenericFactory extends BaseClass {
 							+ translatedDepartmentName + "')][@class='active']"))) {
 						BaseClass.wbDriver.findElement(By.xpath(".//*[@id='flyOut']/li/a[contains(text(),'"
 								+ translatedDepartmentName + "')][@class='active']")).click();
+						WaitFactory.waitForPageLoaded();
+						Thread.sleep(2000);
 						return true;
 					}
 				} else
@@ -2742,6 +2838,7 @@ public class GenericFactory extends BaseClass {
 		}
 
 		ValidationFactory.getElementIfPresent(By.xpath(".//*[@id='js-segments-popover']/div[2]/div[3]/button")).click();
+		Thread.sleep(2000);
 		WaitFactory.waitForPageLoaded();
 		LogFactory.info("Checked all product " + productsUncheckNew + " segment name checkbox ");
 
@@ -2749,6 +2846,7 @@ public class GenericFactory extends BaseClass {
 			alertPageFactory.segmentError = alertPageFactory.wblProdSegmentError.getText();
 			if (ValidationFactory.getElementIfPresent(By.xpath("//div[@id='js-segments']")) != null)
 				ValidationFactory.getElementIfPresent(By.xpath("//div[@id='js-segments']")).click();
+			Thread.sleep(2000);
 			return false;
 		} else {
 			return true;
@@ -3059,7 +3157,6 @@ public class GenericFactory extends BaseClass {
 		try {
 			for (int i = 0; i < PortalLeftNavigation_POF.ListAllActiveLinks.size(); i++) {
 				if (PortalLeftNavigation_POF.ListAllActiveLinks.get(i).getText().equalsIgnoreCase(DepartmentName)) {
-
 					return true;
 				}
 			}
@@ -3265,7 +3362,7 @@ public class GenericFactory extends BaseClass {
 		return countofLinksforHeader;
 	}
 
-	public static boolean productcheckstatus(String product) {
+	public static boolean productcheckstatus(String product) throws InterruptedException {
 		boolean checkboxstatus = false;
 		WebElement oCheckBox = null;
 		/*
@@ -3283,6 +3380,9 @@ public class GenericFactory extends BaseClass {
 			checkboxstatus = oCheckBox.isSelected();
 
 			if (checkboxstatus == false && product.equalsIgnoreCase(productNameData)) {
+
+				Thread.sleep(1000);
+
 				oCheckBox.click();
 				checkboxstatus = true;
 				break;
@@ -3398,6 +3498,9 @@ public class GenericFactory extends BaseClass {
 
 	public static void checkUncheckDepartmentMyPreferenceIndex(String departmentName) throws InterruptedException {
 		try {
+
+			Thread.sleep(2000);
+
 			GenericFactory.utilityMenuMyPreferenceClick();
 			Thread.sleep(5000);
 			for (int i = 0; i < announcementFactory.allCheck.size(); i++) {
@@ -3417,6 +3520,9 @@ public class GenericFactory extends BaseClass {
 	}
 
 	public static void checkandUncheckFromPrefernce() throws Throwable {
+
+		Thread.sleep(3000);
+
 		GenericFactory.utilityMenuMyPreferenceClick();
 		List<WebElement> names = BaseClass.wbDriver
 				.findElements(By.xpath("//div[@class='group-value checkbox-value']/div[@class='value']"));
@@ -3632,6 +3738,9 @@ public class GenericFactory extends BaseClass {
 	public static boolean uncheckCountry(String wcmCountrynameWcm) throws IOException, Exception {
 		boolean checkboxstatus = true;
 		WebElement oCheckBox = null;
+
+		Thread.sleep(3000);
+
 		List<WebElement> countyNameStatusofCheckBox = BaseClass.wbDriver
 				.findElements(By.xpath(".//*[@id='countryGroups']"));
 		List<WebElement> countyName = BaseClass.wbDriver
@@ -3645,6 +3754,9 @@ public class GenericFactory extends BaseClass {
 			String oCheckBox1 = BaseClass.wbDriver
 					.findElement(By.xpath(".//*[@id='country-grouping-form']/div/div/div[" + i + "]/label")).getText();
 			if (checkboxstatus == true && oCheckBox1.equalsIgnoreCase(wcmCountrynameWcm)) {
+
+				Thread.sleep(3000);
+
 				oCheckBox.click();
 				checkboxstatus = true;
 				break;
@@ -3663,6 +3775,9 @@ public class GenericFactory extends BaseClass {
 			oCheckBox = countyName.get(i);
 			checkboxstatus = oCheckBox.isSelected();
 			if (checkboxstatus == false) {
+
+				Thread.sleep(3000);
+
 				oCheckBox.click();
 				checkboxstatus = true;
 			}
@@ -3736,24 +3851,44 @@ public class GenericFactory extends BaseClass {
                }
                System.out.println(listApplication + " is the list of departments.");
 
-               int sizeOfDeptListFromAnalyseUserMapReset = analyzerUserMapReset.get("Department").size();
-               for (int i = 0; i < sizeOfDeptListFromAnalyseUserMapReset; i++) {
-                     String departmentFromAnalyseUserMapReset = GenericFactory.getTranslation(analyzerUserMapReset.get("Department").get(i)).toString();
-                      departmentFromAnalyseUserMapReset=departmentFromAnalyseUserMapReset.contains("[") ? departmentFromAnalyseUserMapReset.replaceAll("[\\[\\]]", "") : departmentFromAnalyseUserMapReset;
-                     System.out.println(departmentFromAnalyseUserMapReset + " has to be checked.");
-                     if (listApplication.contains(departmentFromAnalyseUserMapReset)) {
-                            WebElement checkDepartment = wbDriver
-                                          .findElement(By.xpath("//*[@id='rbacRole']/../div[normalize-space() = '"
-                                                        + departmentFromAnalyseUserMapReset + "']/../input"));
-                            if (!checkDepartment.getAttribute("checked").equalsIgnoreCase("true")) {
-                                   checkDepartment.click();
-                            } else {
-                                   LogFactory.info(departmentFromAnalyseUserMapReset + " is checked present.");
-                            }
-                     } else {
-                            DeptDifferent = DeptDifferent + departmentFromAnalyseUserMapReset;
-                     }
-               }
+			int sizeOfDeptListFromAnalyseUserMapReset = analyzerUserMapReset.get("Department").size();
+
+			for (int i = 0; i < sizeOfDeptListFromAnalyseUserMapReset; i++) {
+
+				String departmentFromAnalyseUserMapReset = GenericFactory
+						.getTranslation(analyzerUserMapReset.get("Department").get(i)).toString();
+
+				departmentFromAnalyseUserMapReset = departmentFromAnalyseUserMapReset.contains("[")
+						? departmentFromAnalyseUserMapReset.replaceAll("[\\[\\]]", "")
+						: departmentFromAnalyseUserMapReset;
+
+				System.out.println(departmentFromAnalyseUserMapReset + " has to be checked.");
+
+				if (listApplication.contains(departmentFromAnalyseUserMapReset)) {
+
+					WebElement checkDepartment = wbDriver
+
+							.findElement(By.xpath("//*[@id='rbacRole']/../div[normalize-space() = '"
+
+									+ departmentFromAnalyseUserMapReset + "']/../input"));
+
+					if (!checkDepartment.getAttribute("checked").equalsIgnoreCase("true")) {
+
+						checkDepartment.click();
+
+					} else {
+
+						LogFactory.info(departmentFromAnalyseUserMapReset + " is checked present.");
+
+					}
+
+				} else {
+
+					DeptDifferent = DeptDifferent + departmentFromAnalyseUserMapReset;
+
+				}
+
+			}
 
                String siteFromAnalyseUserMapReset = "";
                String siteList = "";
@@ -3777,46 +3912,94 @@ public class GenericFactory extends BaseClass {
                      }
                      
 
-               } else {
-                     LogFactory.info("Site Dropdown is not available.");
-               }
-               // Saving Changes
-               myPreferencesPageFactory.wbelMyPreferenceModalSaveButton.click();
-        WaitFactory.waitforelementToinvisibile(myPreferencesPageFactory.wbelMyPreferenceModalSaveButton);
-               wbDriver.switchTo().defaultContent();
-               WaitFactory.waitForPageLoaded();
-String strFlag = "Fail";
-               // Reporter Out put
-               if (DeptDifferent.equalsIgnoreCase("")&&LanguageNotPresent.equalsIgnoreCase("")&&themeNotPresent.equalsIgnoreCase("")&&siteNotPresent.equalsIgnoreCase("")) {
-                     strFlag = "Pass";
-                            ReportFactory.reporterOutput("Reset My Preferences",
-                                          "Verify that changes made to 'My Preference' are reverted back.",
-                                          "Selections on 'My Preferences' before making any changes. </br><b> Language </b>: "
-                                                        + LanguageReset + ".</br><b> Theme </b>: "
-                                                        + analyzerUserMapReset.get("Theme Colors").get(0) + ".</br><b> Departments </b>: "
-                                                        + analyzerUserMapReset.get("Department")+".</br><b> Site </b>:"
-                                                        + siteFromAnalyseUserMapReset,
-                                          "Changes made to verify the functionalities should be reverted back.",
-                                          "All the changes made to 'My Preferences' is reverted back.",strFlag);
-                     } 
-                else {
-                     String print = "";
-                     print = !DeptDifferent.equalsIgnoreCase("")?"</br> <b>Departments which are NOT present as per Analyze user</b> : "+DeptDifferent+"</br>":print;
-                     print = !LanguageNotPresent.equalsIgnoreCase("")?"</br> <b>Language which is NOT present as per Analyze user</b> : "+LanguageNotPresent+"</br>":print;
-                     print = !themeNotPresent.equalsIgnoreCase("")?"</br> <b>Theme which is NOT present as per Analyze user</b> : "+themeNotPresent+"</br>":print;
-                     print = !siteNotPresent.equalsIgnoreCase("")?"</br> <b>Site which are NOT present as per Analyze user</b> : "+siteNotPresent+"</br>":print;
-                            ReportFactory.reporterOutput("Reset My Preferences",
-                                          "Verify that changes made to 'My Preference' are reverted back.",
-                                          "Selections on 'My Preferences' before making any changes. </br><b> Language </b>: "
-                                                        + LanguageReset + ".</br><b> Theme </b>: "
-                                                        + analyzerUserMapReset.get("Theme Colors").get(0) + ".</br><b> Departments </b>: "
-                                                        + analyzerUserMapReset.get("Department")
-                                                        + ".</br><b> Site </b>:"
-                                                                     + siteFromAnalyseUserMapReset+print,
-                                          "Changes made to verify the functionalities should be reverted back.",
-                                          "All the changes made to 'My Preferences' may not have reverted back.",strFlag);
-                     } 
-               
+			} else {
+
+				LogFactory.info("Site Dropdown is not available.");
+
+			}
+
+			// Saving Changes
+
+			myPreferencesPageFactory.wbelMyPreferenceModalSaveButton.click();
+
+			WaitFactory.waitforelementToinvisibile(myPreferencesPageFactory.wbelMyPreferenceModalSaveButton);
+
+			wbDriver.switchTo().defaultContent();
+
+			WaitFactory.waitForPageLoaded();
+
+			String strFlag = "Fail";
+
+			// Reporter Out put
+
+			if (DeptDifferent.equalsIgnoreCase("") && LanguageNotPresent.equalsIgnoreCase("")
+					&& themeNotPresent.equalsIgnoreCase("") && siteNotPresent.equalsIgnoreCase("")) {
+
+				strFlag = "Pass";
+
+				ReportFactory.reporterOutput("Reset My Preferences",
+
+						"Verify that changes made to 'My Preference' are reverted back.",
+
+						"Selections on 'My Preferences' before making any changes. </br><b> Language </b>: "
+
+								+ LanguageReset + ".</br><b> Theme </b>: "
+
+								+ analyzerUserMapReset.get("Theme Colors").get(0) + ".</br><b> Departments </b>: "
+
+								+ analyzerUserMapReset.get("Department") + ".</br><b> Site </b>:"
+
+								+ siteFromAnalyseUserMapReset,
+
+						"Changes made to verify the functionalities should be reverted back.",
+
+						"All the changes made to 'My Preferences' is reverted back.", strFlag);
+
+			}
+
+			else {
+
+				String print = "";
+
+				print = !DeptDifferent.equalsIgnoreCase("")
+						? "</br> <b>Departments which are NOT present as per Analyze user</b> : " + DeptDifferent
+								+ "</br>"
+						: print;
+
+				print = !LanguageNotPresent.equalsIgnoreCase("")
+						? "</br> <b>Language which is NOT present as per Analyze user</b> : " + LanguageNotPresent
+								+ "</br>"
+						: print;
+
+				print = !themeNotPresent.equalsIgnoreCase("")
+						? "</br> <b>Theme which is NOT present as per Analyze user</b> : " + themeNotPresent + "</br>"
+						: print;
+
+				print = !siteNotPresent.equalsIgnoreCase("")
+						? "</br> <b>Site which are NOT present as per Analyze user</b> : " + siteNotPresent + "</br>"
+						: print;
+
+				ReportFactory.reporterOutput("Reset My Preferences",
+
+						"Verify that changes made to 'My Preference' are reverted back.",
+
+						"Selections on 'My Preferences' before making any changes. </br><b> Language </b>: "
+
+								+ LanguageReset + ".</br><b> Theme </b>: "
+
+								+ analyzerUserMapReset.get("Theme Colors").get(0) + ".</br><b> Departments </b>: "
+
+								+ analyzerUserMapReset.get("Department")
+
+								+ ".</br><b> Site </b>:"
+
+								+ siteFromAnalyseUserMapReset + print,
+
+						"Changes made to verify the functionalities should be reverted back.",
+
+						"All the changes made to 'My Preferences' may not have reverted back.", strFlag);
+
+			}
 
         } catch (Exception e) {
                LogFactory.info("I am in catch block");
@@ -3833,17 +4016,28 @@ String strFlag = "Fail";
         xmlTest.setPreserveOrder("true");
         xmlTest.setThreadCount(1);
 
-        List<XmlClass> list = new ArrayList<XmlClass>();
-        for (int i = 0; i < classesExecution.size(); i++) {
-               XmlClass publicTestClass = new XmlClass(Class.forName("com.deere.TestCasesFactory." + classesExecution.get(i)));
-               list.add(publicTestClass);
-        }
-        XmlClass endEmpersonate = new XmlClass(com.deere.TestCasesFactory.EndImpersonate_TestCase.class);
-        list.add(endEmpersonate);
-        xmlTest.setXmlClasses(list);
-        TestNG testng = new TestNG();
-        List<XmlSuite> suite = new ArrayList<XmlSuite>();
-        suite.add(xmlSuite);
+		List<XmlClass> list = new ArrayList<XmlClass>();
+
+		for (int i = 0; i < classesExecution.size(); i++) {
+
+			XmlClass publicTestClass = new XmlClass(
+					Class.forName("com.deere.TestCasesFactory." + classesExecution.get(i)));
+
+			list.add(publicTestClass);
+
+		}
+
+		XmlClass endEmpersonate = new XmlClass(com.deere.TestCasesFactory.EndImpersonate_TestCase.class);
+
+		list.add(endEmpersonate);
+
+		xmlTest.setXmlClasses(list);
+
+		TestNG testng = new TestNG();
+
+		List<XmlSuite> suite = new ArrayList<XmlSuite>();
+
+		suite.add(xmlSuite);
 
         testng.setXmlSuites(suite);
         for (XmlSuite suitefor : suite) {

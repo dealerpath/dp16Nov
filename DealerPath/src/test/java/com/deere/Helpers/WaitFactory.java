@@ -1,6 +1,8 @@
 package com.deere.Helpers;
 
+import java.time.Duration;
 import java.util.List;
+
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.Alert;
@@ -25,12 +27,13 @@ public class WaitFactory extends BaseClass {
 		public static  void WaitForElementNotPresent(WebElement element) throws Exception
 		{	WebElement elem = null;
 			try {
-				Wait<WebDriver> waitobj = new FluentWait<WebDriver>(BaseClass.wbDriver)
-								.withTimeout(15, TimeUnit.SECONDS)
-						       .pollingEvery(2, TimeUnit.SECONDS)
-						 
-						       .ignoring(NoSuchElementException.class);
-					elem = (WebElement) waitobj.until(ExpectedConditions.visibilityOf(element));
+				@SuppressWarnings("deprecation")
+				WebDriverWait wait = new WebDriverWait(BaseClass.wbDriver, 25, 2500L);
+				wait.withTimeout(Duration.ofSeconds(30));
+				wait.pollingEvery(Duration.ofMillis(500));
+				wait.ignoring(NoSuchElementException.class);
+				
+					elem = (WebElement) wait.until(ExpectedConditions.visibilityOf(element));
 			   
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
@@ -42,14 +45,11 @@ public class WaitFactory extends BaseClass {
 		{
 			WebElement elem = null;
 		    try {
-			Wait<WebDriver> waitobj = new FluentWait<WebDriver>(BaseClass.wbDriver)
-						 
-					       .withTimeout(160, TimeUnit.SECONDS)
- 
-					       .pollingEvery(2, TimeUnit.SECONDS)
-	 
-					       .ignoring(NoSuchElementException.class);
-				elem =   waitobj.until(ExpectedConditions.elementToBeClickable(element));
+				WebDriverWait wait = new WebDriverWait(BaseClass.wbDriver, 25, 2500L);
+				wait.withTimeout(Duration.ofSeconds(30));
+				wait.pollingEvery(Duration.ofMillis(500));
+				wait.ignoring(NoSuchElementException.class);
+				elem =   wait.until(ExpectedConditions.elementToBeClickable(element));
 			
 			} catch (Exception e) {
 				
@@ -65,14 +65,12 @@ public class WaitFactory extends BaseClass {
 	{	List<WebElement>  elem = null;
 		    try {
 			
-				Wait<WebDriver> waitobj = new FluentWait<WebDriver>(BaseClass.wbDriver)
-				 
-					       .withTimeout(160, TimeUnit.SECONDS)
-					 
-					       .pollingEvery(2, TimeUnit.SECONDS)
-					 
-					       .ignoring(NoSuchElementException.class);
-				elem =  (List<WebElement>) waitobj.until(ExpectedConditions.visibilityOfAllElements(elements));
+				WebDriverWait wait = new WebDriverWait(BaseClass.wbDriver, 25, 2500L);
+				wait.withTimeout(Duration.ofSeconds(30));
+				wait.pollingEvery(Duration.ofMillis(500));
+				wait.ignoring(NoSuchElementException.class);
+				
+				elem =  (List<WebElement>) wait.until(ExpectedConditions.visibilityOfAllElements(elements));
 			
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -89,11 +87,11 @@ public class WaitFactory extends BaseClass {
 		Boolean Flag = false;
 
 		try {
-			Wait<WebDriver> waitobj = new FluentWait<WebDriver>(BaseClass.wbDriver)
-					.withTimeout(160, TimeUnit.SECONDS)
-					.pollingEvery(2, TimeUnit.SECONDS).ignoring(WebDriverException.class)
-					.ignoring(TargetLostException.class).ignoring(NoSuchElementException.class);
-			Flag = waitobj.until(ExpectedConditions.invisibilityOf(element));
+			WebDriverWait wait = new WebDriverWait(BaseClass.wbDriver, 25, 2500L);
+			wait.withTimeout(Duration.ofSeconds(30));
+			wait.pollingEvery(Duration.ofMillis(500));
+			wait.ignoring(NoSuchElementException.class);
+			Flag = wait.until(ExpectedConditions.invisibilityOf(element));
 
 		} catch (Exception e) {
 
@@ -107,16 +105,14 @@ public static  WebElement WaitForElementToVisible(WebElement element) throws Exc
 {	WebElement elem = null;
 	    try {
 		
-		Wait<WebDriver> waitobj = new FluentWait<WebDriver>(BaseClass.wbDriver)
-						.withTimeout(10, TimeUnit.SECONDS)
-				       .pollingEvery(1, TimeUnit.SECONDS)
-				 
-				       .ignoring(NoSuchElementException.class);
-			elem = (WebElement) waitobj.until(ExpectedConditions.visibilityOf(element));
+	    	WebDriverWait wait = new WebDriverWait(BaseClass.wbDriver, 25, 2500L);
+			wait.withTimeout(Duration.ofSeconds(30));
+			wait.pollingEvery(Duration.ofMillis(500));
+			wait.ignoring(NoSuchElementException.class);
+			elem = (WebElement) wait.until(ExpectedConditions.visibilityOf(element));
 	
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-		//	Assert.fail("Timeout waiting for Element Load Request to complete."); 
+			System.out.println(e.getMessage());
 		}
 	
 		return elem;	 
@@ -127,12 +123,11 @@ public static  boolean WaitForTexttoBePresentInElement(WebElement element, Strin
 {	WebElement elem = null;
 	    try {
 		
-		Wait<WebDriver> waitobj = new FluentWait<WebDriver>(BaseClass.wbDriver)
-						.withTimeout(10, TimeUnit.SECONDS)
-				       .pollingEvery(1, TimeUnit.SECONDS)
-				 
-				       .ignoring(NoSuchElementException.class);
-		  return (waitobj.until(ExpectedConditions.textToBePresentInElement(element, text)));
+	    	WebDriverWait wait = new WebDriverWait(BaseClass.wbDriver, 25, 2500L);
+			wait.withTimeout(Duration.ofSeconds(30));
+			wait.pollingEvery(Duration.ofMillis(500));
+			wait.ignoring(NoSuchElementException.class);
+		  return (wait.until(ExpectedConditions.textToBePresentInElement(element, text)));
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -153,7 +148,7 @@ public static  boolean WaitForTexttoBePresentInElement(WebElement element, Strin
 			} 
 		}; 
 
-		Wait<WebDriver> wait = new WebDriverWait(wbDriver, 30); 
+		WebDriverWait wait = new WebDriverWait(BaseClass.wbDriver, 25, 2500L);
 		try { 
 			wait.until(expectation); 
 		} catch(Throwable error) { 
@@ -199,17 +194,25 @@ public static  boolean WaitForTexttoBePresentInElement(WebElement element, Strin
 
 	public static WebElement waitForElement(WebElement Wbel) {
 		try {
-			WebDriverWait wait = new WebDriverWait(wbDriver, 44);
+			WebDriverWait wait = new WebDriverWait(BaseClass.wbDriver, 25, 2500L);
+			wait.withTimeout(Duration.ofSeconds(30));
+			wait.pollingEvery(Duration.ofMillis(500));
+			wait.ignoring(NoSuchElementException.class);
+			
 			return wait.until(ExpectedConditions.visibilityOf(Wbel));
 		} catch (NoSuchElementException e) {
 			throw new NoSuchElementException(e.getMessage());
 		}
 	}
 	
-	public static List<WebElement> waitForElements(List<WebElement> elements,
-			WebDriver driver) {
+	public static List<WebElement> waitForElements(List<WebElement> elements){
 		try {
-			WebDriverWait wait = new WebDriverWait(wbDriver, 25);
+			//WebDriverWait wait = new WebDriverWait(wbDriver, 25);
+			WebDriverWait wait = new WebDriverWait(BaseClass.wbDriver, 25, 2500L);
+			wait.withTimeout(Duration.ofSeconds(30));
+			wait.pollingEvery(Duration.ofMillis(500));
+			wait.ignoring(NoSuchElementException.class);
+			
 			return wait.until(ExpectedConditions
 					.visibilityOfAllElements(elements));
 		} catch (NoSuchElementException e) {
@@ -220,8 +223,13 @@ public static  boolean WaitForTexttoBePresentInElement(WebElement element, Strin
 	
 	public static Alert waitForAlertPresent(WebDriver driver) {
 		try {
-			WebDriverWait wait = new WebDriverWait(wbDriver, 25);
-			return wait.until(ExpectedConditions.alertIsPresent());
+			WebDriverWait wait = new WebDriverWait(BaseClass.wbDriver, 25, 2500L);
+			wait.withTimeout(Duration.ofSeconds(30));
+			wait.pollingEvery(Duration.ofMillis(500));
+			wait.ignoring(NoSuchElementException.class);			
+			return wait.until(ExpectedConditions.alertIsPresent())
+					
+					;
 		} catch (NoSuchElementException e) {
 			throw new NoSuchElementException(e.getMessage());
 		}
@@ -239,7 +247,11 @@ public static  boolean WaitForTexttoBePresentInElement(WebElement element, Strin
 	
 	public static WebElement waitForElementClickable(WebElement Wbel) {
 		try {
-			WebDriverWait wait = new WebDriverWait(wbDriver, 50);
+			//WebDriverWait wait = new WebDriverWait(wbDriver, 50);
+			WebDriverWait wait = new WebDriverWait(BaseClass.wbDriver, 25, 2500L);
+			wait.withTimeout(Duration.ofSeconds(30));
+			wait.pollingEvery(Duration.ofMillis(500));
+			wait.ignoring(NoSuchElementException.class);
 			return wait.until(ExpectedConditions.elementToBeClickable(Wbel));
 		} catch (NoSuchElementException e) {
 			throw new NoSuchElementException(e.getMessage());
@@ -250,7 +262,11 @@ public static  boolean WaitForTexttoBePresentInElement(WebElement element, Strin
 	public static boolean waitForTextIsPresentInElement(WebElement Wbel,
 			WebDriver driver, String Strtext) {
 		try {
-			WebDriverWait wait = new WebDriverWait(wbDriver, 25);
+			WebDriverWait wait = new WebDriverWait(BaseClass.wbDriver, 25, 2500L);
+			wait.withTimeout(Duration.ofSeconds(30));
+			wait.pollingEvery(Duration.ofMillis(500));
+			wait.ignoring(NoSuchElementException.class);
+			
 			return wait.until(ExpectedConditions.textToBePresentInElementValue(
 					Wbel, Strtext));
 		} catch (NoSuchElementException e) {
@@ -283,12 +299,11 @@ public static  boolean WaitForTexttoBePresentInElement(WebElement element, Strin
 	{	boolean elem=false;
 		    try {
 			
-			Wait<WebDriver> waitobj = new FluentWait<WebDriver>(BaseClass.wbDriver)
-							.withTimeout(30, TimeUnit.SECONDS)
-					       .pollingEvery(3, TimeUnit.SECONDS)
-					 
-					       .ignoring(NoSuchElementException.class);
-				elem = waitobj.until(ExpectedConditions.invisibilityOf((WebElement) countryApplyFilterButton));
+				WebDriverWait wait = new WebDriverWait(BaseClass.wbDriver, 25, 2500L);
+				wait.withTimeout(Duration.ofSeconds(30));
+				wait.pollingEvery(Duration.ofMillis(500));
+				wait.ignoring(NoSuchElementException.class);
+				elem = wait.until(ExpectedConditions.invisibilityOf((WebElement) countryApplyFilterButton));
 			
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
