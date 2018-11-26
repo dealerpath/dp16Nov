@@ -6,7 +6,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
@@ -14,7 +16,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
@@ -558,15 +559,19 @@ public class Announcements_POF extends BaseClass {
 							.getText().toString().trim();
 					description = temp.substring(temp.indexOf("\n") + 1, temp.length());
 				} else {
-						WaitFactory.waitForElement(framePath.get(i).findElement(By.xpath(".//div[@class='secondary-action-container']")));
-						WaitFactory.WaitForElementToVisible(framePath.get(i).findElement(By.xpath(".//div[@class='secondary-action-container']")));
-						((JavascriptExecutor) wbDriver).executeScript("arguments[0].click();",framePath.get(i).findElement(By.xpath(".//div[@class='secondary-action-container']")));
-						WebElement textAfterReadMoreLinkClick = WaitFactory.WaitForElementToVisible(
+					WaitFactory.waitForElement(
+							framePath.get(i).findElement(By.xpath(".//div[@class='secondary-action-container']")));
+					WaitFactory.WaitForElementToVisible(
+							framePath.get(i).findElement(By.xpath(".//div[@class='secondary-action-container']")));
+					((JavascriptExecutor) wbDriver).executeScript("arguments[0].click();",
+							framePath.get(i).findElement(By.xpath(".//div[@class='secondary-action-container']")));
+					WebElement textAfterReadMoreLinkClick = WaitFactory.WaitForElementToVisible(
 							framePath.get(i).findElement(By.xpath(".//div[@class='list-item-body is-expanded']")));
 					String temp1 = textAfterReadMoreLinkClick.getText().toString().trim();
 					description = temp1.substring(temp1.indexOf("\n") + 1, temp1.length());
-					((JavascriptExecutor) wbDriver).executeScript("arguments[0].click();",framePath.get(i).findElement(By.xpath(".//div[@class='secondary-action-container']")));
-					//framePath.get(i).findElement(By.xpath(".//div[@class='secondary-action-container']")).click();
+					((JavascriptExecutor) wbDriver).executeScript("arguments[0].click();",
+							framePath.get(i).findElement(By.xpath(".//div[@class='secondary-action-container']")));
+					// framePath.get(i).findElement(By.xpath(".//div[@class='secondary-action-container']")).click();
 				}
 				description = StringUtils.normalizeSpace(description);
 				descriptionWCM = StringUtils.normalizeSpace(descriptionWCM);
@@ -634,25 +639,30 @@ public class Announcements_POF extends BaseClass {
 	/**
 	 * @author shrey.choudhary This method is verifying that any announcement which
 	 *         is having embedded links should not be broken.
-	 * @return Test output that embeded links are broken or not, if broken test case
+	 * @return Test output that Embedded links are broken or not, if broken test case
 	 *         would be failed.
 	 * @throws Throwable
 	 */
-	public static void verifyEmbededlinks(String strTCID) throws Throwable {
-
+	public static void verifyEmbeddedlinks(String strTCID) throws Throwable {
 		int respCode = 200;
 		List<String> emptyLinks = new ArrayList<String>();
-		List<String> brokenLinks = new ArrayList<String>();
+		Map<String, Integer> brokenLinks = new HashMap<String, Integer>();
 		List<String> CorrectLinks = new ArrayList<String>();
+		List<WebElement> readMoreLinks = BaseClass.wbDriver.findElements(By.xpath(
+				".//div[@class='section']//div[@class='wide-list hide-overflow']//div[@class='secondary-action-container']"));
+		for (int i = 0; i < readMoreLinks.size(); i++) {
+			readMoreLinks.get(i).click();
+			Thread.sleep(2000);
+		}
 		List<WebElement> lstWebElement = GenericFactory.getLinksFromFrame(wbelAnnouncementFramePath);
-		String correctLinksString = "";
 		try {
 
 			if (lstWebElement.size() > 0) {
-				for (int i = 0; i < lstWebElement.size(); i++) {
+				for (int i = 1; i < lstWebElement.size(); i++) {
 					String url = BaseClass.wbDriver.findElement(By.linkText(lstWebElement.get(i).getText()))
 							.getAttribute("href");
-					String urlName = lstWebElement.get(i).getText();
+					String urlName = BaseClass.wbDriver.findElement(By.linkText(lstWebElement.get(i).getText()))
+							.getText();
 					if (url == null || url.isEmpty()) {
 						emptyLinks.add(urlName);
 					} else {
@@ -661,7 +671,7 @@ public class Announcements_POF extends BaseClass {
 						huc.connect();
 						respCode = huc.getResponseCode();
 						if (respCode >= 400) {
-							brokenLinks.add(urlName);
+							brokenLinks.put(urlName + "Status response ", respCode);
 						} else
 							CorrectLinks.add(urlName);
 					}
@@ -669,29 +679,27 @@ public class Announcements_POF extends BaseClass {
 				System.out.println("Broken Links are :" + brokenLinks + ", Empty/null links are :" + emptyLinks
 						+ ", Correct links are :" + CorrectLinks);
 				if (emptyLinks.isEmpty() && brokenLinks.isEmpty()) {
-					correctLinksString = String.join(",", CorrectLinks);
 
-					ReportFactory.reporterOutput(strTCID, "Verify embeded links on Announcement Portlet", "NA",
-							"Embeded links should not be broken or empty",
-							"Embeded links are not broken and working fine as expected :" + correctLinksString, "Pass");
+					ReportFactory.reporterOutput(strTCID, "Verify Embedded links on Announcement Portlet", "NA",
+							"Embedded links should not be broken or empty",
+							"Embedded links are not broken and working fine as expected :" + CorrectLinks, "Pass");
 				} else {
-					String brokenLinksString = String.join(",", brokenLinks);
-					String stringEmptyLinks = String.join(",", emptyLinks);
 
-					ReportFactory.reporterOutput(strTCID, "Verify Embeded Links on Announcement Portlet", "NA",
-							"Embeded links should not be broken or empty", "Working Embeded links" + correctLinksString
-									+ "Broken Links are :" + brokenLinksString + " , Empty links : " + stringEmptyLinks,
+					ReportFactory.reporterOutput(strTCID, "Verify Embedded Links on Announcement Portlet", "NA",
+							"Embedded links should not be broken or empty",
+							"<B>Working Embedded links are :</B>" + CorrectLinks + "</br><B>Broken Links are :</B>"
+									+ brokenLinks + "</br><B>Empty links are :</B>" + emptyLinks,
 							"Fail");
 				}
 			} else {
-				System.out.println("No embeded links are present");
-				ReportFactory.reporterOutput(strTCID, "Verify Embeded Links on Announcement Portlets.", "NA",
-						"Embeded links should not be broken or empty", "No links are present", "Pass");
+				System.out.println("No Embedded links are present");
+				ReportFactory.reporterOutput(strTCID, "Verify Embedded Links on Announcement Portlets.", "NA",
+						"Embedded links should not be broken or empty", "No links are present", "Pass");
 			}
 		} catch (Exception e) {
 			LogFactory.error("e");
 			String er = e.getMessage().toString().trim();
-			ReportFactory.reporterOutput(strTCID, "Verify Embeded Links on Announcement Portlets.", "NA", "NA", er,
+			ReportFactory.reporterOutput(strTCID, "Verify Embedded Links on Announcement Portlets.", "NA", "NA", er,
 					"Fail");
 		}
 	}

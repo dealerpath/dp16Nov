@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 import javax.xml.xpath.XPath;
@@ -202,7 +203,7 @@ public class Alerts_POF extends BaseClass {
 				LogFactory.info("Alerts portlet header is present ");
 				strAlrtHeaderTxtOnHomePage = wbelPortletHeader.getText();
 				if (strAlrtHeaderTxtOnHomePage.equals(strAlertHeaderTxtPrefrdLang)) {
-					strFlag = "PASS";
+					strFlag = "Pass";
 					LogFactory.info("Alert is displayed in the user  preferred language with "
 							+ strAlrtHeaderTxtOnHomePage + " " + "" + strAlertHeaderTxtPrefrdLang);
 					strResult = " Alert header text " + strAlrtHeaderTxtOnHomePage
@@ -1324,21 +1325,27 @@ public class Alerts_POF extends BaseClass {
 
 	}
 
-	public static void verifyEmbededlinks(String strTCID) throws Throwable {
-
+	public static void verifyEmbeddedlinks(String strTCID) throws Throwable {
 		int respCode = 200;
 		List<String> emptyLinks = new ArrayList<String>();
-		List<String> brokenLinks = new ArrayList<String>();
+		Map<String, Integer> brokenLinks = new HashMap<String, Integer>();
 		List<String> CorrectLinks = new ArrayList<String>();
+		List<WebElement> readMoreLinks = BaseClass.wbDriver.findElements(By.xpath(
+				"//div[@class='section warning']//div[@class='secondary-action-container']"));
+		for (int i = 0; i < readMoreLinks.size(); i++) {
+			readMoreLinks.get(i).click();
+			Thread.sleep(2000);
+		}
 		List<WebElement> lstWebElement = GenericFactory.getLinksFromFrame(wbelAlertPortlet);
-		String correctLinksString = "";
 		try {
 
 			if (lstWebElement.size() > 0) {
-				for (int i = 0; i < lstWebElement.size(); i++) {
+				for (int i = 1; i < lstWebElement.size(); i++) {
 					String url = BaseClass.wbDriver.findElement(By.linkText(lstWebElement.get(i).getText()))
 							.getAttribute("href");
-					String urlName = lstWebElement.get(i).getText();
+					Thread.sleep(1000);
+					String urlName = BaseClass.wbDriver.findElement(By.linkText(lstWebElement.get(i).getText()))
+							.getText();
 					if (url == null || url.isEmpty()) {
 						emptyLinks.add(urlName);
 					} else {
@@ -1347,7 +1354,7 @@ public class Alerts_POF extends BaseClass {
 						huc.connect();
 						respCode = huc.getResponseCode();
 						if (respCode >= 400) {
-							brokenLinks.add(urlName);
+							brokenLinks.put(urlName + " Status response", respCode);
 						} else
 							CorrectLinks.add(urlName);
 					}
@@ -1355,29 +1362,28 @@ public class Alerts_POF extends BaseClass {
 				System.out.println("Broken Links are :" + brokenLinks + ", Empty/null links are :" + emptyLinks
 						+ ", Correct links are :" + CorrectLinks);
 				if (emptyLinks.isEmpty() && brokenLinks.isEmpty()) {
-					correctLinksString = String.join(",", CorrectLinks);
 
-					ReportFactory.reporterOutput(strTCID, "Verify embeded links on Alert Portlet", "NA",
-							"Embeded links should not be broken or empty",
-							"Embeded links are not broken and working fine as expected :" + correctLinksString, "Pass");
+					ReportFactory.reporterOutput(strTCID, "Verify Embedded links on Alert Portlet", "NA",
+							"Embedded links should not be broken or empty",
+							"Embedded links are not broken and working fine as expected.</br><B>Verified Links are :</B>" + CorrectLinks, "Pass");
 				} else {
-					String brokenLinksString = String.join(",", brokenLinks);
-					String stringEmptyLinks = String.join(",", emptyLinks);
 
-					ReportFactory.reporterOutput(strTCID, "Verify Embeded Links on Alert Portlet", "NA",
-							"Embeded links should not be broken or empty", "Working Embeded links" + correctLinksString
-									+ "Broken Links are :" + brokenLinksString + " , Empty links : " + stringEmptyLinks,
+					ReportFactory.reporterOutput(strTCID, "Verify Embedded Links on Alert Portlet", "NA",
+							"Embedded links should not be broken or empty",
+							"<B>Working Embedded links are :</B>" + CorrectLinks + "</br><B>Broken Links are :</B>"
+									+ brokenLinks + "</br><B>Empty links are :</B>" + emptyLinks,
 							"Fail");
 				}
 			} else {
-				System.out.println("No embeded links are present");
-				ReportFactory.reporterOutput(strTCID, "Verify Embeded Links on Alert Portlets.", "NA",
-						"Embeded links should not be broken or empty", "No links are present", "Pass");
+				System.out.println("No Embedded links are present");
+				ReportFactory.reporterOutput(strTCID, "Verify Embedded Links on Alert Portlets.", "NA",
+						"Embedded links should not be broken or empty", "No links are present", "Pass");
 			}
 		} catch (Exception e) {
 			LogFactory.error("e");
 			String er = e.getMessage().toString().trim();
-			ReportFactory.reporterOutput(strTCID, "Verify Embeded Links on Alert Portlets.", "NA", "NA", er, "Fail");
+			ReportFactory.reporterOutput(strTCID, "Verify Embedded Links on Announcement Portlets.", "NA", "NA", er,
+					"Fail");
 		}
 	}
 
