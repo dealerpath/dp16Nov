@@ -130,7 +130,7 @@ public class Alerts_TestCase extends BaseClass {
 		strTCID = "TC05_ALERTS_HOMEPAGE";
 		strExpectedValue = BaseClass.getExcelDataByTestCaseID(strTCID);
 		if (!strExpectedValue.equalsIgnoreCase("None")) {
-			alertPageFactory.verifyEmbededlinks(strTCID);
+			alertPageFactory.verifyEmbeddedlinks(strTCID);
 		}
 	}
 

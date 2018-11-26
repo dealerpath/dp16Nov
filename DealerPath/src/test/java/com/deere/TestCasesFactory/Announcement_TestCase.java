@@ -168,7 +168,7 @@ public class Announcement_TestCase extends BaseClass {
 		strTCID = "TC10_Announcement_Portlet";
 		strExpectedValue = BaseClass.getExcelDataByTestCaseID(strTCID);
 		if (!strExpectedValue.equalsIgnoreCase("None")) {
-			announcementFactory.verifyEmbededlinks(strTCID);
+			announcementFactory.verifyEmbeddedlinks(strTCID);
 		}
 	}
 
