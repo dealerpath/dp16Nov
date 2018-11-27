@@ -1996,7 +1996,7 @@ public class Favourites_POF extends BaseClass {
 						racfFlag = GenericFactory.verifyRacfGroupMatched(RACFGroup_2ndUser);
 						
 
-						if (Department_2ndUser.contains("Finance & Incentives")) {
+						if (Department_2ndUser.contains(department_WCM)) {
 							department_new_flag = true;
 						}
 						List<WebElement> folder_icon = BaseClass.wbDriver.findElements(
@@ -2075,9 +2075,18 @@ public class Favourites_POF extends BaseClass {
 					}
 				}
 
+				
+				if ( Allflag_title_result.isEmpty() && title_result.isEmpty() && country_result.isEmpty() && product_result.isEmpty()) {
+					
+			
 				FinalResult = Allflag_title_result + "</br> " + title_result + "</br> " + country_result + "</br> "
 						+ product_result + "";
-
+				}
+				else {
+					resultflag="Fail";
+					FinalResult = " Looks like nothing has been copied reason could be Invalid 2nd User, please check all mappings check the 2nd dealer/employee and update and retry ";
+				}
+				
 				ReportFactory.reporterOutput(TCID, "Copy favourites from Employee/Dealer",
 						"Favourites copied from the user <b>" + strUserRACFID + "</b> to <b>" + RACFID + "</b> user",
 						"Favorites from one dealer/Employee to another dealer/Employee should be copied only if those links are accessible (in terms of additional RACF group tagging, Dealer Principal department access) to the employee/authorized contingent user who is copying them ",
@@ -2347,14 +2356,15 @@ public class Favourites_POF extends BaseClass {
 
 				List<WebElement> icons = null;
 				if (i % 2 == 0) {
-					
+					System.out.println("test");
 					if (ValidationFactory.isElementPresent(By.xpath(
-							"//div[@class='fav-link-body' and contains(.,'My Fav Folder')]//span[@class='icon folder  closed']"))) {
+							"//div[@class='fav-link-body' and contains(.,'My Fav Folder')]//span[@class='icon folder closed']"))) {
+						
 						LogFactory.info("Clicked on Folder to expand");
 						WaitFactory.WaitForElementToVisible(BaseClass.wbDriver.findElement(By.xpath(
-								"//div[@class='fav-link-body' and contains(.,'My Fav Folder')]//span[@class='icon folder  closed']")));
+								"//div[@class='fav-link-body' and contains(.,'My Fav Folder')]//span[@class='icon folder closed']")));
 						WaitFactory.waitForElementClickable(BaseClass.wbDriver.findElement(By.xpath(
-								"//div[@class='fav-link-body' and contains(.,'My Fav Folder')]//span[@class='icon folder  closed']")))
+								"//div[@class='fav-link-body' and contains(.,'My Fav Folder')]//span[@class='icon folder closed']")))
 								.click();
 					} else
 						LogFactory.info("Folder already in expanded form");
@@ -2451,8 +2461,9 @@ public class Favourites_POF extends BaseClass {
 			LogFactory.info("Deleted links are: " + DeletedLinks);
 			WebElement star = BaseClass.wbDriver.findElement(By.xpath("//div[@id='js-favorites']"));
 			WaitFactory.WaitForElementToVisible(star);
+			Thread.sleep(1000);
 			WaitFactory.waitForElementClickable(star).click();
-
+			Thread.sleep(1000);
 			List<WebElement> Quick_icons_name = BaseClass.wbDriver.findElements(By.xpath(
 					"//div[@class='link-group']//span[@class='icon fav-star is-selected']/following-sibling::a"));
 
