@@ -1382,13 +1382,13 @@ public class Alerts_POF extends BaseClass {
 		} catch (Exception e) {
 			LogFactory.error("e");
 			String er = e.getMessage().toString().trim();
-			ReportFactory.reporterOutput(strTCID, "Verify Embedded Links on Announcement Portlets.", "NA", "NA", er,
+			ReportFactory.reporterOutput(strTCID, "Verify Embedded Links on Alert Portlets.", "NA", "NA", er,
 					"Fail");
 		}
 	}
 
 	// waitfactory added - Aniket
-	public static boolean checkReadMoreAndCollapseLinkForAlert(String strTCID) throws Throwable {
+	public static void checkReadMoreAndCollapseLinkForAlert(String strTCID) throws Throwable {
 		String strFlag = "Fail";
 		String strResult = "Readmore link is not present";
 		boolean booFlagReadmore = true;
@@ -1397,43 +1397,44 @@ public class Alerts_POF extends BaseClass {
 
 		try {
 
-			WaitFactory.WaitForElementToVisible(wbelAlertPortlet);
-
 			WaitFactory.waitForPageLoaded();
+			Thread.sleep(2000);
+			WaitFactory.WaitForElementToVisible(wbelAlertPortlet);
+		
 			List<WebElement> readMoreLink = wbelAlertPortlet
 					.findElements(By.xpath(".//div[@class='secondary-action-container']"));
+			
 			int readmorelinkcount = readMoreLink.size();
 
 			if (readmorelinkcount > 0) {
-				for (int j = 0; j < readmorelinkcount; j++) {
-					WaitFactory.WaitForElementToVisible(readMoreLink.get(j));
-					WaitFactory.waitForPageLoaded();
-					readMoreLink.get(j).click();
-					WaitFactory.waitForPageLoaded();
-					String strCollapseText = readMoreLink.get(j).getText().trim().toString();
+					WaitFactory.WaitForElementToVisible(readMoreLink.get(0));
+					Thread.sleep(2000);
+					((JavascriptExecutor) wbDriver).executeScript("arguments[0].click();",readMoreLink.get(0));
+					Thread.sleep(2000);
+			//		readMoreLink.get(0).click();
+					String strCollapseText = readMoreLink.get(0).getText().trim().toString();
 					booFlagReadmore = true;
 					List<String> CollapseTranslate = GenericFactory.getTranslation("Collapse");
 					if (strCollapseText.equalsIgnoreCase(CollapseTranslate.get(0))) {
 						booFlagCollapse = true;
-						WaitFactory.WaitForElementToVisible(readMoreLink.get(j));
-						WaitFactory.waitForPageLoaded();
-						readMoreLink.get(j).click();
-						WaitFactory.waitForPageLoaded();
-						WaitFactory.WaitForElementToVisible(readMoreLink.get(j));
-						String strReadmoreText = readMoreLink.get(j).getText().trim().toString();
+						WaitFactory.WaitForElementToVisible(readMoreLink.get(0));
+						Thread.sleep(2000);
+						((JavascriptExecutor) wbDriver).executeScript("arguments[0].click();",readMoreLink.get(0));
+						Thread.sleep(2000);
+				//		readMoreLink.get(0).click();
+						WaitFactory.WaitForElementToVisible(readMoreLink.get(0));
+						String strReadmoreText = readMoreLink.get(0).getText().trim().toString();
 						List<String> ReadMoreTranslate = GenericFactory.getTranslation("Read more");
 						if (strReadmoreText.equalsIgnoreCase(ReadMoreTranslate.get(0))) {
 							booFlagReadmore = true;
 						} else {
 							booFlagReadmore = false;
 						}
-						break;
 					} else {
 						booFlagReadmore = true;
 						booFlagCollapse = false;
-						break;
 					}
-				}
+				
 			} else {
 				booFlagReadmore = false;
 			}
@@ -1456,7 +1457,7 @@ public class Alerts_POF extends BaseClass {
 			ReportFactory.reporterOutput(strTCID, "Verify 'ReadMore & Collapse' links are displayed on Alerts portlet",
 					"NA", "NA", e.getMessage(), "Fail");
 		}
-		return booFlagCollapse && booFlagReadmore;
+		//return booFlagCollapse && booFlagReadmore;
 
 	}
 
@@ -1870,10 +1871,11 @@ public class Alerts_POF extends BaseClass {
 			List<WebElement> listItemTitlehomepage = alertsTableTitle;
 
 			for (int i = 0; i < listItemTitlehomepage.size(); i++) {
-				System.out.println(i);
+
 				String temp = listItemTitlehomepage.get(i).getText().toString().trim();
 				int colonIndex = temp.indexOf(':');
 				String titleOfAlert = temp.substring(colonIndex + 1, temp.length()).toString().trim();
+				
 				String description = "";
 				boolean readMoreLink = false;
 				try {

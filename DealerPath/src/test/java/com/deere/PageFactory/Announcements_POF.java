@@ -1011,43 +1011,43 @@ public class Announcements_POF extends BaseClass {
 		try {
 			WaitFactory.WaitForElementToVisible(wbelAnnouncementFramePath);
 			WaitFactory.waitForPageLoaded();
+			Thread.sleep(2000);
 			List<WebElement> readMoreLink = wbelAnnouncementFramePath
 					.findElements(By.xpath(".//div[@class='secondary-action-container']"));
 			int readmorelinkcount = readMoreLink.size();
 
 			if (readmorelinkcount > 0) {
-				for (int j = 0; j < readmorelinkcount;) {
-					WaitFactory.WaitForElementToVisible(readMoreLink.get(j));
-					WaitFactory.waitForPageLoaded();
-					readMoreLink.get(j).click();
-					WaitFactory.waitForPageLoaded();
-					String strCollapseText = readMoreLink.get(j).getText().trim().toString();
-					booFlagReadmore = true;
-					List<String> CollapseTranslate = GenericFactory.getTranslation("Collapse");
-					if (strCollapseText.equalsIgnoreCase(CollapseTranslate.get(0))) {
-						booFlagCollapse = true;
-						WaitFactory.WaitForElementToVisible(readMoreLink.get(j));
-						WaitFactory.waitForPageLoaded();
-						readMoreLink.get(j).click();
-						WaitFactory.waitForPageLoaded();
-						WaitFactory.WaitForElementToVisible(readMoreLink.get(j));
-						String strReadmoreText = readMoreLink.get(j).getText().trim().toString();
-						List<String> ReadMoreTranslate = GenericFactory.getTranslation("Read More");
-						if (strReadmoreText.equalsIgnoreCase(ReadMoreTranslate.get(0))) {
-							booFlagReadmore = true;
-						} else {
-							booFlagReadmore = false;
-						}
-						break;
-					} else {
+				WaitFactory.WaitForElementToVisible(readMoreLink.get(0));
+				Thread.sleep(2000);
+				((JavascriptExecutor) wbDriver).executeScript("arguments[0].click();",readMoreLink.get(0));
+				Thread.sleep(2000);
+		//		readMoreLink.get(0).click();
+				String strCollapseText = readMoreLink.get(0).getText().trim().toString();
+				booFlagReadmore = true;
+				List<String> CollapseTranslate = GenericFactory.getTranslation("Collapse");
+				if (strCollapseText.equalsIgnoreCase(CollapseTranslate.get(0))) {
+					booFlagCollapse = true;
+					WaitFactory.WaitForElementToVisible(readMoreLink.get(0));
+					Thread.sleep(2000);
+					((JavascriptExecutor) wbDriver).executeScript("arguments[0].click();",readMoreLink.get(0));
+					Thread.sleep(2000);
+			//		readMoreLink.get(0).click();
+					WaitFactory.WaitForElementToVisible(readMoreLink.get(0));
+					String strReadmoreText = readMoreLink.get(0).getText().trim().toString();
+					List<String> ReadMoreTranslate = GenericFactory.getTranslation("Read more");
+					if (strReadmoreText.equalsIgnoreCase(ReadMoreTranslate.get(0))) {
 						booFlagReadmore = true;
-						booFlagCollapse = false;
-						break;
+					} else {
+						booFlagReadmore = false;
 					}
+				} else {
+					booFlagReadmore = true;
+					booFlagCollapse = false;
 				}
-			} else {
-				booFlagReadmore = false;
-			}
+			
+		} else {
+			booFlagReadmore = false;
+		}
 
 			if (booFlagReadmore && booFlagCollapse) {
 				strFlag = "Pass";
