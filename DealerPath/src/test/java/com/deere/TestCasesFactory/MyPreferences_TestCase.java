@@ -34,6 +34,7 @@ public class MyPreferences_TestCase extends BaseClass {
 	public void getReportHeader() throws InterruptedException {
 		ReportFactory.tableEnd();
 		GenericFactory.createHeaderSection("My Preferences");
+		GenericFactory.navigateToHomePage();
 	}
 	/**
      * @author      Bhavika Solanki
