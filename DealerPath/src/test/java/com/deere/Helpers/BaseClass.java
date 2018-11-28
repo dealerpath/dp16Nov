@@ -107,6 +107,7 @@ public class BaseClass {
 	public static HashSet<String> departmentNames = new HashSet<String>();
 	public static Map<String, List<String>> analyzerUserMapReset = new HashMap<String, List<String>>();
 	public static List<String> classesExecution;
+	public static HashMap<String, String> translationSheetEnglish = new HashMap<String, String>();
 
 	/*
 	 * // Constants
