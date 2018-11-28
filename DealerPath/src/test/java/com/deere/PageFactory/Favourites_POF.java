@@ -2076,7 +2076,7 @@ public class Favourites_POF extends BaseClass {
 				}
 
 				
-				if ( Allflag_title_result.isEmpty() && title_result.isEmpty() && country_result.isEmpty() && product_result.isEmpty()) {
+				if ( !Allflag_title_result.isEmpty() && !title_result.isEmpty() && !country_result.isEmpty() && !product_result.isEmpty()) {
 					
 			
 				FinalResult = Allflag_title_result + "</br> " + title_result + "</br> " + country_result + "</br> "
@@ -2363,9 +2363,12 @@ public class Favourites_POF extends BaseClass {
 						LogFactory.info("Clicked on Folder to expand");
 						WaitFactory.WaitForElementToVisible(BaseClass.wbDriver.findElement(By.xpath(
 								"//div[@class='fav-link-body' and contains(.,'My Fav Folder')]//span[@class='icon folder closed']")));
-						WaitFactory.waitForElementClickable(BaseClass.wbDriver.findElement(By.xpath(
-								"//div[@class='fav-link-body' and contains(.,'My Fav Folder')]//span[@class='icon folder closed']")))
-								.click();
+						Thread.sleep(5000);
+					
+						((JavascriptExecutor) wbDriver).executeScript("arguments[0].click();",BaseClass.wbDriver.findElement(By.xpath(
+								"//div[@class='fav-link-body' and contains(.,'My Fav Folder')]//span[@class='icon folder closed']")));
+						
+						Thread.sleep(5000);
 					} else
 						LogFactory.info("Folder already in expanded form");
 					Thread.sleep(1500);
@@ -2382,8 +2385,9 @@ public class Favourites_POF extends BaseClass {
 							DeletedLinks.add(InnerLinkName);
 							LogFactory.info("Clicked on " + Folder_Link_name.get(k).getText() + " link");
 							WaitFactory.WaitForElementToVisible(folder_icon.get(k));
-							folder_icon.get(k).click();
-							Thread.sleep(1000);
+							Thread.sleep(5000);
+							((JavascriptExecutor) wbDriver).executeScript("arguments[0].click();",folder_icon.get(k));
+							Thread.sleep(5000);
 							//WaitFactory.WaitForElementToVisible(PopoverHeaderTitile);
 							insidelink_flag = true;
 							break innerloop;
@@ -2411,8 +2415,9 @@ public class Favourites_POF extends BaseClass {
 								WaitFactory.waitForElements(outside_List);
 								LogFactory.info("Clicked on " + OutSide_Link_nameFIrst.get(j).getText() + " link");
 								WaitFactory.WaitForElementToVisible(outside_List.get(j));
-								outside_List.get(j).click();
-								Thread.sleep(1000);
+								Thread.sleep(5000);
+								((JavascriptExecutor) wbDriver).executeScript("arguments[0].click();",outside_List.get(j));
+								Thread.sleep(5000);
 								//WaitFactory.WaitForElementToVisible(PopoverHeaderTitile);
 								Outsidelink_flag = true;
 								break;
@@ -2442,8 +2447,9 @@ public class Favourites_POF extends BaseClass {
 									WaitFactory.waitForElements(outside_List);
 									LogFactory.info("Clicked on " + OutSide_Link_nameLast.get(j).getText() + " link");
 									WaitFactory.WaitForElementToVisible(outside_List.get(j));
-									outside_List.get(j).click();
-									Thread.sleep(1000);
+									Thread.sleep(5000);
+									((JavascriptExecutor) wbDriver).executeScript("arguments[0].click();",outside_List.get(j));
+									Thread.sleep(5000);
 									//WaitFactory.WaitForElementToVisible(PopoverHeaderTitile);
 									break;
 
@@ -2461,9 +2467,10 @@ public class Favourites_POF extends BaseClass {
 			LogFactory.info("Deleted links are: " + DeletedLinks);
 			WebElement star = BaseClass.wbDriver.findElement(By.xpath("//div[@id='js-favorites']"));
 			WaitFactory.WaitForElementToVisible(star);
-			Thread.sleep(1000);
-			WaitFactory.waitForElementClickable(star).click();
-			Thread.sleep(1000);
+			Thread.sleep(5000);
+			WaitFactory.waitForElementClickable(star);
+			((JavascriptExecutor) wbDriver).executeScript("arguments[0].click();",star);
+			Thread.sleep(5000);
 			List<WebElement> Quick_icons_name = BaseClass.wbDriver.findElements(By.xpath(
 					"//div[@class='link-group']//span[@class='icon fav-star is-selected']/following-sibling::a"));
 
@@ -2471,9 +2478,12 @@ public class Favourites_POF extends BaseClass {
 					"//div[@class='link-group-container']//div[@class='link-item folder-space' and contains(.,'My Fav Folder')]//span[@class='icon folder closed']"))) {
 				WaitFactory.WaitForElementToVisible(BaseClass.wbDriver.findElement(By.xpath(
 						"//div[@class='link-group-container']//div[@class='link-item folder-space' and contains(.,'My Fav Folder')]//span[@class='icon folder closed']")));
+				Thread.sleep(5000);
 				WaitFactory.waitForElementClickable(BaseClass.wbDriver.findElement(By.xpath(
-						"//div[@class='link-group-container']//div[@class='link-item folder-space' and contains(.,'My Fav Folder')]//span[@class='icon folder closed']")))
-						.click();
+						"//div[@class='link-group-container']//div[@class='link-item folder-space' and contains(.,'My Fav Folder')]//span[@class='icon folder closed']")));
+				((JavascriptExecutor) wbDriver).executeScript("arguments[0].click();",BaseClass.wbDriver.findElement(By.xpath(
+						"//div[@class='link-group-container']//div[@class='link-item folder-space' and contains(.,'My Fav Folder')]//span[@class='icon folder closed']")));
+				Thread.sleep(5000);
 			}
 			WaitFactory.waitForElements(Quick_icons_name);
 			if (Quick_icons_name.size() > 0) {
