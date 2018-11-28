@@ -4063,4 +4063,41 @@ public class GenericFactory extends BaseClass {
  }
 	
 
+ public static List<String> getTranslationEnglish(String strExpectedValue) throws IOException, Exception {
+		translationSheetEnglish=ExcelFactory.translationLookUpEnglish();
+		 
+		boolean flagTranslationFound = false;
+		String strExpectedTranslatedTitle = null;
+		List<String> listExpectedData = new ArrayList<String>();
+		List<String> ExpectedListKey = GenericFactory.splitString(strExpectedValue, ",");
+
+		String languageCode = analyzerUserMap.get("Language").get(0);
+		if (languageCode.equalsIgnoreCase("en_US")) {
+			LogFactory.info(ExpectedListKey + " is translated to : " + ExpectedListKey);
+			return ExpectedListKey;
+		}
+	 
+		if (ExpectedListKey.size() >= 1) {
+
+			for (String key : ExpectedListKey) {
+				if (!strExpectedValue.equals("") && translationSheetEnglish.containsKey(key)) 
+				{
+
+					if (!translationSheetEnglish.get(key).equals("")) {
+					listExpectedData.add(translationSheetEnglish.get(key).toString());
+						flagTranslationFound = true;
+					}
+				}
+
+				else if (!strExpectedValue.equals("")) {
+					listExpectedData.add(key.toString().trim());
+				}
+			}
+		
+		}
+		return listExpectedData;
+	}
+
+
 }
+
