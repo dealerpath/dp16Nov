@@ -1122,4 +1122,48 @@ public class ExcelFactory extends BaseClass {
 		}
 		return runningClasses;
 	}
+	public static LinkedHashMap<String, String> translationLookUpEnglish() throws IOException, Exception {
+		try {
+			XSSFRow singleRow;
+			XSSFRow singleHeaderRow;
+			String strEnglishKey = "";
+			String strTransKey = "";
+			LinkedHashMap<String, String> mapTranslationSheet = new LinkedHashMap<String, String>();
+			LinkedHashMap<String, String> mapTranslationLan = null;
+			int totalRows = dataTranslationsSheet.getLastRowNum();
+			int totalCol = dataTranslationsSheet.getRow(4).getLastCellNum();
+			for (int j = 2; j < totalRows; j++) {
+				singleRow = dataTranslationsSheet.getRow(j);
+				singleHeaderRow = dataTranslationsSheet.getRow(1);
+				if ((singleRow.getCell(0).getCellType() == Cell.CELL_TYPE_STRING)) {
+					strEnglishKey = dataFormatter.formatCellValue(singleRow.getCell(9));
+					mapTranslationLan = new LinkedHashMap<String, String>();
+					for (int i = 0; i < totalCol; i++) {
+						strTransKey = dataFormatter.formatCellValue(singleHeaderRow.getCell(i));
+						String strTransValue = dataFormatter.formatCellValue(singleRow.getCell(i));
+						if(strTransKey.equalsIgnoreCase("en_US"))
+						{
+							
+					
+						if (!strTransValue.equalsIgnoreCase("X")) {
+							//mapTranslationLan.put(strTransKey.trim(), strTransValue.trim());
+							mapTranslationSheet.put(strEnglishKey.trim(), strTransValue.trim());
+						//	mapTranslationSheet.put(strTransValue.trim(), mapTranslationLan);
+						} else {
+							//mapTranslationLan.put(strTransKey.trim(), strEnglishKey.trim());
+							mapTranslationSheet.put(strEnglishKey.trim(), strTransValue.trim());
+							//mapTranslationSheet.put(strEnglishKey.trim(), mapTranslationLan);
+						}
+						}
+					}
+				}
+			}
+			//System.out.println(mapTranslationSheet);
+			return mapTranslationSheet;
+		} catch (Exception e) {
+			LogFactory.info(e.getMessage());
+			return null;
+		}
+
+	}
 }
