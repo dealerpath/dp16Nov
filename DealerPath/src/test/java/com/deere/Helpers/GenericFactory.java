@@ -3200,8 +3200,11 @@ public class GenericFactory extends BaseClass {
 
 			try {
 				System.out.println(listOfElements.get(i).toString());
+				String text = listOfElements.get(i).toString();
+				List<String> translatedText = GenericFactory.getTranslationEnglish(listOfElements.get(i).toString());
+				text =translatedText.get(0); 
 				if (!(listOfElements.get(i).toString().equalsIgnoreCase("JDPS"))) {
-					oCheckBox = BaseClass.wbDriver.findElement(By.xpath(".//*[@id='" + listOfElements.get(i) + "']"));
+					oCheckBox = BaseClass.wbDriver.findElement(By.xpath(".//*[@id='" + text + "']"));
 
 				} else {
 
@@ -3224,7 +3227,6 @@ public class GenericFactory extends BaseClass {
 		return checkboxstatus;
 
 	}
-
 	public static List<String> getCheckBoxValuesAll() throws Throwable {
 
 		ValidationFactory.getElementIfPresent(By.xpath("//div[@id='js-segments']")).click();
