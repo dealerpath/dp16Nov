@@ -2084,6 +2084,15 @@ public class GenericFactory extends BaseClass {
 		DepartmentName = translatedText.get(0);
 
 		switch (ContentType) {
+				//code added by bhavika
+				case "AT-Link" : case "AT-Document": case "AT-RichText":
+            try {
+                  clickOnDepartmentByName(DepartmentName);
+                  BaseClass.wbDriver.findElement(By.xpath(".//*[@class='active leftNavIndexPadding ']|//*[@class='active leftNavIndexPadding'][contains(text(),'"+secondLevelIndex+"')]")).click();
+                  LogFactory.info("Navigated to AT-Link or AT-Document or AT-RichText successfully");
+     }catch (Exception e) {
+            LogFactory.info("Unable to navigate to AT-Link or AT-Document or AT-RichText");
+     }
 		case "AT-Index Page":
 			try {
 				if (!DepartmentName.equalsIgnoreCase("NA") && !secondLevelIndex.equalsIgnoreCase("NA")
