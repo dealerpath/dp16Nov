@@ -69,7 +69,7 @@ public class Announcements_POF extends BaseClass {
 	@FindBy(how = How.XPATH, using = ".//*[@class='leftNav']/li/a")
 	static List<WebElement> listAnnouncementLeftNavigationDeptName;
 
-	@FindBy(how = How.XPATH, using = ".//*[@id='layoutContainers']/div/div[2]/div[3]/div[3]/section/div/div[2]")
+	@FindBy(how = How.XPATH, using = ".//div[@class='section']//div[@class='list-item hide-overflow']")
 	public static WebElement wbelAnnouncementFramePath;
 
 	@FindBy(how = How.XPATH, using = ".//div/div/div/div/section/div/div/div/h3")
@@ -902,7 +902,7 @@ public class Announcements_POF extends BaseClass {
 		String flagResult = "Pass";
 		String actualResult = "Announcement header is not present.";
 		try {
-
+Thread.sleep(2000);
 			for (int i = 0; i < HeaderList.size(); i++) {
 				if (HeaderList.get(i).getText().contains("(")) {
 					String temp = GenericFactory.splitString(HeaderList.get(i).getText(), "(").get(1);
@@ -951,7 +951,7 @@ public class Announcements_POF extends BaseClass {
 				+ WcmProducts + "</B> product types are filtered";
 		List<String> listUserProducts = GenericFactory.splitString(UserProductName, ",");
 
-		if (!GenericFactory.selectProductsFromProductSegmentList(WcmProducts)) {
+		if (GenericFactory.selectProductsFromProductSegmentList(WcmProducts)) {
 			if (!verifyAnnouncementHeader(titleName, description)) {
 				strAnnouncementFlag = "Pass";
 				strResult = "<B>Announcement title :</B>" + titleName + " is not present after the corresponding :<B>"
