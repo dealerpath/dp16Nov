@@ -19,6 +19,7 @@ import java.net.URL;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.xmlbeans.impl.xb.xsdschema.Public;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NotFoundException;
 import org.openqa.selenium.WebDriver;
@@ -1577,7 +1578,7 @@ private static String getURLForUncheckDeptError(String strTCID,int colspan, bool
 }*/
 static String RACFGrp,strFlag,strRACFGrpdealer2FromAnalzeUser,strRACFGrpdealer2,strCountryDealer2,strDealer_ProductTypeDealer2,strDepartmentNameDealer2,strContentTypeDealer2,strTitleDealer2,strProductTypeDealer2,strDealerTypeMainSubDealer2,strRACFGroupsDealer2;
 static boolean countryPresent1 = false ,countrySharingsuccess = false,  countryPresent2 = false ,countrySharing = false,localflagCountry,localflagProductType,localflagdealerType,localflagRACFGrps,localcountryComparisonflag,localProductTypeComparisonflag;
-static String result, errorMsg,finalResult,resultCountry="";
+static String result, errorMsg,finalResult,resultCountry="",RACF2="";
 static List<String> countryDealer1 = new ArrayList<String>();
 static List<String> countryDealer2 = new ArrayList<String>();
 public static void URLValidation(String strTCID,String strdealer2,String strWCMID,String strDealer_Country,String strDealer_ProductType,String strDepartmentName,String strContentType,String strTitle,String strCountry,String strProductType,String strDealerTypeMainSub,String strRACFGroups) throws Throwable, Exception {
@@ -1607,7 +1608,7 @@ public static void URLValidation(String strTCID,String strdealer2,String strWCMI
 						strProductType);
 				System.out.println("***************************************"+strDealer_ProductTypeDealer2);
 				System.out.println("***************************************"+strDealer_ProductType);
-				localflagdealerType=GenericFactory.verifyDealerType(strdealer2);
+				localflagdealerType=GenericFactory.verifyDealerType(strDealerTypeMainSub);
 			
 				//country
 				if (localflagCountry) {
@@ -1633,14 +1634,14 @@ public static void URLValidation(String strTCID,String strdealer2,String strWCMI
 					result = result	+ "<b>Dealer Type doesnot Matched.</b></br>";
 					localcountryComparisonflag = false;
 				}
-				String RACF2=getRACFGrpOfDealer2(strdealer2);
+				RACF2=getRACFGrpOfDealer2(strdealer2);
 				System.out.println("***************************************"+RACF2);
 				//change the RACF grp
 				strRACFGrpdealer2FromAnalzeUser=(!strRACFGroups.equals("NA"))?RACF2:"NA";
 				localflagRACFGrps= GenericFactory.verifyRacfGroupMatched(strRACFGroups,strRACFGrpdealer2FromAnalzeUser);
 				System.out.println("***************************************"+strRACFGroups);
-				System.out.println("***************************************"+strRACFGrpdealer2FromAnalzeUser);
-				if (!strRACFGrpdealer2FromAnalzeUser.equals("NA")) {
+				System.out.println("***************************************"+RACF2);
+				if (!RACF2.equals("NA")) {
 					//RACF groups
 					if (localflagRACFGrps) {
 						result = result + "RACF groups Matched.</br>";
@@ -1648,9 +1649,6 @@ public static void URLValidation(String strTCID,String strdealer2,String strWCMI
 						result = result	+ "<b>RACF groups doesnot Matched.</b></br>";
 					}	
 				}
-				
-				
-				
 				GenericFactory.impersonateUser(strUserRACFID);
 				//country list of dealer from dealer info sheet
 				if(ValidationFactory.isElementPresent(wbelCountrySegmentIcon)) {
@@ -1676,6 +1674,7 @@ public static void URLValidation(String strTCID,String strdealer2,String strWCMI
 					GenericFactory.SendPORTLET_LINKFLAG(ExcelFactory.getWCMByTCID(strWCMID));
 					boolean eleFlag = true;
 					try {
+//						locDriver.findElement(By.xpath("//a[contains(text(), '5 columns table row 1 link')]"));
 						locDriver.findElement(By.xpath("//a[contains(text(),'" + strTitle + "')]"));
 					}catch (Exception e) {
 						eleFlag = false;
@@ -1721,8 +1720,8 @@ public static void URLValidation(String strTCID,String strdealer2,String strWCMI
 					
 					if (!URL.equalsIgnoreCase("")) {//no else
 					       String DepartmentName = (String) Map.get("DepartmentName").toString().trim();
-					    
-					       WebElement dept = locDriver.findElement(By.xpath("//a[contains(text(),'"+strDepartmentName+"')]"));
+					   String deptname =GenericFactory.getTranslation(DepartmentName).get(0);
+					       WebElement dept = locDriver.findElement(By.xpath("//a[contains(text(),'"+deptname+"')]"));
 						if(!dept.isEnabled()) {
 							System.out.println("Department is inactive");
 						}				
@@ -1838,8 +1837,8 @@ public static void URLValidation(String strTCID,String strdealer2,String strWCMI
 							}
 							ReportFactory.reporterOutput(strTCID, "Verify URL sharing.",
 									"<b>URL Path : </b>" + BaseClass.PORTLET_LINKFLAG + "<br><b>WCM Id : </b>"
-											+ strWCMID + "<br><b>URL Sharing to USER-2 : </b>" + strdealer2 +"<br><b>WCM Country : </b>"+strCountry +"<br><b>Dealer 2 Country : </b>"+strCountryDealer2 +"<br><b>WCM product Type</b>"+strProductType +"<br><b>dealer 2 Product Type : </b>"+strDealer_ProductTypeDealer2  +"<br><b>WCM Dealer Type : </b>"+strDealerTypeMainSub +"<br><b>Dealer 2 Dealer Type : </b>"+strDealerTypeMainSubDealer2+"<br><b>WCM RACF Group : </b>"+strRACFGroups  +"<br><b>Dealer 2 RACF Group : </b>"+strRACFGroupsDealer2,
-											strdealer2+" has access to the content in terms of country tagged, product types tagged, preferred department,"+strdealer2+" should be able to navigate to the Index Page of shared URL by "+strUserRACFID+".",
+											+ strWCMID + "<br><b>URL Sharing to USER-2 : </b>" + strdealer2 +"<br><b>WCM Country : </b>"+strCountry +"<br><b>Dealer 2 Country : </b>"+strCountryDealer2 +"<br><b>WCM product Type</b>"+strProductType +"<br><b>dealer 2 Product Type : </b>"+strDealer_ProductTypeDealer2  +"<br><b>WCM Dealer Type : </b>"+strDealerTypeMainSub +"<br><b>Dealer 2 Dealer Type : </b>"+strDealerTypeMainSubDealer2+"<br><b>WCM RACF Group : </b>"+strRACFGroups  +"<br><b>Dealer 2 RACF Group : </b>"+RACF2,
+											strdealer2+" has access to the content in terms of country tagged, product types tagged, preferred department,"+strdealer2+" should be able to navigate to the Index Page of shared URL by "+strUserRACFID+".</br><b>URL Shared : </b></br>"+URL,
 									result, strFlag);
 						} else {
 							if (!flag&&finalResult.equalsIgnoreCase("Error Messege displayed")) {
@@ -1851,8 +1850,8 @@ public static void URLValidation(String strTCID,String strdealer2,String strWCMI
 							}
 							ReportFactory.reporterOutput(strTCID, "Verify URL sharing.",
 									"<b>URL Path : </b>" + BaseClass.PORTLET_LINKFLAG + "<br><b>WCM Id : </b>"
-											+ strWCMID + "<br><b>URL Sharing to USER-2 : </b>" + strdealer2 +"<br><b>WCM Country : </b>"+strCountry +"<br><b>Dealer 2 Country : </b>"+strCountryDealer2 +"<br><b>WCM product Type</b>"+strProductType +"<br><b>dealer 2 Product Type : </b>"+strDealer_ProductTypeDealer2  +"<br><b>WCM Dealer Type : </b>"+strDealerTypeMainSub +"<br><b>Dealer 2 Dealer Type : </b>"+strDealerTypeMainSubDealer2+"<br><b>WCM RACF Group : </b>"+strRACFGroups  +"<br><b>Dealer 2 RACF Group : </b>"+strRACFGroupsDealer2,
-											strdealer2+" doesnot has access to the content in terms of country tagged, product types tagged, preferred department,"+strdealer2+" should get Error messege.",
+											+ strWCMID + "<br><b>URL Sharing to USER-2 : </b>" + strdealer2 +"<br><b>WCM Country : </b>"+strCountry +"<br><b>Dealer 2 Country : </b>"+strCountryDealer2 +"<br><b>WCM product Type</b>"+strProductType +"<br><b>dealer 2 Product Type : </b>"+strDealer_ProductTypeDealer2  +"<br><b>WCM Dealer Type : </b>"+strDealerTypeMainSub +"<br><b>Dealer 2 Dealer Type : </b>"+strDealerTypeMainSubDealer2+"<br><b>WCM RACF Group : </b>"+strRACFGroups  +"<br><b>Dealer 2 RACF Group : </b>"+RACF2,
+											strdealer2+" doesnot has access to the content in terms of country tagged, product types tagged, preferred department,"+strdealer2+" should get Error messege.</br><b>URL Shared : </b></br>"+URL,
 									result, strFlag);
 						}
 						if (countrySharingsuccess) {
@@ -1864,7 +1863,7 @@ public static void URLValidation(String strTCID,String strdealer2,String strWCMI
 												+ "<br><b>Country from WCM : </b>" + countryDealer1
 												+ "<br><b>Country for Dealer from additional Testcases : </b>"
 												+ countryDealer2,
-										"Atleast one Country of both dealers matches.URL should be shared.",
+										"Atleast one Country of both dealers matches.URL should be shared.</br><b>URL Shared : </b></br>"+URL,
 										resultCountry+"</n>URL is Shared.", strFlag);
 							} else {
 								strFlag = "Fail";
@@ -1874,7 +1873,7 @@ public static void URLValidation(String strTCID,String strdealer2,String strWCMI
 												+ "<br><b>Country from WCM : </b>" + countryDealer1
 												+ "<br><b>Country for Dealer from additional Testcases : </b>"
 												+ countryDealer2,
-										"Atleast one Country of both dealers matches.URL should be shared.",
+										"Atleast one Country of both dealers matches.URL should be shared.</br><b>URL Shared : </b></br>"+URL,
 										resultCountry+"</n>URL is NOT Shared.", strFlag);
 							}
 						}else {
@@ -1886,7 +1885,7 @@ public static void URLValidation(String strTCID,String strdealer2,String strWCMI
 												+ "<br><b>Country from WCM : </b>" + countryDealer1
 												+ "<br><b>Country for Dealer from additional Testcases : </b>"
 												+ countryDealer2,
-										"Atleast one Country of both dealers matches.URL should <b>NOT</b> be shared.",
+										"Atleast one Country of both dealers matches.URL should <b>NOT</b> be shared.</br><b>URL Shared : </b></br>"+URL,
 										resultCountry+"</n>Error Message is displayed.", strFlag);
 							}else {
 							strFlag = "Fail";
@@ -1896,7 +1895,7 @@ public static void URLValidation(String strTCID,String strdealer2,String strWCMI
 											+ "<br><b>Country from WCM : </b>" + countryDealer1
 											+ "<br><b>Country for Dealer from additional Testcases : </b>"
 											+ countryDealer2,
-									"Atleast one Country of both dealers matches.URL should <b>NOT</b> be shared.",
+									"Atleast one Country of both dealers matches.URL should <b>NOT</b> be shared.</br><b>URL Shared : </b></br>"+URL,
 									resultCountry+"</n>URL is Shared.", strFlag);
 						}}
 					
@@ -1907,7 +1906,7 @@ public static void URLValidation(String strTCID,String strdealer2,String strWCMI
 					strFlag = "Fail";
 					ReportFactory.reporterOutput(strTCID, "Verify URL sharing.",
 							"<b>URL Path : </b>" + BaseClass.PORTLET_LINKFLAG + "<br><b>WCM Id : </b>"
-									+ strWCMID + "<br><b>URL Sharing to USER-2 : </b>" + strdealer2 +"<br><b>WCM Country : </b>"+strCountry +"<br><b>Dealer 2 Country : </b>"+strCountryDealer2 +"<br><b>WCM product Type</b>"+strProductType +"<br><b>dealer 2 Product Type : </b>"+strDealer_ProductTypeDealer2  +"<br><b>WCM Dealer Type : </b>"+strDealerTypeMainSub +"<br><b>Dealer 2 Dealer Type : </b>"+strDealerTypeMainSubDealer2+"<br><b>WCM RACF Group : </b>"+strRACFGroups  +"<br><b>Dealer 2 RACF Group : </b>"+strRACFGroupsDealer2,
+									+ strWCMID + "<br><b>URL Sharing to USER-2 : </b>" + strdealer2 +"<br><b>WCM Country : </b>"+strCountry +"<br><b>Dealer 2 Country : </b>"+strCountryDealer2 +"<br><b>WCM product Type</b>"+strProductType +"<br><b>dealer 2 Product Type : </b>"+strDealer_ProductTypeDealer2  +"<br><b>WCM Dealer Type : </b>"+strDealerTypeMainSub +"<br><b>Dealer 2 Dealer Type : </b>"+strDealerTypeMainSubDealer2+"<br><b>WCM RACF Group : </b>"+strRACFGroups  +"<br><b>Dealer 2 RACF Group : </b>"+RACF2,
 							"If "+strdealer2+" has access to the content in terms of country tagged, product types tagged, preferred department then "+strdealer2+" should be able to navigate  to the Index Page of shared URL by "+strUserRACFID+".",
 							"Invalid Navigation path is not available.",
 							strFlag);
@@ -1934,8 +1933,8 @@ public static void URLValidation(String strTCID,String strdealer2,String strWCMI
 		strFlag = "Fail";
 		ReportFactory.reporterOutput(strTCID, "Verify URL sharing.",
 				"<b>URL Path : </b>" + BaseClass.PORTLET_LINKFLAG + "<br><b>WCM Id : </b>"
-						+ strWCMID + "<br><b>URL Sharing to USER-2 : </b>" + strdealer2 +"<br><b>WCM Country : </b>"+strCountry +"<br><b>Dealer 2 Country : </b>"+strCountryDealer2 +"<br><b>WCM product Type</b>"+strProductType +"<br><b>dealer 2 Product Type : </b>"+strDealer_ProductTypeDealer2  +"<br><b>WCM Dealer Type : </b>"+strDealerTypeMainSub +"<br><b>Dealer 2 Dealer Type : </b>"+strDealerTypeMainSubDealer2+"<br><b>WCM RACF Group : </b>"+strRACFGroups  +"<br><b>Dealer 2 RACF Group : </b>"+strRACFGroupsDealer2,
-				"URL sharing should be successful",
+						+ strWCMID + "<br><b>URL Sharing to USER-2 : </b>" + strdealer2 +"<br><b>WCM Country : </b>"+strCountry +"<br><b>Dealer 2 Country : </b>"+strCountryDealer2 +"<br><b>WCM product Type</b>"+strProductType +"<br><b>dealer 2 Product Type : </b>"+strDealer_ProductTypeDealer2  +"<br><b>WCM Dealer Type : </b>"+strDealerTypeMainSub +"<br><b>Dealer 2 Dealer Type : </b>"+strDealerTypeMainSubDealer2+"<br><b>WCM RACF Group : </b>"+strRACFGroups  +"<br><b>Dealer 2 RACF Group : </b>"+RACF2,
+				"URL sharing should be successful.</br><b>URL Shared : </b></br>"+URL,
 				result + "URL sharing is failed.",
 				strFlag);
 	}
@@ -1947,13 +1946,19 @@ public static void URLValidation(String strTCID,String strdealer2,String strWCMI
 
 public static String getRACFGrpOfDealer2(String strdealer2) throws Exception {
 	GenericFactory.EndImpersonateUSER();
+
 //	GenericFactory.utilityMenuAdminClick();
 //	AnalyzeUser.click();
-	Thread.sleep(1000);
-	AnalyzeUserTextBox.sendKeys(strdealer2);
-	analyzeUserButton.click();
-	Thread.sleep(1000);
-	RACFGrp = securityGrps.getText();
+	Thread.sleep(2000);
+	ValidationFactory.getElementIfPresent(By.xpath(".//*[@id='analyseUserId']")).sendKeys(strdealer2);
+//	JavascriptExecutor jse = (JavascriptExecutor) locDriver;
+//	jse.executeScript("document.getElementById('analyseUserId').value = "+strdealer2+"");
+//	jse.executeScript("arguments[1].value = arguments[0]; ", strdealer2, AnalyzeUserTextBox);
+//	AnalyzeUserTextBox.sendKeys(strdealer2);
+	ValidationFactory.getElementIfPresent(By.xpath(".//*[@id='analyzeUserButton']")).click();
+	WaitFactory.waitForPageLoaded();
+	Thread.sleep(2000);
+	RACFGrp = ValidationFactory.getElementIfPresent(By.xpath("//*[normalize-space(text()) = 'Security Groups']/../following-sibling::td")).getText();
 	
 	String SecurityGroups =RACFGrp.replaceAll("\n", ",");
 	
