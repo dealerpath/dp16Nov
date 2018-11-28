@@ -398,7 +398,7 @@ public class ExcelFactory extends BaseClass {
 				if (portletLinkArea.equalsIgnoreCase(portletlinks) && !contenttype.equalsIgnoreCase("AT_Alerts")
 						&& !contenttype.equalsIgnoreCase("AT_Announcement") && !depertment.equalsIgnoreCase("NA")
 						&& !secondndlevel.equalsIgnoreCase("NA") && !contenttype.equalsIgnoreCase("AT-Index page")
-						&& !contenttype.equalsIgnoreCase("AT-Child Index Page")
+						&& !contenttype.equalsIgnoreCase("AT-ChildIndex Page")
 						&& !contenttype.equalsIgnoreCase("AT-GrandChild Index Page")) {
 					// System.out.println(rowdata);
 					rowDataList.add(rowdata);
@@ -899,22 +899,6 @@ public class ExcelFactory extends BaseClass {
 	}
 
 	public static LinkedHashMap getWCMByTCID(String TCID) {
-		if (TCID.equalsIgnoreCase("IndexPage")) {
-			LinkedHashMap wcmRow = ExcelFactory.getUserWcmDetailsAfterFilteringCountryAndProduct("AT-Index Page")
-					.get(0);
-			return wcmRow;
-		}
-		else if(TCID.equalsIgnoreCase("ChildIndexPage")) {
-			LinkedHashMap wcmRow = ExcelFactory.getUserWcmDetailsAfterFilteringCountryAndProduct("AT-Child Index Page")
-					.get(0);
-			return wcmRow;
-		}
-		else if(TCID.equalsIgnoreCase("GrandChildIndexPage")) {
-			LinkedHashMap wcmRow = ExcelFactory.getUserWcmDetailsAfterFilteringCountryAndProduct("AT-GrandChild Index Page")
-					.get(0);
-			return wcmRow;
-		}
-		
 		LinkedHashMap rowdata = null;
 		for (int i = 0; i < userWCMData.size(); i++) {
 			rowdata = userWCMData.get(i);
@@ -1122,6 +1106,8 @@ public class ExcelFactory extends BaseClass {
 		}
 		return runningClasses;
 	}
+	
+	
 	public static LinkedHashMap<String, String> translationLookUpEnglish() throws IOException, Exception {
 		try {
 			XSSFRow singleRow;
@@ -1131,12 +1117,31 @@ public class ExcelFactory extends BaseClass {
 			LinkedHashMap<String, String> mapTranslationSheet = new LinkedHashMap<String, String>();
 			LinkedHashMap<String, String> mapTranslationLan = null;
 			int totalRows = dataTranslationsSheet.getLastRowNum();
+			int rowNumberOfLanguageCode=0;
+			 
+			 
+			String languageCode =analyzerUserMap.get("Language").get(0);
+			
 			int totalCol = dataTranslationsSheet.getRow(4).getLastCellNum();
+			
 			for (int j = 2; j < totalRows; j++) {
 				singleRow = dataTranslationsSheet.getRow(j);
 				singleHeaderRow = dataTranslationsSheet.getRow(1);
+				
+				for (int s = 0; s < totalCol; s++) 
+				{
+					strTransKey = dataFormatter.formatCellValue(singleHeaderRow.getCell(s));
+					if(strTransKey.equalsIgnoreCase(languageCode))
+					{
+					 rowNumberOfLanguageCode = s;
+					break;
+					}
+				}
+				
+				
 				if ((singleRow.getCell(0).getCellType() == Cell.CELL_TYPE_STRING)) {
-					strEnglishKey = dataFormatter.formatCellValue(singleRow.getCell(9));
+					
+					strEnglishKey = dataFormatter.formatCellValue(singleRow.getCell(rowNumberOfLanguageCode));
 					mapTranslationLan = new LinkedHashMap<String, String>();
 					for (int i = 0; i < totalCol; i++) {
 						strTransKey = dataFormatter.formatCellValue(singleHeaderRow.getCell(i));
@@ -1146,19 +1151,19 @@ public class ExcelFactory extends BaseClass {
 							
 					
 						if (!strTransValue.equalsIgnoreCase("X")) {
-							//mapTranslationLan.put(strTransKey.trim(), strTransValue.trim());
+							 
 							mapTranslationSheet.put(strEnglishKey.trim(), strTransValue.trim());
-						//	mapTranslationSheet.put(strTransValue.trim(), mapTranslationLan);
+					 
 						} else {
-							//mapTranslationLan.put(strTransKey.trim(), strEnglishKey.trim());
+						 
 							mapTranslationSheet.put(strEnglishKey.trim(), strTransValue.trim());
-							//mapTranslationSheet.put(strEnglishKey.trim(), mapTranslationLan);
+					 
 						}
 						}
 					}
 				}
 			}
-			//System.out.println(mapTranslationSheet);
+		 
 			return mapTranslationSheet;
 		} catch (Exception e) {
 			LogFactory.info(e.getMessage());
