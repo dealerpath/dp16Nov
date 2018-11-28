@@ -3987,9 +3987,9 @@ public class PortletLinksPage_POF {
 			} else {
 
 				// List<String> listOfElements = GenericFactory.getCheckBoxValuesAll();
-
+				Thread.sleep(3000);
 				GenericFactory.checkAllProductsData(listOfElements);
-				Thread.sleep(1500);
+				Thread.sleep(3000);
 				PortletLinksPage_POF.applyFilter.click();
 
 				int m = listOfElements.size();
@@ -4051,23 +4051,22 @@ public class PortletLinksPage_POF {
 
 					List<String> translatedText1 = GenericFactory.getTranslation(parentItemUncheck);
 					parentItemUncheck = translatedText1.get(0);
-
+					Thread.sleep(1000);
 					if ((listOfElements.size() > 1)) {
 						WebElement productSeg = PortletDriver
 								.findElement(By.xpath(".//*[@id='productSegmentsForm']/div"));
 						if (!productSeg.isDisplayed()) {
-
+							Thread.sleep(1000);
 							ValidationFactory.getElementIfPresent(By.xpath("//div[@id='js-segments']")).click();
 						}
 						productWCMRemoved.add(parentItemUncheck);
-					/*	List<String> translatedText = GenericFactory.getTranslationEnglish(parentItemUncheck);
-						parentItemUncheck =translatedText.get(0); */
+				 
 						boolean checkboxstatus = GenericFactory.productcheckstatus(parentItemUncheck);
 
 						if (k >= hashsetWCMList.size() - 1) {
 
 							PortletLinksPage_POF.applyFilter.click();
-							Thread.sleep(1500);
+							Thread.sleep(2000);
 							String Resultfound = null;
 							List<WebElement> innerLinks = PortletDriver
 									.findElements(By.xpath("//div[contains(@class,'link-col col-xs-6')]"));
