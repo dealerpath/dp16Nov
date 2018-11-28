@@ -126,8 +126,9 @@ public class Alerts_TestCase extends BaseClass {
 	@Test(priority = 7) // Aniket - not did any changes - need data which is having embedded links
 	public static void verifyEmbededLinksOntheAlertPortlet() throws Throwable {
 
-		LogFactory.beginTestCase("Verisy Embeded Links on  Alert Portlet ");
 		strTCID = "TC05_ALERTS_HOMEPAGE";
+		LogFactory.beginTestCase(strTCID + " Verisy Embeded Links on  Alert Portlet ");
+		
 		strExpectedValue = BaseClass.getExcelDataByTestCaseID(strTCID);
 		if (!strExpectedValue.equalsIgnoreCase("None")) {
 			alertPageFactory.verifyEmbeddedlinks(strTCID);
@@ -136,8 +137,9 @@ public class Alerts_TestCase extends BaseClass {
 
 	@Test(priority = 8) // Aniket
 	public static void verifyReadMoreAndCollapseLinkOnAlerts() throws Throwable {
-		LogFactory.beginTestCase("Verify the Readmore and Collapse links on the Alert Portlet");
 		strTCID = "TC06_ALERTS_HOMEPAGE";
+		LogFactory.beginTestCase(strTCID + " Verify the Readmore and Collapse links on the Alert Portlet");
+		
 		strExpectedValue = BaseClass.getExcelDataByTestCaseID(strTCID);
 		if (!strExpectedValue.equalsIgnoreCase("None")) {
 			alertPageFactory.checkReadMoreAndCollapseLinkForAlert(strTCID);
