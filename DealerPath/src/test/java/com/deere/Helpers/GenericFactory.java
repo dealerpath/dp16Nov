@@ -3799,222 +3799,214 @@ public class GenericFactory extends BaseClass {
 	}
 	
 	
-	public static void resetMyPreferenceSettings() throws Throwable {
-        String LanguageReset = "";
-        String ThemeReset = "";
-        String DeptDifferent = "";
-        String LanguageNotPresent = "",themeNotPresent = "",siteNotPresent = "";
-        
-        try {
-               LogFactory.info(
-                            "Reset the settings for the user : " + strUserRACFID + " on My Preferences page is initiated.");
-               
-               myPreferencesPageFactory.navigateToMyPreferences();
-               LogFactory.info("Navigated to 'My Preference' Modal window.");
-               String langList = "";
-               // Language Reset
-               LogFactory.info("Resetting the value for Language Drop down.");
-               if (ValidationFactory.isElementPresent(myPreferencesPageFactory.wbelMyPreferenceModalLanguageDDL)) {
-                     String LanguagecodeReset = analyzerUserMapReset.get("Language").get(0);
-                     LanguageReset = myPreferencesPageFactory.selectLanguagebyCodeMap(LanguagecodeReset);
-                     Select select = new Select(myPreferencesPageFactory.wbelMyPreferenceModalLanguageDDL);
-                     List<WebElement> listOfSites=select.getOptions();
-                     for(int i = 0;i<listOfSites.size();i++) {
-                            langList = langList + listOfSites.get(i).getText();    
-                     }
-                     if(langList.contains(LanguageReset)) {
-                     select.selectByVisibleText(LanguageReset);}
-                     else {
-                            LanguageNotPresent = "<b>Language "+LanguageReset+" is not present in the Language drop down</b>.";
-                     }
-                     LogFactory.info("Selected the Language : " + LanguageReset);
-               } else {
-                     LogFactory.info("Language Drop down is not available.");
-               }
-               // Theme Reset
-               if (ValidationFactory.isElementEnabled(myPreferencesPageFactory.wbelMyPreferenceTheme.get(0))) {
-                     LogFactory.info("Resetting the value for Theme.");
-                     ThemeReset = analyzerUserMapReset.get("Theme Colors").get(0);
-                     try{
-                            WebElement webelThemeReset = wbDriver.findElement(By.xpath("//*[@type='radio'][@value='" + ThemeReset + "']"));
-                            webelThemeReset.click();   
-                     }
-                     catch(Exception e) {
-                            themeNotPresent = "<b>Theme "+ThemeReset+" is not present</b>.";
-                     }
-                     Thread.sleep(500);
-               
-                     LogFactory.info("Selected the Theme.");
-               } else {
-                     LogFactory.info("Theme is not available.");
-               }
+		public static void resetMyPreferenceSettings() throws Throwable {
+		String LanguageReset = "";
+		String ThemeReset = "";
+		String DeptDifferent = "";
+		String ProductNotPresent = "";
+		String LanguageNotPresent = "", themeNotPresent = "", siteNotPresent = "";
 
-               // Department reset
-               LogFactory.info("Resetting the values for Departments.");
-               List<String> listApplication = new ArrayList<String>();
+		try {
+			LogFactory.info(
+					"Reset the settings for the user : " + strUserRACFID + " on My Preferences page is initiated.");
 
-               int sizeOfDeptListFromApplication = myPreferencesPageFactory.wbelMyPreferenceModalDepartments.size();
-               for (int i = 0; i < sizeOfDeptListFromApplication; i++) {
-                     String Dep = myPreferencesPageFactory.wbelMyPreferenceModalDepartments.get(i).getText();
-                     listApplication.add(Dep);
-               }
-               System.out.println(listApplication + " is the list of departments.");
+			myPreferencesPageFactory.navigateToMyPreferences();
+			LogFactory.info("Navigated to 'My Preference' Modal window.");
+			String langList = "";
+			// Language Reset
+			LogFactory.info("Resetting the value for Language Drop down.");
+			if (ValidationFactory.isElementPresent(myPreferencesPageFactory.wbelMyPreferenceModalLanguageDDL)) {
+				String LanguagecodeReset = analyzerUserMapReset.get("Language").get(0);
+				LanguageReset = myPreferencesPageFactory.selectLanguagebyCodeMap(LanguagecodeReset);
+				Select select = new Select(myPreferencesPageFactory.wbelMyPreferenceModalLanguageDDL);
+				List<WebElement> listOfSites = select.getOptions();
+				for (int i = 0; i < listOfSites.size(); i++) {
+					langList = langList + listOfSites.get(i).getText();
+				}
+				if (langList.contains(LanguageReset)) {
+					select.selectByVisibleText(LanguageReset);
+				} else {
+					LanguageNotPresent = "<b>Language " + LanguageReset
+							+ " is not present in the Language drop down</b>.";
+				}
+				LogFactory.info("Selected the Language : " + LanguageReset);
+			} else {
+				LogFactory.info("Language Drop down is not available.");
+			}
+			// Theme Reset
+			if (ValidationFactory.isElementEnabled(myPreferencesPageFactory.wbelMyPreferenceTheme.get(0))) {
+				LogFactory.info("Resetting the value for Theme.");
+				ThemeReset = analyzerUserMapReset.get("Theme Colors").get(0);
+				try {
+					WebElement webelThemeReset = wbDriver
+							.findElement(By.xpath("//*[@type='radio'][@value='" + ThemeReset + "']"));
+					webelThemeReset.click();
+				} catch (Exception e) {
+					themeNotPresent = "<b>Theme " + ThemeReset + " is not present</b>.";
+				}
+				Thread.sleep(500);
+
+				LogFactory.info("Selected the Theme.");
+			} else {
+				LogFactory.info("Theme is not available.");
+			}
+
+			// Department reset
+			LogFactory.info("Resetting the values for Departments.");
+			List<String> listApplication = new ArrayList<String>();
+
+			int sizeOfDeptListFromApplication = myPreferencesPageFactory.wbelMyPreferenceModalDepartments.size();
+			for (int i = 0; i < sizeOfDeptListFromApplication; i++) {
+				String Dep = myPreferencesPageFactory.wbelMyPreferenceModalDepartments.get(i).getText();
+				listApplication.add(Dep);
+			}
+			System.out.println(listApplication + " is the list of departments.");
 
 			int sizeOfDeptListFromAnalyseUserMapReset = analyzerUserMapReset.get("Department").size();
-
 			for (int i = 0; i < sizeOfDeptListFromAnalyseUserMapReset; i++) {
-
 				String departmentFromAnalyseUserMapReset = GenericFactory
 						.getTranslation(analyzerUserMapReset.get("Department").get(i)).toString();
-
 				departmentFromAnalyseUserMapReset = departmentFromAnalyseUserMapReset.contains("[")
 						? departmentFromAnalyseUserMapReset.replaceAll("[\\[\\]]", "")
 						: departmentFromAnalyseUserMapReset;
-
 				System.out.println(departmentFromAnalyseUserMapReset + " has to be checked.");
-
 				if (listApplication.contains(departmentFromAnalyseUserMapReset)) {
-
 					WebElement checkDepartment = wbDriver
-
 							.findElement(By.xpath("//*[@id='rbacRole']/../div[normalize-space() = '"
-
 									+ departmentFromAnalyseUserMapReset + "']/../input"));
-
 					if (!checkDepartment.getAttribute("checked").equalsIgnoreCase("true")) {
-
 						checkDepartment.click();
-
 					} else {
-
 						LogFactory.info(departmentFromAnalyseUserMapReset + " is checked present.");
-
 					}
-
 				} else {
-
 					DeptDifferent = DeptDifferent + departmentFromAnalyseUserMapReset;
+				}
+			}
 
+			String siteFromAnalyseUserMapReset = "";
+			String siteList = "";
+			// Site Reset
+			LogFactory.info("Resetting the values for Site.");
+			if (ValidationFactory.isElementPresent(myPreferencesPageFactory.wbelMyPreferencePreferredSite)) {
+				siteFromAnalyseUserMapReset = analyzerUserMapReset.get("strSite").get(0);
+				siteFromAnalyseUserMapReset = myPreferencesPageFactory.selectSitebyCodeMap(siteFromAnalyseUserMapReset);
+				System.out.println("*************************" + siteFromAnalyseUserMapReset);
+				Select select = new Select(myPreferencesPageFactory.wbelMyPreferencePreferredSite);
+				List<WebElement> listOfSites = select.getOptions();
+				for (int i = 0; i < listOfSites.size(); i++) {
+					siteList = siteList + listOfSites.get(i).getText();
 				}
 
-			}
-
-               String siteFromAnalyseUserMapReset = "";
-               String siteList = "";
-               // Site Reset
-               LogFactory.info("Resetting the values for Site.");
-               if (ValidationFactory.isElementPresent(myPreferencesPageFactory.wbelMyPreferencePreferredSite)) {
-                     siteFromAnalyseUserMapReset = analyzerUserMapReset.get("strSite").get(0);
-                     siteFromAnalyseUserMapReset = myPreferencesPageFactory.selectSitebyCodeMap(siteFromAnalyseUserMapReset);
-                     System.out.println("*************************"+siteFromAnalyseUserMapReset);
-                     Select select = new Select(myPreferencesPageFactory.wbelMyPreferencePreferredSite);
-                     List<WebElement> listOfSites=select.getOptions();
-                     for(int i = 0;i<listOfSites.size();i++) {
-                            siteList = siteList + listOfSites.get(i).getText();    
-                     }
-                     
-                     if(siteList.contains(siteFromAnalyseUserMapReset)) {
-                            select.selectByVisibleText(siteFromAnalyseUserMapReset);
-                            LogFactory.info("Selected the Site : " + siteFromAnalyseUserMapReset);
-                     }else {
-                            siteNotPresent = "<b>Site "+siteFromAnalyseUserMapReset+" is not present in the Prefered site drop down</b>.";
-                     }
-                     
+				if (siteList.contains(siteFromAnalyseUserMapReset)) {
+					select.selectByVisibleText(siteFromAnalyseUserMapReset);
+					LogFactory.info("Selected the Site : " + siteFromAnalyseUserMapReset);
+				} else {
+					siteNotPresent = "<b>Site " + siteFromAnalyseUserMapReset
+							+ " is not present in the Prefered site drop down</b>.";
+				}
 
 			} else {
-
 				LogFactory.info("Site Dropdown is not available.");
-
 			}
-
 			// Saving Changes
-
 			myPreferencesPageFactory.wbelMyPreferenceModalSaveButton.click();
-
 			WaitFactory.waitforelementToinvisibile(myPreferencesPageFactory.wbelMyPreferenceModalSaveButton);
-
 			wbDriver.switchTo().defaultContent();
-
 			WaitFactory.waitForPageLoaded();
 
-			String strFlag = "Fail";
+			System.out.println("Check for Products>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>." + analyzerUserMapReset);
+			List<String> prodList = new ArrayList<String>();
+			String ProductFromAnalyseUserMapReset = "";
+			// Product segment reset
+			LogFactory.info("Resetting the values for Product.");
+			prodList = analyzerUserMapReset.get("User Products");
+			if (ValidationFactory.getElementIfPresent(By.xpath("//div[@id='js-segments']")) != null) {
+				BaseClass.wbDriver.findElement(By.xpath("//div[@id='js-segments']")).click();
+				List<WebElement> checkBox = BaseClass.wbDriver.findElements(
+						By.xpath("//div[@id='js-segments-popover']//div[@class='value']//input[@type='checkbox']"));
+				if(prodList!=null) {
+				for (int i = 0; i < prodList.size(); i++) {
+					ProductFromAnalyseUserMapReset = prodList.get(i);
 
-			// Reporter Out put
-
-			if (DeptDifferent.equalsIgnoreCase("") && LanguageNotPresent.equalsIgnoreCase("")
-					&& themeNotPresent.equalsIgnoreCase("") && siteNotPresent.equalsIgnoreCase("")) {
-
-				strFlag = "Pass";
-
-				ReportFactory.reporterOutput("Reset My Preferences",
-
-						"Verify that changes made to 'My Preference' are reverted back.",
-
-						"Selections on 'My Preferences' before making any changes. </br><b> Language </b>: "
-
-								+ LanguageReset + ".</br><b> Theme </b>: "
-
-								+ analyzerUserMapReset.get("Theme Colors").get(0) + ".</br><b> Departments </b>: "
-
-								+ analyzerUserMapReset.get("Department") + ".</br><b> Site </b>:"
-
-								+ siteFromAnalyseUserMapReset,
-
-						"Changes made to verify the functionalities should be reverted back.",
-
-						"All the changes made to 'My Preferences' is reverted back.", strFlag);
-
+					if (!checkBox.get(i).isSelected()) {
+						System.out.println("*********unchecked**********");
+						String Product = BaseClass.wbDriver.findElement(By.xpath(
+								"//div[@id='js-segments-popover']//div[@class='value']//input[@type='checkbox']/../div"))
+								.getText();
+						if (prodList.contains(Product)) {
+							checkBox.get(i).click();
+						} else {
+							System.out.println("Product is not present in Analyse User Map >>>>" + Product);
+						}
+					}
+					if (checkBox.get(i).isSelected()) {
+						System.out.println("*********checked**********");
+						String Product = BaseClass.wbDriver.findElement(By.xpath(
+								"//div[@id='js-segments-popover']//div[@class='value']//input[@type='checkbox']/../div"))
+								.getText();
+						if (prodList.contains(Product)) {
+							System.out.println("Already Checked>>>" + Product);
+						} else {
+							checkBox.get(i).click();
+						}
+					}}
+				}else {
+					LogFactory.info("Product is not available in Analyze user map.");
+					ProductNotPresent = "Product is not available in Analyze user map.";
+				}
+			} else {
+				LogFactory.info("Product segment is not available.");
 			}
-
-			else {
-
+			String strFlag = "Fail";
+			// Reporter Out put
+			if (DeptDifferent.equalsIgnoreCase("") && LanguageNotPresent.equalsIgnoreCase("")
+					&& themeNotPresent.equalsIgnoreCase("") && siteNotPresent.equalsIgnoreCase("")&&ProductNotPresent.equalsIgnoreCase("")) {
+				strFlag = "Pass";
+				ReportFactory.reporterOutput("Reset My Preferences",
+						"Verify that changes made to 'My Preference' are reverted back.",
+						"Selections on 'My Preferences' before making any changes. </br><b> Language </b>: "
+								+ LanguageReset + ".</br><b> Theme </b>: "
+								+ analyzerUserMapReset.get("Theme Colors").get(0) + ".</br><b> Departments </b>: "
+								+ analyzerUserMapReset.get("Department") + ".</br><b> Site </b>:"
+								+ siteFromAnalyseUserMapReset,
+						"Changes made to verify the functionalities should be reverted back.",
+						"All the changes made to 'My Preferences' is reverted back.", strFlag);
+			} else {
 				String print = "";
-
 				print = !DeptDifferent.equalsIgnoreCase("")
 						? "</br> <b>Departments which are NOT present as per Analyze user</b> : " + DeptDifferent
 								+ "</br>"
 						: print;
-
 				print = !LanguageNotPresent.equalsIgnoreCase("")
 						? "</br> <b>Language which is NOT present as per Analyze user</b> : " + LanguageNotPresent
 								+ "</br>"
 						: print;
-
 				print = !themeNotPresent.equalsIgnoreCase("")
 						? "</br> <b>Theme which is NOT present as per Analyze user</b> : " + themeNotPresent + "</br>"
 						: print;
-
 				print = !siteNotPresent.equalsIgnoreCase("")
 						? "</br> <b>Site which are NOT present as per Analyze user</b> : " + siteNotPresent + "</br>"
 						: print;
-
+				print = !ProductNotPresent.equalsIgnoreCase("")
+						? "</br> <b>Product is not available in Analyze user map.</b> : " + siteNotPresent + "</br>"
+						: print;
 				ReportFactory.reporterOutput("Reset My Preferences",
-
 						"Verify that changes made to 'My Preference' are reverted back.",
-
 						"Selections on 'My Preferences' before making any changes. </br><b> Language </b>: "
-
 								+ LanguageReset + ".</br><b> Theme </b>: "
-
 								+ analyzerUserMapReset.get("Theme Colors").get(0) + ".</br><b> Departments </b>: "
-
-								+ analyzerUserMapReset.get("Department")
-
-								+ ".</br><b> Site </b>:"
-
+								+ analyzerUserMapReset.get("Department") + ".</br><b> Site </b>:"
 								+ siteFromAnalyseUserMapReset + print,
-
 						"Changes made to verify the functionalities should be reverted back.",
-
 						"All the changes made to 'My Preferences' may not have reverted back.", strFlag);
-
 			}
 
-        } catch (Exception e) {
-               LogFactory.info("I am in catch block");
-               
-        }
- }
+		} catch (Exception e) {
+			LogFactory.info("I am in catch block");
+
+		}
+	}
 
     public static void createXML() throws Exception {
         XmlSuite xmlSuite = new XmlSuite();
