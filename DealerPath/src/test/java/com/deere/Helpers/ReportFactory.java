@@ -26,7 +26,7 @@ public static int ReprotDetails = 0;
 	{		
 		 Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 	         
-		String Title = "Application URL under test : <a href='"+ URL + "' target='_blank' > " + URL +"</a>"+timestamp;
+		String Title = "Application URL under test : <a href='"+ URL + "' target='_blank' > " + URL +"</a> and Time : "+timestamp;
 		Reporter.log("<h3 border=1px; style= width:100%; ></h3>"
 				+ "<tr font-family:Georgia, Garamond, Serif>  <th width=2l%; border=1px; body bgcolor=#ffff00 background: linear-gradient(green 70% , yellow 15%);> " + Title + " </th></tr>");
 	}
