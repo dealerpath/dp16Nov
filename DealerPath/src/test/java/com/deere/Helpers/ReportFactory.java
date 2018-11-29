@@ -2,6 +2,7 @@ package com.deere.Helpers;
 
 import static org.testng.Assert.assertFalse;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
@@ -23,7 +24,9 @@ public static int ReprotDetails = 0;
 	
 	public static void createHeader()
 	{		
-		String Title = "Application URL under test : <a href='"+ URL + "' target='_blank' > " + URL +"</a>";
+		 Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+	         
+		String Title = "Application URL under test : <a href='"+ URL + "' target='_blank' > " + URL +"</a>"+timestamp;
 		Reporter.log("<h3 border=1px; style= width:100%; ></h3>"
 				+ "<tr font-family:Georgia, Garamond, Serif>  <th width=2l%; border=1px; body bgcolor=#ffff00 background: linear-gradient(green 70% , yellow 15%);> " + Title + " </th></tr>");
 	}
