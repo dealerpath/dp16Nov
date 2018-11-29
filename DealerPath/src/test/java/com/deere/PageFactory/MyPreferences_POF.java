@@ -633,8 +633,8 @@ public class MyPreferences_POF extends BaseClass {
 			listExpectedDatastr = listExpectedDatastr.replaceAll(" ", "");
 			// donot remove this.It is specific for some languages.If removed will cause
 			// failure.
-			translationdeptStr = translationdeptStr.replaceAll("Â ", "");
-			listExpectedDatastr = listExpectedDatastr.replaceAll("Â ", "");
+			translationdeptStr = translationdeptStr.replaceAll("Ã‚Â ", "");
+			listExpectedDatastr = listExpectedDatastr.replaceAll("Ã‚Â ", "");
 			if (translationdeptStr.contains(listExpectedDatastr)) {
 				strFlag = "Pass";
 				result = "All the expected departments are displayed in the department section of the My Preference modal  window.Translated List : "
@@ -835,7 +835,7 @@ public class MyPreferences_POF extends BaseClass {
 		String strFlag = "Pass";
 		String result = "", langSelected = "", langSaved = "", expectedHeader = "", welcomeHeaderActual = "",
 				productHeaderActual = "", str = "", ResetLanguage = null, langtobeSelected, translationfavouri = "",
-				translationprod = "";
+				translationprod = "",LangReset = "";
 		List<String> langSa = new ArrayList<String>();
 		List<String> translationProduct = new ArrayList<String>();
 		List<String> translationFav = new ArrayList<String>();
@@ -893,7 +893,7 @@ public class MyPreferences_POF extends BaseClass {
 					//Navigate to my preferences
 					navigateToMyPreferences();
 					Thread.sleep(500);
-					
+					LangReset  = languageSelector.getFirstSelectedOption().getAttribute("value");
 					ResetLanguage = languageSelector.getFirstSelectedOption().getText();
 					langtobeSelected = languageSelector.getOptions().get(lang).getText();
 					//select the language and save
@@ -912,10 +912,13 @@ public class MyPreferences_POF extends BaseClass {
 					Thread.sleep(500);
 					navigateToMyPreferences();
 					Thread.sleep(500);
+					
+					
 					langSelected = listOfLanguage.get(lang);
 					listOfLanguages = language.findElements(By.xpath("//option"));
 					langSaved = languageSelector.getFirstSelectedOption().getText();
 					System.out.println("langSaved : " + langSaved);
+					
 					if (langSaved.equalsIgnoreCase(langSelected)) {
 						System.out.println(langSelected + " is selected and saved successfully ");
 					} else {
@@ -953,14 +956,15 @@ public class MyPreferences_POF extends BaseClass {
 					homepageCheckPoints.put("header Welcome", "Welcome");
 					homepageCheckPoints.put("Products", "Product Segments");
 					if (onDept) {
-						homepageDealerPath.click();
-						WaitFactory.waitForPageLoaded();
+						GenericFactory.navigateToHomePage();
+						Thread.sleep(1000);
 					}
 					// Verification point : Left Header
 					String leftHeader = homepageCheckPoints.get("left Header");
 					// Translation for left header
 					List<String> translation = GenericFactory.getTranslation(leftHeader);
 					String translatedleftHeader = translation.get(0);
+					Thread.sleep(1000);
 					LogFactory.info("Verification points : Left Header");
 					if (ValidationFactory.isElementPresent(wbelLeftHeader)) {
 						leftHeader = wbelLeftHeader.getText();
@@ -1020,6 +1024,9 @@ public class MyPreferences_POF extends BaseClass {
 						strActualFavHeader = strActualFavHeader.replaceAll(" ", "");
 						translationfavouri = translationfavouri.replaceAll(" ", "");
 
+						strActualFavHeader = strActualFavHeader.replaceAll("Ã‚Â ", "");
+						translationfavouri = translationfavouri.replaceAll("Ã‚Â ", "");
+						
 						strActualFavHeader = strActualFavHeader.replaceAll("Â ", "");
 						translationfavouri = translationfavouri.replaceAll("Â ", "");
 
@@ -1126,6 +1133,16 @@ public class MyPreferences_POF extends BaseClass {
 					}
 					
 				}
+				GenericFactory.navigateToHomePage();
+				Thread.sleep(1000);
+				navigateToMyPreferences();
+				Thread.sleep(1000);
+				languageSelector.selectByVisibleText(ResetLanguage);
+				wbelMyPreferenceModalSaveButton.click();
+				Thread.sleep(500);
+				MyPreferencesDriver.switchTo().defaultContent();
+				WaitFactory.waitForPageLoaded();
+				//save original language
 			}
 		} catch (Exception e) {
 			String er = e.getMessage().substring(0, 60).toString().trim();
@@ -1489,7 +1506,7 @@ public class MyPreferences_POF extends BaseClass {
 		List<String> returnedLang = new ArrayList<String>();
 		for (String lang : code) {
 			Map<String, String> mp = new HashMap<String, String>();
-			mp.put("fr_FR", "Franï¿½ais");
+			mp.put("fr_FR", "FranÃ¯Â¿Â½ais");
 			mp.put("en_US", "English");
 			mp.put("en_GB", "English");
 			mp.put("es_MX", "Spanish");
@@ -1549,7 +1566,7 @@ public class MyPreferences_POF extends BaseClass {
 
 	public static String selectLanguagebyCodeMap(String code) throws Exception {
 		Map<String, String> mp = new HashMap<String, String>();
-		mp.put("fr_FR", "Franï¿½ais");
+		mp.put("fr_FR", "FranÃ¯Â¿Â½ais");
 		mp.put("en_US", "English");
 		mp.put("en_GB", "English");
 		mp.put("es_MX", "Spanish");
@@ -1559,7 +1576,7 @@ public class MyPreferences_POF extends BaseClass {
 		mp.put("de_DE", "German");
 		mp.put("en_AU", "English");
 		mp.put("zh_CN", "China");
-		mp.put("fr_CA","Franï¿½ais");
+		mp.put("fr_CA","FranÃ¯Â¿Â½ais");
 
 		languagebyCode = mp.get(code);
 		return languagebyCode;
@@ -2355,7 +2372,7 @@ public class MyPreferences_POF extends BaseClass {
 				if (!strExpectedValue.equalsIgnoreCase("None")) {
 					LogFactory.beginTestCase(
 							"Verify language preferences functionality : list of languages for other sites should be displayed.");
-					myPreferenceLangVerification(strTCID, "English,FranÃ§ais,EspaÃ±ol");
+					myPreferenceLangVerification(strTCID, "English,FranÃƒÂ§ais,EspaÃƒÂ±ol");
 				}
 		} catch (Exception e) {
 			String er = e.getMessage().substring(0, 60).toString().trim();
