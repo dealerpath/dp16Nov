@@ -34,7 +34,7 @@ public class IterationTest extends BaseClass {
 					for (int i = 0; i <uniqueRackfId.size(); i++) {
 				
 						if (ImpersonateUser.impersonateUserSuccess(uniqueRackfId.get(i))) {
-							
+						GenericFactory.productListForReset();	
 						List<String> suites = new ArrayList<String>();
 						strUserRACFID=uniqueRackfId.get(i);
 						System.out.println("Reading excel data.....");
