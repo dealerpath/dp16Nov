@@ -4127,5 +4127,5 @@ public class GenericFactory extends BaseClass {
 		ValidationFactory.getElementIfPresent(By.xpath("//div[@id='js-segments']")).click();
 		analyzerUserMapReset.put("User Products", listOfProductForResetList);}
 }
-}
+
 
