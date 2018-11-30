@@ -31,10 +31,25 @@ public class Favourites_POF extends BaseClass {
 	public Favourites_POF(WebDriver driver) {
 		this.FavouritesDriver = driver;
 	}
-	
+
 	static ArrayList<String> QuickLinks = new ArrayList<String>();
 
-
+	@FindBy(how = How.XPATH, using = "//div[@class='link-group-container']//div[@class='link-item folder-space' and contains(.,'My Fav Folder')]//span[@class='icon folder closed']")
+	public static WebElement QuickModalFolderClosed;
+	@FindBy(how = How.XPATH, using = "//div[@class='link-group']//span[@class='icon fav-star is-selected']/following-sibling::a")
+	public static List<WebElement> QuickModalLinkName;
+	@FindBy(how = How.XPATH, using = "//div[@id='js-favorites']")
+	public static WebElement FvrtstarIcon;
+	@FindBy(how = How.XPATH, using = "//div[@class='fav-link-item last']/div/div/span/following-sibling::a")
+	public static List<WebElement> OutsideLinkNameLast;
+	@FindBy(how = How.XPATH, using = "//div[@class='fav-link-item']/div/div/span/following-sibling::a")
+	public static List<WebElement> OutsideIconNameFirst;
+	@FindBy(how = How.XPATH, using = "//div[@class='fav-link-item child']/div/div/span/following-sibling::a")
+	public static List<WebElement> homePagelinkIconNameunderFolder;
+	@FindBy(how = How.XPATH, using = "//div[@class='fav-link-item child']/div/div/span[not(@class='icon drag ui-sortable-handle')]")
+	public static List<WebElement> homePagelinkIconunderFolder;
+	@FindBy(how = How.XPATH, using = "//div[@class='fav-link-body' and contains(.,'My Fav Folder')]//span[@class='icon folder closed']")
+	public static WebElement homePageClosedFolderIcon;
 	@FindBy(how = How.XPATH, using = "//div[@class='value']//select[@id='lang']")
 	public static WebElement language_label;
 	@FindBy(how = How.ID, using = "preference-cancel")
@@ -59,12 +74,10 @@ public class Favourites_POF extends BaseClass {
 	public static WebElement wbelFavouriteFrame;
 	@FindBy(how = How.XPATH, using = ".//*[@id='layoutContainers']/div/div[2]/div[3]/div[4]/section/div/div[2]/div[1]/h3")
 	static WebElement wbelHeaderTitleFav;
-	
+
 	@FindBy(how = How.XPATH, using = ".//*[@id='js-quick-favorites-popover']/div[2]/div[1]")
 	static WebElement wbelQuickLinkHeader;
-		
 
-	
 	@FindBy(how = How.XPATH, using = ".//*[@id='favorites-target']/div/p[2]")
 	static WebElement wbelMessageFav;
 	@FindBy(how = How.XPATH, using = ".//*[@id='favorites-target']/div/div/div/div/div/div[1]")
@@ -180,8 +193,9 @@ public class Favourites_POF extends BaseClass {
 	static WebElement Outside_iconLast = null;
 
 	/**
-	 * @author Shubham Raj This method is used to mark the favourite links on Link
-	 *         portlet @ exception Description of exception you are handling
+	 * @author Shubham Raj This method is used to mark the favourite links on
+	 *         Link portlet @ exception Description of exception you are
+	 *         handling
 	 * 
 	 */
 
@@ -199,226 +213,229 @@ public class Favourites_POF extends BaseClass {
 		String ThirdlevelFolder = "";
 		Boolean clickCheck = false;
 
-		
+		List<LinkedHashMap> userWCMContent = ExcelFactory.getUserWcmDetailsAfterFilteringCountryAndProduct("AT-Link",
+				"AT-Document", "AT-Rich Text", "");
+		System.out.println(userWCMContent);
+		for (int i = 0; i < userWCMContent.size(); i++) {
+			department1 = userWCMContent.get(i).get("DepartmentName").toString().trim();
+			subDepartmentName = (String) userWCMContent.get(i).get("2ndLevel").toString().trim();
+			subDepartmentLang = GenericFactory.getTranslation(subDepartmentName).toString().replaceAll("^\\[|\\]$", "");
+			title = (String) userWCMContent.get(i).get("Title").toString().trim();
+			TCID = (String) userWCMContent.get(i).get("Test Case ID").toString().trim();
+			ThirdlevelFolder = (String) userWCMContent.get(i).get("3rdLevelFolder").toString().trim();
 
-			List<LinkedHashMap> userWCMContent = ExcelFactory
-					.getUserWcmDetailsAfterFilteringCountryAndProduct("AT-Link", "AT-Document", "AT-Rich Text", "");
-			System.out.println(userWCMContent);
-			for (int i = 0; i < userWCMContent.size(); i++) {
-				department1 = userWCMContent.get(i).get("DepartmentName").toString().trim();
-				subDepartmentName = (String) userWCMContent.get(i).get("2ndLevel").toString().trim();
-				subDepartmentLang = GenericFactory.getTranslation(subDepartmentName).toString().replaceAll("^\\[|\\]$",
-						"");
-				title = (String) userWCMContent.get(i).get("Title").toString().trim();
-				TCID = (String) userWCMContent.get(i).get("Test Case ID").toString().trim();
-				ThirdlevelFolder = (String) userWCMContent.get(i).get("3rdLevelFolder").toString().trim();
+			if (GenericFactory.clickOnDepartmentByName(department1)) {
+				{
+					if (!ThirdlevelFolder.equals("NA")) {
+						GenericFactory.toClickOnFolder(ThirdlevelFolder, subDepartmentName);
 
-				if (GenericFactory.clickOnDepartmentByName(department1)) {
-					{
-						if (!ThirdlevelFolder.equals("NA")) {
-							GenericFactory.toClickOnFolder(ThirdlevelFolder, subDepartmentName);
+					}
+					departmentNames.add(department1);
+					WaitFactory.waitForPageLoaded();
+					List<WebElement> allHeaderNamesAndLinks = BaseClass.wbDriver.findElements(By.xpath(
+							".//*[@id='links-target']/div[not(@class='links-no-results') and not(@class='empty-link-portlet-container')]"));
+					secondloop: for (int j = 0; j < allHeaderNamesAndLinks.size(); j++) {
+						WebElement thirdLevelLinks = allHeaderNamesAndLinks.get(j);
+						String[] headerName = (thirdLevelLinks.getText()).split("\n");
+						List<WebElement> links = null;
 
-						}
-						departmentNames.add(department1);
-						WaitFactory.waitForPageLoaded();
-						List<WebElement> allHeaderNamesAndLinks = BaseClass.wbDriver.findElements(By.xpath(
-								".//*[@id='links-target']/div[not(@class='links-no-results') and not(@class='empty-link-portlet-container')]"));
-						secondloop: for (int j = 0; j < allHeaderNamesAndLinks.size(); j++) {
-							WebElement thirdLevelLinks = allHeaderNamesAndLinks.get(j);
-							String[] headerName = (thirdLevelLinks.getText()).split("\n");
-							List<WebElement> links = null;
+						if (subDepartmentLang.equals(headerName[0])) {
 
-							if (subDepartmentLang.equals(headerName[0])) {
-								
-								List<WebElement> icons = null;
+							List<WebElement> icons = null;
 
-								if (!ThirdlevelFolder.equals("NA")) {
-									icons = thirdLevelLinks.findElements(By
-											.xpath("//div[contains(@parent-folder,'" + ThirdlevelFolder + "')]/span"));
-									links = thirdLevelLinks.findElements(By.xpath("//div[contains(@parent-folder,'"
-											+ ThirdlevelFolder + "')]/span/following-sibling::a"));
-								} else {
-									icons = thirdLevelLinks.findElements(By.xpath("//h5[contains(text(),'"
-											+ subDepartmentName
-											+ "')]/..//div[@class='link-group']/div/div[@class='link-item wrap']/span"));
-									links = thirdLevelLinks.findElements(By.xpath("//h5[contains(text(),'"
-											+ subDepartmentName
-											+ "')]/..//div[@class='link-group']/div/div[@class='link-item wrap']/a"));
+							if (!ThirdlevelFolder.equals("NA")) {
+								icons = thirdLevelLinks.findElements(
+										By.xpath("//div[contains(@parent-folder,'" + ThirdlevelFolder + "')]/span"));
+								links = thirdLevelLinks.findElements(By.xpath("//div[contains(@parent-folder,'"
+										+ ThirdlevelFolder + "')]/span/following-sibling::a"));
+							} else {
+								icons = thirdLevelLinks.findElements(By.xpath("//h5[contains(text(),'"
+										+ subDepartmentName
+										+ "')]/..//div[@class='link-group']/div/div[@class='link-item wrap']/span"));
+								links = thirdLevelLinks.findElements(By.xpath("//h5[contains(text(),'"
+										+ subDepartmentName
+										+ "')]/..//div[@class='link-group']/div/div[@class='link-item wrap']/a"));
 
-								}
-								for (int k = 0; k < icons.size(); k++) {
-									Thread.sleep(2000);
-									linkname = links.get(k).getAttribute("textContent").trim();
-									WaitFactory.WaitForElementToVisible(icons.get(k));
-									Thread.sleep(2000);
-									IconIsslected = icons.get(k).getAttribute("class").toString().trim();
-									if (IconIsslected.contains("fav-star is-selected") && linkname.equals(title)) {
-										LogFactory.info(linkname + " is already marked so de-selecting it first");
+							}
+							for (int k = 0; k < icons.size(); k++) {
+								Thread.sleep(2000);
+								linkname = links.get(k).getAttribute("textContent").trim();
+								WaitFactory.WaitForElementToVisible(icons.get(k));
+								Thread.sleep(2000);
+								IconIsslected = icons.get(k).getAttribute("class").toString().trim();
+								if (IconIsslected.contains("fav-star is-selected") && linkname.equals(title)) {
+									LogFactory.info(linkname + " is already marked so de-selecting it first");
+
+									WaitFactory.waitForElements(icons);
+									((JavascriptExecutor) BaseClass.wbDriver)
+											.executeScript("arguments[0].scrollIntoView(true);", icons.get(k));
+									Thread.sleep(1500);
+
+									WaitFactory.waitForElementClickable(icons.get(k)).click();
+									Thread.sleep(2000); // Time Difference
+														// between Unmarking and
+														// Marking a Favourite
+
+									if (i % 2 == 0) {
 
 										WaitFactory.waitForElements(icons);
-										((JavascriptExecutor) BaseClass.wbDriver).executeScript("arguments[0].scrollIntoView(true);", icons.get(k));
-										 Thread.sleep(1500);
-										 
-										
+										((JavascriptExecutor) BaseClass.wbDriver)
+												.executeScript("arguments[0].scrollIntoView(true);", icons.get(k));
+										Thread.sleep(1500);
+
 										WaitFactory.waitForElementClickable(icons.get(k)).click();
-										Thread.sleep(2000); //Time Difference between Unmarking and Marking a Favourite
-										 
-										if (i % 2 == 0) {
+										WaitFactory.waitForElement(favouriteSavebtn);
+										String dropdownVal = addFavFolder.getText();
+										if (dropdownVal.contains("My Fav Folder")) {
+											GenericFactory.selectByVisibleText(addFavFolder, "My Fav Folder");
+											Thread.sleep(1000);
+											if (ValidationFactory.isElementPresent(favouriteSavebtn))
 
-											WaitFactory.waitForElements(icons);
-											((JavascriptExecutor) BaseClass.wbDriver).executeScript("arguments[0].scrollIntoView(true);", icons.get(k));
-											 Thread.sleep(1500);
-											 
-											WaitFactory.waitForElementClickable(icons.get(k)).click();
-											WaitFactory.waitForElement(favouriteSavebtn);
-											String dropdownVal = addFavFolder.getText();
-											if (dropdownVal.contains("My Fav Folder")) {
-												GenericFactory.selectByVisibleText(addFavFolder, "My Fav Folder");
-												Thread.sleep(1000);
-												if (ValidationFactory.isElementPresent(favouriteSavebtn))
-													
-													WaitFactory.WaitForElementToVisible(favouriteSavebtn);
-												Thread.sleep(2000);
-														WaitFactory.waitForElementClickable(favouriteSavebtn).click();
-														WaitFactory.waitforelementToinvisibile(favouriteSavebtn);
-													
-												WaitFactory.waitForPageLoaded();
-												markedlinkNames.add(linkname);
-												markedLinks.add(TCID);
-												break secondloop;
+												WaitFactory.WaitForElementToVisible(favouriteSavebtn);
+											Thread.sleep(2000);
+											WaitFactory.waitForElementClickable(favouriteSavebtn).click();
+											WaitFactory.waitforelementToinvisibile(favouriteSavebtn);
 
-											} else if (ValidationFactory.isElementPresent(addFavoriteNewfolder)) {
-												addFavoriteNewfolder.sendKeys("My Fav Folder");
-												Thread.sleep(1000);
-												WaitFactory.WaitForTexttoBePresentInElement(addFavoriteNewfolder,"My Fav Folder");
-												if (ValidationFactory.isElementPresent(favouriteSavebtn))
-													
-													WaitFactory.WaitForElementToVisible(favouriteSavebtn);
-												Thread.sleep(2000);
-													WaitFactory.waitForElementClickable(favouriteSavebtn).click();
-													WaitFactory.waitforelementToinvisibile(favouriteSavebtn);
-												WaitFactory.waitForPageLoaded();
-												markedlinkNames.add(linkname);
-												markedLinks.add(TCID);
-												break secondloop;
-											}
+											WaitFactory.waitForPageLoaded();
+											markedlinkNames.add(linkname);
+											markedLinks.add(TCID);
+											break secondloop;
 
-										} else {
-											((JavascriptExecutor) BaseClass.wbDriver).executeScript("arguments[0].scrollIntoView(true);", icons.get(k));
-										 Thread.sleep(500);
-											 WaitFactory.WaitForElementToVisible(icons.get(k));
-											icons.get(k).click();
-											WaitFactory.waitForElements(icons);
-											LogFactory.info("Clicked on the link to mark favourite = " + linkname);
-											WaitFactory.WaitForElementToVisible(favouriteSavebtn);
-											if (ValidationFactory.isElementPresent(favouriteSavebtn)) {
-												Thread.sleep(2000);
-												WaitFactory.waitForElementClickable(favouriteSavebtn).click();
-												WaitFactory.waitforelementToinvisibile(favouriteSavebtn);
-												LogFactory.info("Click On Save Button ");
-												WaitFactory.WaitForElementToVisible(icons.get(k));
-												markedlinkNames.add(linkname);
-												markedLinks.add(TCID);
-												break secondloop;
+										} else if (ValidationFactory.isElementPresent(addFavoriteNewfolder)) {
+											addFavoriteNewfolder.sendKeys("My Fav Folder");
+											Thread.sleep(1000);
+											WaitFactory.WaitForTexttoBePresentInElement(addFavoriteNewfolder,
+													"My Fav Folder");
+											if (ValidationFactory.isElementPresent(favouriteSavebtn))
 
-											}
+												WaitFactory.WaitForElementToVisible(favouriteSavebtn);
+											Thread.sleep(2000);
+											WaitFactory.waitForElementClickable(favouriteSavebtn).click();
+											WaitFactory.waitforelementToinvisibile(favouriteSavebtn);
+											WaitFactory.waitForPageLoaded();
+											markedlinkNames.add(linkname);
+											markedLinks.add(TCID);
+											break secondloop;
+										}
+
+									} else {
+										((JavascriptExecutor) BaseClass.wbDriver)
+												.executeScript("arguments[0].scrollIntoView(true);", icons.get(k));
+										Thread.sleep(500);
+										WaitFactory.WaitForElementToVisible(icons.get(k));
+										icons.get(k).click();
+										WaitFactory.waitForElements(icons);
+										LogFactory.info("Clicked on the link to mark favourite = " + linkname);
+										WaitFactory.WaitForElementToVisible(favouriteSavebtn);
+										if (ValidationFactory.isElementPresent(favouriteSavebtn)) {
+											Thread.sleep(2000);
+											WaitFactory.waitForElementClickable(favouriteSavebtn).click();
+											WaitFactory.waitforelementToinvisibile(favouriteSavebtn);
+											LogFactory.info("Click On Save Button ");
+											WaitFactory.WaitForElementToVisible(icons.get(k));
+											markedlinkNames.add(linkname);
+											markedLinks.add(TCID);
+											break secondloop;
 
 										}
 
-									} else if (IconIsslected.contains("icon fav-star") && linkname.equals(title)) {
-
-										if (i % 2 == 0) {
-											((JavascriptExecutor) BaseClass.wbDriver).executeScript("arguments[0].scrollIntoView(true);", icons.get(k));
-											 Thread.sleep(500);
-											icons.get(k).click();
-											Thread.sleep(1000);
-											WaitFactory.WaitForElementToVisible(favouriteSavebtn);
-											WaitFactory.waitForElement(favouriteSavebtn);
-											String dropdownVal1 = addFavFolder.getText();
-											if (dropdownVal1.contains("My Fav Folder")) {
-												GenericFactory.selectByVisibleText(addFavFolder, "My Fav Folder");
-												if (ValidationFactory.isElementPresent(favouriteSavebtn))
-													Thread.sleep(2000);
-													WaitFactory.waitForElementClickable(favouriteSavebtn).click();
-													WaitFactory.waitforelementToinvisibile(favouriteSavebtn);
-												WaitFactory.waitForPageLoaded();
-												markedlinkNames.add(linkname);
-												markedLinks.add(TCID);
-												break secondloop;
-												
-											} else if (ValidationFactory.isElementPresent(addFavoriteNewfolder)) {
-												addFavoriteNewfolder.sendKeys("My Fav Folder");
-												WaitFactory.WaitForTexttoBePresentInElement(addFavoriteNewfolder,"My Fav Folder");
-												
-												if (ValidationFactory.isElementPresent(favouriteSavebtn))
-													WaitFactory.WaitForElementToVisible(favouriteSavebtn);
-												Thread.sleep(2000);
-													WaitFactory.waitForElementClickable(favouriteSavebtn).click();
-													WaitFactory.waitforelementToinvisibile(favouriteSavebtn);
-												WaitFactory.waitForPageLoaded();
-												markedlinkNames.add(linkname);
-												markedLinks.add(TCID);
-												break secondloop;
-											}
-
-										} else {
-											WaitFactory.waitForElements(icons);
-											((JavascriptExecutor) BaseClass.wbDriver).executeScript("arguments[0].scrollIntoView(true);", icons.get(k));
-											Thread.sleep(1000);
-											icons.get(k).click();
-											Thread.sleep(1000);
-											LogFactory.info("Clicked on the link to mark favourite = " + linkname);
-											WaitFactory.WaitForElementToVisible(favouriteSavebtn);
-											if (favouriteSavebtn.isDisplayed()) {
-												Thread.sleep(2000);
-												WaitFactory.waitForElementClickable(favouriteSavebtn).click();
-												WaitFactory.waitforelementToinvisibile(favouriteSavebtn);
-												LogFactory.info("Click On Save Button ");
-												WaitFactory.WaitForElementToVisible(icons.get(k));
-												markedlinkNames.add(linkname);
-												markedLinks.add(TCID);
-												break secondloop;
-											}
-
-										}
 									}
 
+								} else if (IconIsslected.contains("icon fav-star") && linkname.equals(title)) {
+
+									if (i % 2 == 0) {
+										((JavascriptExecutor) BaseClass.wbDriver)
+												.executeScript("arguments[0].scrollIntoView(true);", icons.get(k));
+										Thread.sleep(500);
+										icons.get(k).click();
+										Thread.sleep(1000);
+										WaitFactory.WaitForElementToVisible(favouriteSavebtn);
+										WaitFactory.waitForElement(favouriteSavebtn);
+										String dropdownVal1 = addFavFolder.getText();
+										if (dropdownVal1.contains("My Fav Folder")) {
+											GenericFactory.selectByVisibleText(addFavFolder, "My Fav Folder");
+											if (ValidationFactory.isElementPresent(favouriteSavebtn))
+												Thread.sleep(2000);
+											WaitFactory.waitForElementClickable(favouriteSavebtn).click();
+											WaitFactory.waitforelementToinvisibile(favouriteSavebtn);
+											WaitFactory.waitForPageLoaded();
+											markedlinkNames.add(linkname);
+											markedLinks.add(TCID);
+											break secondloop;
+
+										} else if (ValidationFactory.isElementPresent(addFavoriteNewfolder)) {
+											addFavoriteNewfolder.sendKeys("My Fav Folder");
+											WaitFactory.WaitForTexttoBePresentInElement(addFavoriteNewfolder,
+													"My Fav Folder");
+
+											if (ValidationFactory.isElementPresent(favouriteSavebtn))
+												WaitFactory.WaitForElementToVisible(favouriteSavebtn);
+											Thread.sleep(2000);
+											WaitFactory.waitForElementClickable(favouriteSavebtn).click();
+											WaitFactory.waitforelementToinvisibile(favouriteSavebtn);
+											WaitFactory.waitForPageLoaded();
+											markedlinkNames.add(linkname);
+											markedLinks.add(TCID);
+											break secondloop;
+										}
+
+									} else {
+										WaitFactory.waitForElements(icons);
+										((JavascriptExecutor) BaseClass.wbDriver)
+												.executeScript("arguments[0].scrollIntoView(true);", icons.get(k));
+										Thread.sleep(1000);
+										icons.get(k).click();
+										Thread.sleep(1000);
+										LogFactory.info("Clicked on the link to mark favourite = " + linkname);
+										WaitFactory.WaitForElementToVisible(favouriteSavebtn);
+										if (favouriteSavebtn.isDisplayed()) {
+											Thread.sleep(2000);
+											WaitFactory.waitForElementClickable(favouriteSavebtn).click();
+											WaitFactory.waitforelementToinvisibile(favouriteSavebtn);
+											LogFactory.info("Click On Save Button ");
+											WaitFactory.WaitForElementToVisible(icons.get(k));
+											markedlinkNames.add(linkname);
+											markedLinks.add(TCID);
+											break secondloop;
+										}
+
+									}
 								}
 
 							}
+
 						}
 					}
 				}
 			}
+		}
 
-			LogFactory.info("Total marked links on link portlet are: " + markedlinkNames);
-			if (ValidationFactory.isElementPresent(favouriteSavebtn)) {
-				WaitFactory.waitForElementClickable(favouriteSavebtn).click();
-			}
-			GenericFactory.navigateToHomePage();
-			BrowserFactory.RefreshBrowser();
-			if (markedLinks.size() > 0) {
+		LogFactory.info("Total marked links on link portlet are: " + markedlinkNames);
+		if (ValidationFactory.isElementPresent(favouriteSavebtn)) {
+			WaitFactory.waitForElementClickable(favouriteSavebtn).click();
+		}
+		GenericFactory.navigateToHomePage();
+		BrowserFactory.RefreshBrowser();
+		if (markedLinks.size() > 0) {
 
-				ReportFactory.reporterOutput("TC01_Favourite", "To mark the titles as Favourites",
-						"WCM ID's selected to mark as Favoutits" + markedLinks,
-						"Links/Titles marked are from the department" + departmentNames,
-						"Marked Favourites are : " + markedlinkNames, "Pass");
-			} else {
-				ReportFactory.reporterOutput("TC01_Favourite", "To mark the titles as Favourites", "NA", "NA",
-						"No titles selected to mark as favourite", "Pass");
-			}
+			ReportFactory.reporterOutput("TC01_Favourite", "To mark the titles as Favourites",
+					"WCM ID's selected to mark as Favoutits" + markedLinks,
+					"Links/Titles marked are from the department" + departmentNames,
+					"Marked Favourites are : " + markedlinkNames, "Pass");
+		} else {
+			ReportFactory.reporterOutput("TC01_Favourite", "To mark the titles as Favourites", "NA", "NA",
+					"No titles selected to mark as favourite", "Pass");
+		}
 
-			
-		
-		
-		/*catch (Exception e) {
-			System.out.println(e.getMessage());
-		}*/
-		
+		/*
+		 * catch (Exception e) { System.out.println(e.getMessage()); }
+		 */
+
 	}
+
 	/**
-	 * @author Shubham Raj This method is used to fetch all the folders present on
-	 *         the Dealer Path homepage @ exception Exception e
+	 * @author Shubham Raj This method is used to fetch all the folders present
+	 *         on the Dealer Path homepage @ exception Exception e
 	 */
 
 	public static ArrayList<String> ToGetFavouritesFolder_HomePage() {
@@ -453,8 +470,8 @@ public class Favourites_POF extends BaseClass {
 	// ***********************************END ***************************
 
 	/**
-	 * @author Shubham Raj This method is used to fetch all the folders present on
-	 *         the Quick Modal window @ exception Exception e
+	 * @author Shubham Raj This method is used to fetch all the folders present
+	 *         on the Quick Modal window @ exception Exception e
 	 */
 	public static ArrayList<String> TOGetFolderListQuickModal() {
 		ArrayList<String> QuickFolderNameList = new ArrayList<String>();
@@ -523,12 +540,12 @@ public class Favourites_POF extends BaseClass {
 	// ***************************************************************
 
 	/**
-	 * @author Shubham Raj This method is used to delete the favourite folder from
-	 *         the home page and verifies that the deleted folder should not present
-	 *         on Quick Modal window
+	 * @author Shubham Raj This method is used to delete the favourite folder
+	 *         from the home page and verifies that the deleted folder should
+	 *         not present on Quick Modal window
 	 * @param param1
-	 *            Describe the name of the folder needs to be deleted @ exception
-	 * Exception e
+	 *            Describe the name of the folder needs to be deleted @
+	 *            exception Exception e
 	 */
 
 	public static void ToDeleteFavFolder(String folderName) throws Exception {
@@ -548,7 +565,6 @@ public class Favourites_POF extends BaseClass {
 
 					if (actualFolerName.equals(folderName)) {
 
-						System.out.println("test");
 						@SuppressWarnings("unused")
 
 						// to select the web element of delete btn
@@ -640,8 +656,8 @@ public class Favourites_POF extends BaseClass {
 
 	/**
 	 * @author Shubham Raj This method is used to fetch the marked link from the
-	 *         selected department and stores it into a List of String @ exception
-	 * Exception e
+	 *         selected department and stores it into a List of String @
+	 *         exception Exception e
 	 */
 
 	public static ArrayList<String> getDepartmentFavouriteslink() {
@@ -668,7 +684,8 @@ public class Favourites_POF extends BaseClass {
 
 	/**
 	 * @author Shubham Raj This method is used to fetch the marked link from the
-	 *         Quick modal window and stores it into List @ exception Exception e
+	 *         Quick modal window and stores it into List @ exception Exception
+	 *         e
 	 */
 
 	public static ArrayList<String> ToGetMarkedFavouriteslinkQuickModal() throws Exception {
@@ -706,11 +723,11 @@ public class Favourites_POF extends BaseClass {
 	 * @author Shubham Raj This method is used to mark the favourite links if
 	 *         present on specific department
 	 * @param param1
-	 *            Describe the name of the department from which fav link needs to
-	 *            be selected
+	 *            Describe the name of the department from which fav link needs
+	 *            to be selected
 	 * @param param2
-	 *            Describe the name of the link to be selected @ exception Exception
-	 * e
+	 *            Describe the name of the link to be selected @ exception
+	 *            Exception e
 	 */
 
 	public static String toMarkLinkFavourite(String departmentName, String titleLink) throws Exception {
@@ -787,14 +804,14 @@ public class Favourites_POF extends BaseClass {
 	// **********************************************************************************************************
 
 	/**
-	 * @author Shubham Raj This case describe that folder should be created with the
-	 *         folder name given in Excel, if folder name is 'NA' it will create a
-	 *         default folder named 'Test Folder'
+	 * @author Shubham Raj This case describe that folder should be created with
+	 *         the folder name given in Excel, if folder name is 'NA' it will
+	 *         create a default folder named 'Test Folder'
 	 * @param param1
 	 *            Describe the test case ID to be executed from the excel sheet
 	 * @param param1
-	 *            Describe the name of the folder given by user in Test data sheet @
-	 *            exception Exception e
+	 *            Describe the name of the folder given by user in Test data
+	 *            sheet @ exception Exception e
 	 */
 
 	public static void verifyCreateFolder(String TCID, String folderName) throws Throwable {
@@ -824,7 +841,7 @@ public class Favourites_POF extends BaseClass {
 			LogFactory.info("Click On Add Folder Button");
 			// Enter Folder Name
 			addFolderNametxtbox.sendKeys(folderName);
-			WaitFactory.WaitForTexttoBePresentInElement(addFolderNametxtbox,folderName);
+			WaitFactory.WaitForTexttoBePresentInElement(addFolderNametxtbox, folderName);
 			LogFactory.info("Entered Folder Name " + folderName);
 			WaitFactory.WaitForElementToVisible(addbtn);
 			WaitFactory.waitForElementClickable(addbtn).click();
@@ -887,8 +904,9 @@ public class Favourites_POF extends BaseClass {
 	}
 
 	/**
-	 * @author Shubham Raj This case describe that created favourite folder should
-	 *         be deleted from the Homepage as well as from the Quick modal window
+	 * @author Shubham Raj This case describe that created favourite folder
+	 *         should be deleted from the Homepage as well as from the Quick
+	 *         modal window
 	 * @param param1
 	 *            Describe the test case ID to be executed from the excel sheet
 	 * @param param1
@@ -976,12 +994,12 @@ public class Favourites_POF extends BaseClass {
 	}
 
 	/**
-	 * @author Shubham Raj This case describes that user should be able to deleted a
-	 *         favourite from link portlet and it should not be further displayed on
-	 *         Homepage and Quick modal window
+	 * @author Shubham Raj This case describes that user should be able to
+	 *         deleted a favourite from link portlet and it should not be
+	 *         further displayed on Homepage and Quick modal window
 	 * @param param1
-	 *            Describe the test case ID to be executed from the excel sheet @
-	 *            exception Exception e
+	 *            Describe the test case ID to be executed from the excel
+	 *            sheet @ exception Exception e
 	 */
 
 	public static void verifyRemoveFavouriteLink(String TCID) throws Throwable {
@@ -1001,7 +1019,8 @@ public class Favourites_POF extends BaseClass {
 		List<String> deletedLink_list = new ArrayList<String>();
 
 		try {
-			WaitFactory.waitForElement(BaseClass.wbDriver.findElement(By.xpath("//input[@class='filter-box fav-filter']")));
+			WaitFactory.waitForElement(
+					BaseClass.wbDriver.findElement(By.xpath("//input[@class='filter-box fav-filter']")));
 			ValidationFactory.isElementPresent(By.xpath("//input[@class='filter-box fav-filter']"));
 
 			JavascriptExecutor js1 = (JavascriptExecutor) wbDriver;
@@ -1028,7 +1047,7 @@ public class Favourites_POF extends BaseClass {
 							System.out.println("test");
 						}
 						departmentNames.add(department1);
-						
+
 						List<WebElement> allHeaderNamesAndLinks = BaseClass.wbDriver.findElements(By.xpath(
 								".//*[@id='links-target']/div[not(@class='links-no-results') and not(@class='empty-link-portlet-container')]"));
 						secondloop: for (int j = 0; j < allHeaderNamesAndLinks.size(); j++) {
@@ -1037,30 +1056,31 @@ public class Favourites_POF extends BaseClass {
 							List<WebElement> links = null;
 
 							if (subDepartmentLang.equals(headerName[0])) {
-								
+
 								List<WebElement> icons = null;
 
 								if (!ThirdlevelFolder.equals("NA")) {
 									WaitFactory.waitForElements(thirdLevelLinks.findElements(By
 											.xpath("//div[contains(@parent-folder,'" + ThirdlevelFolder + "')]/span")));
-									
+
 									icons = thirdLevelLinks.findElements(By
 											.xpath("//div[contains(@parent-folder,'" + ThirdlevelFolder + "')]/span"));
-									
-									WaitFactory.waitForElements(thirdLevelLinks.findElements(By.xpath("//div[contains(@parent-folder,'"
-											+ ThirdlevelFolder + "')]/span/following-sibling::a")));
+
+									WaitFactory.waitForElements(
+											thirdLevelLinks.findElements(By.xpath("//div[contains(@parent-folder,'"
+													+ ThirdlevelFolder + "')]/span/following-sibling::a")));
 									links = thirdLevelLinks.findElements(By.xpath("//div[contains(@parent-folder,'"
 											+ ThirdlevelFolder + "')]/span/following-sibling::a"));
 								} else {
-									WaitFactory.waitForElements(thirdLevelLinks.findElements(By.xpath("//h5[contains(text(),'"
-											+ subDepartmentName
-											+ "')]/..//div[@class='link-group']/div/div[@class='link-item wrap']/span")));
+									WaitFactory.waitForElements(thirdLevelLinks
+											.findElements(By.xpath("//h5[contains(text(),'" + subDepartmentName
+													+ "')]/..//div[@class='link-group']/div/div[@class='link-item wrap']/span")));
 									icons = thirdLevelLinks.findElements(By.xpath("//h5[contains(text(),'"
 											+ subDepartmentName
 											+ "')]/..//div[@class='link-group']/div/div[@class='link-item wrap']/span"));
-									WaitFactory.waitForElements(thirdLevelLinks.findElements(By.xpath("//h5[contains(text(),'"
-											+ subDepartmentName
-											+ "')]/..//div[@class='link-group']/div/div[@class='link-item wrap']/a")));
+									WaitFactory.waitForElements(thirdLevelLinks
+											.findElements(By.xpath("//h5[contains(text(),'" + subDepartmentName
+													+ "')]/..//div[@class='link-group']/div/div[@class='link-item wrap']/a")));
 									links = thirdLevelLinks.findElements(By.xpath("//h5[contains(text(),'"
 											+ subDepartmentName
 											+ "')]/..//div[@class='link-group']/div/div[@class='link-item wrap']/a"));
@@ -1080,9 +1100,10 @@ public class Favourites_POF extends BaseClass {
 
 										WaitFactory.waitForElements(icons);
 										WaitFactory.WaitForElementToVisible(icons.get(k));
-										((JavascriptExecutor) BaseClass.wbDriver).executeScript("arguments[0].scrollIntoView(true);", icons.get(k));
+										((JavascriptExecutor) BaseClass.wbDriver)
+												.executeScript("arguments[0].scrollIntoView(true);", icons.get(k));
 										Thread.sleep(1500);
-										
+
 										WaitFactory.waitForElementClickable(icons.get(k)).click();
 										Thread.sleep(1500);
 										DeletedLink_name = links.get(k).getText().toString().trim();
@@ -1100,19 +1121,22 @@ public class Favourites_POF extends BaseClass {
 			}
 			GenericFactory.navigateToHomePage();
 			WaitFactory.waitForPageLoaded();
-			System.out.println("test");
+			Thread.sleep(3000);
 			LogFactory.info("Deleted links from link portlet are: " + deletedLink_list);
 			WebElement star = BaseClass.wbDriver.findElement(By.xpath("//div[@id='js-favorites']"));
-			WaitFactory.waitForElementClickable(star).click();
+			WaitFactory.WaitForElementToVisible(star);
 
+			WaitFactory.waitForElementClickable(star).click();
+			Thread.sleep(1500);
 			List<WebElement> Quick_icons_name = BaseClass.wbDriver.findElements(By.xpath(
 					"//div[@class='link-group']//span[@class='icon fav-star is-selected']/following-sibling::a"));
-			
+
 			if (ValidationFactory.isElementPresent(By.xpath(
 					"//div[@class='link-group-container']//div[@class='link-item folder-space' and contains(.,'My Fav Folder')]//span[@class='icon folder closed']"))) {
 
-				WaitFactory.waitForElementClickable(BaseClass.wbDriver.findElement(By.xpath(
-						"//div[@class='link-group-container']//div[@class='link-item folder-space' and contains(.,'My Fav Folder')]//span[@class='icon folder closed']")))
+				WaitFactory
+						.waitForElementClickable(BaseClass.wbDriver.findElement(By
+								.xpath("//div[@class='link-group-container']//div[@class='link-item folder-space' and contains(.,'My Fav Folder')]//span[@class='icon folder closed']")))
 						.click();
 			}
 			WaitFactory.waitForElements(Quick_icons_name);
@@ -1130,19 +1154,18 @@ public class Favourites_POF extends BaseClass {
 						"Favourite should get removed and should no more display on quick favourite modal window page",
 						"Links successfully removed from <b>Quick favourite modal window page</b>", "PASS");
 
-			} else if(QuickLinks.contains(deletedLink_list) && !QuickLinks.isEmpty() && !deletedLink_list.isEmpty()){
+			} else if (QuickLinks.contains(deletedLink_list) && !QuickLinks.isEmpty() && !deletedLink_list.isEmpty()) {
 				ReportFactory.reporterOutput(TCID, "verify Remove Favourite Link from Link portlet page ",
 						"Selected links are not being removed: " + deletedLink_list.toString(),
 						"Favourite should be removed and should no more display on quick favourite modal window page",
 						"Links are not being removed from <b>quick favourite modal window page</b>", "FAIL");
-			}
-			else if(deletedLink_list.isEmpty()) {
+			} else if (deletedLink_list.isEmpty()) {
 				ReportFactory.reporterOutput(TCID, "verify Remove Favourite Link from Link portlet page ",
 						"Favourite Links are not present " + deletedLink_list.toString(),
 						"Favourite should be removed and should no more display on quick favourite modal window page",
 						"No sufficient favourites are present to execute  this test case</b>", "PASS");
 			}
-			
+
 			BrowserFactory.RefreshBrowser();
 			LogFactory.info("The deleted links from Quick modal windows are: " + deletedLink_list);
 			JavascriptExecutor js = (JavascriptExecutor) BaseClass.wbDriver;
@@ -1151,8 +1174,9 @@ public class Favourites_POF extends BaseClass {
 			if (ValidationFactory.isElementPresent(By.xpath(
 					"//div[@class='fav-link-body' and contains(.,'My Fav Folder')]//span[@class='icon folder  closed']"))) {
 
-				WaitFactory.waitForElementClickable(BaseClass.wbDriver.findElement(By.xpath(
-						"//div[@class='fav-link-body' and contains(.,'My Fav Folder')]//span[@class='icon folder  closed']")))
+				WaitFactory
+						.waitForElementClickable(BaseClass.wbDriver.findElement(By
+								.xpath("//div[@class='fav-link-body' and contains(.,'My Fav Folder')]//span[@class='icon folder  closed']")))
 						.click();
 			}
 			List<WebElement> homepageLinks_name = BaseClass.wbDriver.findElements(By.xpath(
@@ -1171,15 +1195,14 @@ public class Favourites_POF extends BaseClass {
 						"Favourite should get removed and should no more display on Favourite portlet on homepage",
 						"Links successfully removed from <b>Favourite portlet on homepage</b>", "PASS");
 
-			} else if(Homepage_link_names.contains(deletedLink_list) && !Homepage_link_names.isEmpty()
+			} else if (Homepage_link_names.contains(deletedLink_list) && !Homepage_link_names.isEmpty()
 					&& !deletedLink_list.isEmpty()) {
 				ReportFactory.reporterOutput(TCID, "verify Remove Favourite Link from Link portlet page ",
 						"Selected links are not being removed from Favourite portlet on homepage: "
 								+ deletedLink_list.toString(),
 						"Favourite should be removed and should no more display on Favourite portlet on homepage",
 						"Links are not being removed from <b>Favourite portlet on homepage</b>", "FAIL");
-			}
-			else if(deletedLink_list.isEmpty()) {
+			} else if (deletedLink_list.isEmpty()) {
 				ReportFactory.reporterOutput(TCID, "verify Remove Favourite Link from Link portlet page ",
 						"Favourite Links are not present " + deletedLink_list.toString(),
 						"Favourite should be removed and should no more display on quick Favourite portlet on homepage",
@@ -1196,11 +1219,11 @@ public class Favourites_POF extends BaseClass {
 	// **********************************************************************************************************
 
 	/**
-	 * @author Shubham Raj This case describes moving/dragging the favourite folder
-	 *         from the top position to last
+	 * @author Shubham Raj This case describes moving/dragging the favourite
+	 *         folder from the top position to last
 	 * @param param1
-	 *            Describe the test case ID to be executed from the excel sheet @
-	 *            exception Exception e
+	 *            Describe the test case ID to be executed from the excel
+	 *            sheet @ exception Exception e
 	 */
 
 	public static void verifyMovingFavouriteFolderandLink(String TCID) throws Throwable {
@@ -1283,11 +1306,12 @@ public class Favourites_POF extends BaseClass {
 
 	// [ P29-- Verify Collapsing and Expanding a folder on Favourites portlet. ]
 	/**
-	 * @author Shubham Raj This case describes that upon clicking on the favourite
-	 *         folder it should expand and should show the marked links
+	 * @author Shubham Raj This case describes that upon clicking on the
+	 *         favourite folder it should expand and should show the marked
+	 *         links
 	 * @param param1
-	 *            Describe the test case ID to be executed from the excel sheet @
-	 *            exception Exception e
+	 *            Describe the test case ID to be executed from the excel
+	 *            sheet @ exception Exception e
 	 */
 
 	public static void verifyExpandAndCollapseFavroiteFolder(String TCID) throws Throwable {
@@ -1385,8 +1409,8 @@ public class Favourites_POF extends BaseClass {
 
 	/**
 	 * @author Shubham Raj This case describes that Quick Favorite modal window
-	 *         should be available on homepage, department and all levels of index
-	 *         pages as applicable
+	 *         should be available on homepage, department and all levels of
+	 *         index pages as applicable
 	 * @param param1
 	 *            Describe the test case ID to be executed from the excel sheet
 	 */
@@ -1399,7 +1423,7 @@ public class Favourites_POF extends BaseClass {
 		List<WebElement> departmentListCount;
 		String departmentName = "";
 		try {
-			
+
 			favouriteListHomePage_QuickModal = ToGetMarkedFavouriteslinkQuickModal();
 			departmentListCount = ActivedepartmentList;
 			for (int i = 1; i < departmentListCount.size(); i++) {
@@ -1407,12 +1431,12 @@ public class Favourites_POF extends BaseClass {
 
 				if (GenericFactory.toClickonDeptOnFavourite(departmentName)) {
 					QuickMOdalfavouriteListOfDepartment = ToGetMarkedFavouriteslinkQuickModal();
-					
+
 					if ((favouriteListHomePage_QuickModal.equals(QuickMOdalfavouriteListOfDepartment))) {
 						Deptflag = "Pass";
 						Deptresult = "Links under Favourite Quick link Modal on Home Page and on Departmnet page are same  ";
 						break;
-						
+
 					}
 
 					else {
@@ -1425,10 +1449,12 @@ public class Favourites_POF extends BaseClass {
 
 				}
 			}
-			//GenericFactory.navigateToIndexPage(userWCMContent);
-			ReportFactory.reporterOutput(TCID, "Verify quick favourite link Modal and on Quick Link favourite Modal Departmnet Page are same or not",
-					"NA", "Favourite link under Favourite Quick link Modal on Home Page and On Departmnet page must be same", Deptresult,
-					Deptflag);
+			// GenericFactory.navigateToIndexPage(userWCMContent);
+			ReportFactory.reporterOutput(TCID,
+					"Verify quick favourite link Modal and on Quick Link favourite Modal Departmnet Page are same or not",
+					"NA",
+					"Favourite link under Favourite Quick link Modal on Home Page and On Departmnet page must be same",
+					Deptresult, Deptflag);
 			GenericFactory.navigateToHomePage();
 			WaitFactory.waitForPageLoaded();
 		} catch (Exception e) {
@@ -1443,9 +1469,9 @@ public class Favourites_POF extends BaseClass {
 	}
 
 	/**
-	 * @author Shubham Raj This case describes that user type some random text in
-	 *         the Filter text box that does not exist in any folder name nor any
-	 *         favorite link.
+	 * @author Shubham Raj This case describes that user type some random text
+	 *         in the Filter text box that does not exist in any folder name nor
+	 *         any favorite link.
 	 * @param param1
 	 *            Describe the test case ID to be executed from the excel sheet
 	 * @param param2
@@ -1477,8 +1503,8 @@ public class Favourites_POF extends BaseClass {
 				}
 				FavFilter.click();
 				FavFilter.sendKeys(StrInputvalue);
-				
-				WaitFactory.WaitForTexttoBePresentInElement(FavFilter,StrInputvalue);
+
+				WaitFactory.WaitForTexttoBePresentInElement(FavFilter, StrInputvalue);
 
 				Thread.sleep(1000);
 				FavlinkListHomepage = ToGetMarkedFavouriteslink_HomePage().toString();
@@ -1500,7 +1526,7 @@ public class Favourites_POF extends BaseClass {
 
 				FavFilter.click();
 				FavFilter.sendKeys(StrInputvalue);
-				WaitFactory.WaitForTexttoBePresentInElement(FavFilter,StrInputvalue);
+				WaitFactory.WaitForTexttoBePresentInElement(FavFilter, StrInputvalue);
 
 				Thread.sleep(1000);
 
@@ -1509,8 +1535,10 @@ public class Favourites_POF extends BaseClass {
 				List<WebElement> WebFavFolderListHomepage = BaseClass.wbDriver
 						.findElements(By.xpath(".//*[@class='fav-link-item folder']"));
 				/*
-				 * FavlinkListHomepage = ToGetMarkedFavouriteslink_HomePage().toString();
-				 * FavFolderListHomepage = ToGetFavouritesFolder_HomePage().toString();
+				 * FavlinkListHomepage =
+				 * ToGetMarkedFavouriteslink_HomePage().toString();
+				 * FavFolderListHomepage =
+				 * ToGetFavouritesFolder_HomePage().toString();
 				 */
 				if (WebFavlinkListHomepage.size() > 0 || WebFavFolderListHomepage.size() > 0) {
 					flag = "Fail";
@@ -1543,8 +1571,8 @@ public class Favourites_POF extends BaseClass {
 	 * @author Shubham Raj This case describe that favourites will be displayed
 	 *         irrespective of languages selected
 	 * @param param1
-	 *            Describe the test case ID to be executed from the excel sheet @
-	 *            exception Exception e
+	 *            Describe the test case ID to be executed from the excel
+	 *            sheet @ exception Exception e
 	 */
 
 	public static void verifyFavouritesDifferentLanguagesOnHomepage(String TCID) throws Throwable {
@@ -1673,8 +1701,8 @@ public class Favourites_POF extends BaseClass {
 	 *            Describe the Department name(s) from where favourite should be
 	 *            selected
 	 * @param param3
-	 *            Describe all the marked links selected from different department @
-	 *            exception Throwable
+	 *            Describe all the marked links selected from different
+	 *            department @ exception Throwable
 	 */
 
 	public static void VerifyFavouriteForNonPreffredDept(String TCID, List<String> deptName, List<String> Favlink)
@@ -1696,7 +1724,8 @@ public class Favourites_POF extends BaseClass {
 			GenericFactory.checkDepartmentMyPreference();
 
 			/*
-			 * WaitFactory .waitforelementToBeClickable(BaseClass.wbDriver.findElement(By.
+			 * WaitFactory
+			 * .waitforelementToBeClickable(BaseClass.wbDriver.findElement(By.
 			 * xpath("//*[@id='preference-save']"))) .click(); WaitFactory
 			 * .waitforelementToinvisibile(BaseClass.wbDriver.findElement(By.
 			 * xpath("//*[@id='preference-save']")));
@@ -1726,8 +1755,9 @@ public class Favourites_POF extends BaseClass {
 
 			}
 			/*
-			 * } else { flag = "Pass"; result = "The given link test data is blank  " +
-			 * Favlink; LogFactory.info(result); }
+			 * } else { flag = "Pass"; result =
+			 * "The given link test data is blank  " + Favlink;
+			 * LogFactory.info(result); }
 			 */
 
 			ReportFactory.reporterOutput(TCID, "Verify favorites for non-preferred departments ",
@@ -1755,13 +1785,14 @@ public class Favourites_POF extends BaseClass {
 	 *         present in Dealer info sheet
 	 * @param param1
 	 *            Describe the RACFID of the user to be impersonated @ exception
-	 * Exception e
+	 *            Exception e
 	 */
 	public static boolean impersonateFavUser(String RACFID) throws Throwable {
 		try {
 
 			BaseClass.errorUserFound = false;
-			if (!GenericFactory.isNull(RACFID)) {System.out.println("test");
+			if (!GenericFactory.isNull(RACFID)) {
+				System.out.println("test");
 				if (ValidationFactory
 						.isElementPresent(WaitFactory.explicitWaitByXpath("//b[text() = 'Admin Links']"))) {
 					// BrowserFactory.RefreshBrowser();
@@ -1772,10 +1803,9 @@ public class Favourites_POF extends BaseClass {
 
 					// WaitFactory.waitforelementToinvisibile(ValidationFactory.getElementIfPresent(By.xpath(".//*[@id='analyseUserId']")));
 					WebElement ele = ValidationFactory.getElementIfPresent(By.xpath(".//*[@id='analyseUserId']"));
-							ele.sendKeys(RACFID);
-					
-					WaitFactory.WaitForTexttoBePresentInElement(ele,RACFID);
+					ele.sendKeys(RACFID);
 
+					WaitFactory.WaitForTexttoBePresentInElement(ele, RACFID);
 
 					LogFactory.info("Click on Analyze Button.....");
 					ValidationFactory.getElementIfPresent(By.xpath(".//*[@id='analyzeUserButton']")).click();
@@ -1820,7 +1850,7 @@ public class Favourites_POF extends BaseClass {
 	 * @author Shubham Raj This method is to analyze the impersonated user
 	 * @param param1
 	 *            Describe the RACFID of the user to be analyzed @ exception
-	 * Exception e
+	 *            Exception e
 	 */
 
 	public static void AnalyzeFavUserInformation(String strRACFID) {
@@ -1864,14 +1894,15 @@ public class Favourites_POF extends BaseClass {
 
 	/**
 	 * @author Shubham Raj This case describes that Favorites from one dealer to
-	 *         another dealer should be copied only if those links are accessible
-	 *         (in terms of country tagging, product type tagging, additional RACF
-	 *         group tagging, department access) to the dealer who is copying them.
+	 *         another dealer should be copied only if those links are
+	 *         accessible (in terms of country tagging, product type tagging,
+	 *         additional RACF group tagging, department access) to the dealer
+	 *         who is copying them.
 	 * @param param1
 	 *            Describe the test case ID to be executed from the excel sheet
 	 * @param param2
-	 *            Describe the RACFID of the dealer/employee whose favourites need
-	 *            to be copied @ exception Exception e
+	 *            Describe the RACFID of the dealer/employee whose favourites
+	 *            need to be copied @ exception Exception e
 	 */
 
 	public static void verifyCopyFavouriteForDealer(String TCID, String RACFID) throws Throwable {
@@ -1917,7 +1948,7 @@ public class Favourites_POF extends BaseClass {
 			String dep_result = "";
 			LinkedHashMap rowdata = null;
 			String FinalResult = "";
-			
+
 			ExcelFactory.getUserWCMContentnew(RACFID);
 			if (flagDealerType != "NA") {
 
@@ -1926,7 +1957,6 @@ public class Favourites_POF extends BaseClass {
 						JavascriptExecutor js = (JavascriptExecutor) BaseClass.wbDriver;
 						js.executeScript("window.scrollBy(0,500)");
 						BaseClass.wbDriver.findElement(By.xpath("//div[@class='section-header-actions']/a")).click();
-						
 
 						JavascriptExecutor js1 = (JavascriptExecutor) BaseClass.wbDriver;
 						js1.executeScript("favActionsCopyFavorites();");
@@ -1940,8 +1970,8 @@ public class Favourites_POF extends BaseClass {
 							WebElement test = ValidationFactory
 									.getElementIfPresent(By.xpath(".//*[@class='form-group']/div/input"));
 							test.sendKeys(strUserRACFID);
-							WaitFactory.WaitForTexttoBePresentInElement(test,strUserRACFID);
-							
+							WaitFactory.WaitForTexttoBePresentInElement(test, strUserRACFID);
+
 							LogFactory.info("Entered " + BaseClass.strUserRACFID + "to copy favourites");
 							WaitFactory.waitForElementClickable(
 									BaseClass.wbDriver.findElement(By.xpath("//button[@id='copy-favorites-copy']")))
@@ -1949,9 +1979,12 @@ public class Favourites_POF extends BaseClass {
 
 							/*
 							 * if(invalidEmployee.isDisplayed()){ String error =
-							 * invalidEmployee.getText().toString().trim(); LogFactory.info(
-							 * error+" is being displayed, Please check the user in Test data sheet" );
-							 * WaitFactory.waitForElementClickable(cancel_btn). click(); }
+							 * invalidEmployee.getText().toString().trim();
+							 * LogFactory.info(
+							 * error+" is being displayed, Please check the user in Test data sheet"
+							 * );
+							 * WaitFactory.waitForElementClickable(cancel_btn).
+							 * click(); }
 							 */
 						}
 					}
@@ -1967,10 +2000,19 @@ public class Favourites_POF extends BaseClass {
 
 					if (ValidationFactory.isElementPresent(By.xpath(
 							"//div[@class='fav-link-body' and contains(.,'My Fav Folder')]//span[@class='icon folder  closed']"))) {
-						WaitFactory.waitForElementClickable(BaseClass.wbDriver.findElement(By.xpath(
-								"//div[@class='fav-link-body' and contains(.,'My Fav Folder')]//span[@class='icon folder  closed']")))
+						WaitFactory
+								.waitForElementClickable(BaseClass.wbDriver.findElement(By
+										.xpath("//div[@class='fav-link-body' and contains(.,'My Fav Folder')]//span[@class='icon folder  closed']")))
+								.click();
+					} else if (ValidationFactory.isElementPresent(By.xpath(
+							"//div[@class='fav-link-body' and contains(.,'My Fav Folder')]//span[@class='icon folder closed']"))) {
+
+						WaitFactory
+								.waitForElementClickable(BaseClass.wbDriver.findElement(By
+										.xpath("//div[@class='fav-link-body' and contains(.,'My Fav Folder')]//span[@class='icon folder closed']")))
 								.click();
 					}
+					Thread.sleep(3000);
 					List<WebElement> homepageLinks_name = BaseClass.wbDriver.findElements(By.xpath(
 							"//div[@class='fav-link-body']//span[@class='icon fav-star is-selected']//following-sibling::a"));
 					for (int m = 0; m < homepageLinks_name.size(); m++) {
@@ -1994,7 +2036,6 @@ public class Favourites_POF extends BaseClass {
 						productFlag = GenericFactory.userAndWCMProductTypeComparison(DealerProduct_type_2ndUser,
 								Product_type);
 						racfFlag = GenericFactory.verifyRacfGroupMatched(RACFGroup_2ndUser);
-						
 
 						if (Department_2ndUser.contains(department_WCM)) {
 							department_new_flag = true;
@@ -2075,25 +2116,26 @@ public class Favourites_POF extends BaseClass {
 					}
 				}
 
-				
-				if ( !Allflag_title_result.isEmpty() && !title_result.isEmpty() && !country_result.isEmpty() && !product_result.isEmpty()) {
-					
-			
+				/*
+				 * if ( !Allflag_title_result.isEmpty() &&
+				 * title_result.isEmpty() && country_result.isEmpty() &&
+				 * product_result.isEmpty()) {
+				 * 
+				 */
 				FinalResult = Allflag_title_result + "</br> " + title_result + "</br> " + country_result + "</br> "
 						+ product_result + "";
-				}
-				else {
-					resultflag="Fail";
-					FinalResult = " Looks like nothing has been copied reason could be Invalid 2nd User, please check all mappings check the 2nd dealer/employee and update and retry ";
-				}
-				
+				// }
+				/*
+				 * else { resultflag="Fail"; FinalResult =
+				 * " Looks like nothing has been copied reason could be Invalid 2nd User, please check all mappings check the 2nd dealer/employee and update and retry "
+				 * ; }
+				 */
 				ReportFactory.reporterOutput(TCID, "Copy favourites from Employee/Dealer",
 						"Favourites copied from the user <b>" + strUserRACFID + "</b> to <b>" + RACFID + "</b> user",
 						"Favorites from one dealer/Employee to another dealer/Employee should be copied only if those links are accessible (in terms of additional RACF group tagging, Dealer Principal department access) to the employee/authorized contingent user who is copying them ",
 						FinalResult, resultflag);
 				Thread.sleep(5000);
 				GenericFactory.EndImpersonateUSER();
-				System.out.println("test");
 				impersonateFavUser(BaseClass.strUserRACFID);
 				GenericFactory.navigateToHomePage();
 				WaitFactory.waitForPageLoaded();
@@ -2111,8 +2153,8 @@ public class Favourites_POF extends BaseClass {
 	}
 
 	/**
-	 * @author Shubham Raj This method will verify that on changing product type,
-	 *         favourite should be filtered accordingly
+	 * @author Shubham Raj This method will verify that on changing product
+	 *         type, favourite should be filtered accordingly
 	 * @param param1
 	 *            Describe the test case ID to be executed from the excel sheet
 	 * @param param2
@@ -2188,12 +2230,12 @@ public class Favourites_POF extends BaseClass {
 	}
 
 	/**
-	 * @author Shubham Raj This case describes that user should be able to deleted a
-	 *         favourite from Quick modal window and it should not be further
-	 *         displayed on Homepage
+	 * @author Shubham Raj This case describes that user should be able to
+	 *         deleted a favourite from Quick modal window and it should not be
+	 *         further displayed on Homepage
 	 * @param param1
-	 *            Describe the test case ID to be executed from the excel sheet @
-	 *            exception Exception e
+	 *            Describe the test case ID to be executed from the excel
+	 *            sheet @ exception Exception e
 	 */
 
 	public static void ToRemoveFavouriteLinkfromQuickmodalwindow(String TCID) throws Throwable {
@@ -2212,12 +2254,12 @@ public class Favourites_POF extends BaseClass {
 		if (ValidationFactory.isElementPresent(By.xpath(
 				"//div[@class='link-group-container']//div[@class='link-item folder-space' and contains(.,'My Fav Folder')]//span[@class='icon folder closed']"))) {
 
-			WaitFactory.waitForElementClickable(BaseClass.wbDriver.findElement(By.xpath(
-					"//div[@class='link-group-container']//div[@class='link-item folder-space' and contains(.,'My Fav Folder')]//span[@class='icon folder closed']")))
+			WaitFactory
+					.waitForElementClickable(BaseClass.wbDriver.findElement(By
+							.xpath("//div[@class='link-group-container']//div[@class='link-item folder-space' and contains(.,'My Fav Folder')]//span[@class='icon folder closed']")))
 					.click();
 			WaitFactory.waitForElements(BaseClass.wbDriver.findElements(By.xpath(
-					"//div[@class='link-group-container']//div[@class='link-item folder-space' and contains(.,'My Fav Folder')]/following-sibling::div[starts-with(@parent-folder,'2')]//span/following-sibling::a"))
-				);
+					"//div[@class='link-group-container']//div[@class='link-item folder-space' and contains(.,'My Fav Folder')]/following-sibling::div[starts-with(@parent-folder,'2')]//span/following-sibling::a")));
 		}
 
 		for (int i = 0; i < markedlinkNames.size(); i++) {
@@ -2287,8 +2329,9 @@ public class Favourites_POF extends BaseClass {
 		if (ValidationFactory.isElementPresent(By.xpath(
 				"//div[@class='fav-link-body' and contains(.,'My Fav Folder')]//span[@class='icon folder  closed']"))) {
 
-			WaitFactory.waitForElementClickable(BaseClass.wbDriver.findElement(By.xpath(
-					"//div[@class='fav-link-body' and contains(.,'My Fav Folder')]//span[@class='icon folder  closed']")))
+			WaitFactory
+					.waitForElementClickable(BaseClass.wbDriver.findElement(By
+							.xpath("//div[@class='fav-link-body' and contains(.,'My Fav Folder')]//span[@class='icon folder  closed']")))
 					.click();
 		}
 		List<WebElement> homepageLinks_name = BaseClass.wbDriver.findElements(By.xpath(
@@ -2306,13 +2349,12 @@ public class Favourites_POF extends BaseClass {
 					"Favourite should be removed from Quick Modal and should no more display on Favourite portlet on homepage",
 					"Links successfully removed from Quick Link", "PASS");
 
-		} else if(Homepage_link_names.contains(Deleted_Linkitems) && !Deleted_Linkitems.isEmpty()) {
+		} else if (Homepage_link_names.contains(Deleted_Linkitems) && !Deleted_Linkitems.isEmpty()) {
 			ReportFactory.reporterOutput(TCID, "verify Remove Favourite Link On QuickModal window ",
 					"Selected links are not being removed from the HomePage: " + Deleted_Linkitems.toString(),
 					"Favourite should be removed from Quick Modal and should no more display on Favourite portlet on homepage",
 					"Links are not being removed from HomePage", "FAIL");
-		}
-		else if(Deleted_Linkitems.isEmpty()) {
+		} else if (Deleted_Linkitems.isEmpty()) {
 			ReportFactory.reporterOutput(TCID, "verify Remove Favourite Link On QuickModal window ",
 					"Favourite links are not present " + Deleted_Linkitems.toString(),
 					"Favourite should be removed from Quick Modal and should no more display on Favourite portlet on homepage",
@@ -2320,15 +2362,16 @@ public class Favourites_POF extends BaseClass {
 		}
 		GenericFactory.navigateToHomePage();
 		WaitFactory.waitForPageLoaded();
+		Thread.sleep(5000);
 	}
 
 	/**
-	 * @author Shubham Raj This case describes that user should be able to deleted a
-	 *         favourite from homepage portlet and it should not be further
-	 *         displayed on Quick modal window
+	 * @author Shubham Raj This case describes that user should be able to
+	 *         deleted a favourite from homepage portlet and it should not be
+	 *         further displayed on Quick modal window
 	 * @param param1
-	 *            Describe the test case ID to be executed from the excel sheet @
-	 *            exception Exception e
+	 *            Describe the test case ID to be executed from the excel
+	 *            sheet @ exception Exception e
 	 */
 
 	public static void ToRemoveFavLinkfromFavoritesPortlethomepage(String TCID) throws Throwable {
@@ -2356,70 +2399,89 @@ public class Favourites_POF extends BaseClass {
 
 				List<WebElement> icons = null;
 				if (i % 2 == 0) {
-					System.out.println("test");
-					if (ValidationFactory.isElementPresent(By.xpath(
-							"//div[@class='fav-link-body' and contains(.,'My Fav Folder')]//span[@class='icon folder closed']"))) {
-						
+					System.out.println("1");
+					if (ValidationFactory.isElementPresent(homePageClosedFolderIcon)) {
+
 						LogFactory.info("Clicked on Folder to expand");
-						WaitFactory.WaitForElementToVisible(BaseClass.wbDriver.findElement(By.xpath(
-								"//div[@class='fav-link-body' and contains(.,'My Fav Folder')]//span[@class='icon folder closed']")));
-						Thread.sleep(5000);
-					
-						((JavascriptExecutor) wbDriver).executeScript("arguments[0].click();",BaseClass.wbDriver.findElement(By.xpath(
-								"//div[@class='fav-link-body' and contains(.,'My Fav Folder')]//span[@class='icon folder closed']")));
-						
-						Thread.sleep(5000);
+						System.out.println("2");
+						WaitFactory.WaitForElementToVisible(homePageClosedFolderIcon);
+						System.out.println("3");
+						// WaitFactory.waitForElementClickable(homePageClosedFolderIcon).click();
+						((JavascriptExecutor) BaseClass.wbDriver).executeScript("arguments[0].click();",
+								homePageClosedFolderIcon);
+						System.out.println("4");
+
 					} else
 						LogFactory.info("Folder already in expanded form");
+					System.out.println("5");
 					Thread.sleep(1500);
-					List<WebElement> folder_icon = BaseClass.wbDriver.findElements(By.xpath(
-							"//div[@class='fav-link-item child']/div/div/span[not(@class='icon drag ui-sortable-handle')]"));
-					List<WebElement> Folder_Link_name = BaseClass.wbDriver.findElements(
-							By.xpath("//div[@class='fav-link-item child']/div/div/span/following-sibling::a"));
+					List<WebElement> folder_icon = homePagelinkIconunderFolder;
+					System.out.println("6");
+					List<WebElement> Folder_Link_name = homePagelinkIconNameunderFolder;
+					System.out.println("7");
 
 					innerloop: for (int k = 0; k < Folder_Link_name.size(); k++) {
-
+						System.out.println("8");
 						InnerLinkName = Folder_Link_name.get(k).getText().trim();
-
+						System.out.println("9");
 						if (markedlinkNames.get(i).equals(InnerLinkName)) {
+							System.out.println("10");
 							DeletedLinks.add(InnerLinkName);
+							System.out.println("11");
 							LogFactory.info("Clicked on " + Folder_Link_name.get(k).getText() + " link");
+							System.out.println("12");
 							WaitFactory.WaitForElementToVisible(folder_icon.get(k));
-							Thread.sleep(5000);
-							((JavascriptExecutor) wbDriver).executeScript("arguments[0].click();",folder_icon.get(k));
-							Thread.sleep(5000);
-							//WaitFactory.WaitForElementToVisible(PopoverHeaderTitile);
+							System.out.println("13");
+							// folder_icon.get(k).click();
+							((JavascriptExecutor) BaseClass.wbDriver).executeScript("arguments[0].click();",
+									folder_icon.get(k));
+							System.out.println("14");
+							Thread.sleep(1000);
+							// WaitFactory.WaitForElementToVisible(PopoverHeaderTitile);
 							insidelink_flag = true;
+							System.out.println("15");
 							break innerloop;
 						}
 					}
 
 				} else {
 					Thread.sleep(700);
+					System.out.println("16");
 					WebElement outside_iconFirst = ValidationFactory.getElementIfPresent(By.xpath(
 							"//div[@class='fav-link-item']/div/div/span[not(@class='icon drag ui-sortable-handle')]"));
+					System.out.println("17");
 					if (outside_iconFirst != null) {
 						List<WebElement> outside_List = BaseClass.wbDriver.findElements(By.xpath(
 								"//div[@class='fav-link-item']/div/div/span[not(@class='icon drag ui-sortable-handle')]"));
+						System.out.println("18");
 
 						for (int j = 0; j < outside_List.size(); j++) {
-
-							List<WebElement> OutSide_Link_nameFIrst = BaseClass.wbDriver.findElements(
-									By.xpath("//div[@class='fav-link-item']/div/div/span/following-sibling::a"));
+							System.out.println("19");
+							List<WebElement> OutSide_Link_nameFIrst = OutsideIconNameFirst;
+							System.out.println("20");
 							String Outer_LinkNameFirst = OutSide_Link_nameFIrst.get(j).getText().trim();
-
+							System.out.println("21");
 							if (markedlinkNames.get(i).equals(Outer_LinkNameFirst)) {
+								System.out.println("22");
 								WaitFactory.waitForElements(OutSide_Link_nameFIrst);
+								System.out.println("23");
 								OuterLinkName1 = OutSide_Link_nameFIrst.get(j).getText().trim();
+								System.out.println("24");
 								DeletedLinks.add(OuterLinkName1);
+								System.out.println("25");
 								WaitFactory.waitForElements(outside_List);
+								System.out.println("26");
 								LogFactory.info("Clicked on " + OutSide_Link_nameFIrst.get(j).getText() + " link");
+								System.out.println("27");
 								WaitFactory.WaitForElementToVisible(outside_List.get(j));
-								Thread.sleep(5000);
-								((JavascriptExecutor) wbDriver).executeScript("arguments[0].click();",outside_List.get(j));
-								Thread.sleep(5000);
-								//WaitFactory.WaitForElementToVisible(PopoverHeaderTitile);
+								System.out.println("28");
+								// outside_List.get(j).click();
+								((JavascriptExecutor) BaseClass.wbDriver).executeScript("arguments[0].click();",
+										outside_List.get(j));
+								System.out.println("29");
+								Thread.sleep(1000);
 								Outsidelink_flag = true;
+								System.out.println("30");
 								break;
 
 							}
@@ -2437,8 +2499,7 @@ public class Favourites_POF extends BaseClass {
 
 							for (int j = 0; j < outside_List.size(); j++) {
 
-								List<WebElement> OutSide_Link_nameLast = BaseClass.wbDriver.findElements(By
-										.xpath("//div[@class='fav-link-item last']/div/div/span/following-sibling::a"));
+								List<WebElement> OutSide_Link_nameLast = OutsideLinkNameLast;
 								String Outer_LinkNameLast = OutSide_Link_nameLast.get(j).getText().trim();
 								if (markedlinkNames.get(i).equals(Outer_LinkNameLast)) {
 									OuterLinkName2 = OutSide_Link_nameLast.get(j).getText().trim();
@@ -2447,10 +2508,10 @@ public class Favourites_POF extends BaseClass {
 									WaitFactory.waitForElements(outside_List);
 									LogFactory.info("Clicked on " + OutSide_Link_nameLast.get(j).getText() + " link");
 									WaitFactory.WaitForElementToVisible(outside_List.get(j));
-									Thread.sleep(5000);
-									((JavascriptExecutor) wbDriver).executeScript("arguments[0].click();",outside_List.get(j));
-									Thread.sleep(5000);
-									//WaitFactory.WaitForElementToVisible(PopoverHeaderTitile);
+									// outside_List.get(j).click();
+									((JavascriptExecutor) BaseClass.wbDriver).executeScript("arguments[0].click();",
+											outside_List.get(j));
+									Thread.sleep(1000);
 									break;
 
 								}
@@ -2465,49 +2526,42 @@ public class Favourites_POF extends BaseClass {
 				}
 			}
 			LogFactory.info("Deleted links are: " + DeletedLinks);
-			WebElement star = BaseClass.wbDriver.findElement(By.xpath("//div[@id='js-favorites']"));
+			WebElement star = FvrtstarIcon;
 			WaitFactory.WaitForElementToVisible(star);
-			Thread.sleep(5000);
-			WaitFactory.waitForElementClickable(star);
-			((JavascriptExecutor) wbDriver).executeScript("arguments[0].click();",star);
-			Thread.sleep(5000);
-			List<WebElement> Quick_icons_name = BaseClass.wbDriver.findElements(By.xpath(
-					"//div[@class='link-group']//span[@class='icon fav-star is-selected']/following-sibling::a"));
+			Thread.sleep(1000);
+			((JavascriptExecutor) BaseClass.wbDriver).executeScript("arguments[0].click();", star);
+			Thread.sleep(1000);
+			List<WebElement> Quick_icons_name = QuickModalLinkName;
 
-			if (ValidationFactory.isElementPresent(By.xpath(
-					"//div[@class='link-group-container']//div[@class='link-item folder-space' and contains(.,'My Fav Folder')]//span[@class='icon folder closed']"))) {
-				WaitFactory.WaitForElementToVisible(BaseClass.wbDriver.findElement(By.xpath(
-						"//div[@class='link-group-container']//div[@class='link-item folder-space' and contains(.,'My Fav Folder')]//span[@class='icon folder closed']")));
-				Thread.sleep(5000);
-				WaitFactory.waitForElementClickable(BaseClass.wbDriver.findElement(By.xpath(
-						"//div[@class='link-group-container']//div[@class='link-item folder-space' and contains(.,'My Fav Folder')]//span[@class='icon folder closed']")));
-				((JavascriptExecutor) wbDriver).executeScript("arguments[0].click();",BaseClass.wbDriver.findElement(By.xpath(
-						"//div[@class='link-group-container']//div[@class='link-item folder-space' and contains(.,'My Fav Folder')]//span[@class='icon folder closed']")));
-				Thread.sleep(5000);
+			if (ValidationFactory.isElementPresent(QuickModalFolderClosed)) {
+				WaitFactory.WaitForElementToVisible(QuickModalFolderClosed);
+				// WaitFactory.waitForElementClickable(QuickModalFolderClosed).click();
+				((JavascriptExecutor) BaseClass.wbDriver).executeScript("arguments[0].click();",
+						QuickModalFolderClosed);
+
 			}
 			WaitFactory.waitForElements(Quick_icons_name);
 			if (Quick_icons_name.size() > 0) {
 				for (int m = 0; m < Quick_icons_name.size(); m++) {
 					String Quick_names = Quick_icons_name.get(m).getText().trim();
 					QuickLinks.add(Quick_names);
+					System.out.println("test");
 
 				}
 			}
 			LogFactory.info("Links present after deleting on QuickModal window are: " + QuickLinks);
 			if (!QuickLinks.contains(DeletedLinks) && !DeletedLinks.isEmpty()) {
-				// String flag1="";
 				ReportFactory.reporterOutput(TCID, "verify Remove Favourite Link On Favorites portlet on homepage ",
 						"Selected links to be removed from Favourite Portlet = " + DeletedLinks.toString(),
 						"Favourite should get removed and should no more display on 'Favourite' portlet on homepage, quick favourite modal window page",
 						"Links successfully removed from Favorite portlet homepage", "PASS");
 
-			} else if (QuickLinks.contains(DeletedLinks) && !DeletedLinks.isEmpty()){
+			} else if (QuickLinks.contains(DeletedLinks) && !DeletedLinks.isEmpty()) {
 				ReportFactory.reporterOutput(TCID, "verify Remove Favourite Link On Favorites portlet on homepage ",
 						"Selected links are not being removed: " + DeletedLinks.toString(),
 						"Favourite should be removed and should no more display on 'Favourite' portlet on homepage, quick favourite modal window page",
 						"Links successfully removed from Favorite portlet homepage", "FAIL");
-			}
-			else if(DeletedLinks.isEmpty()){
+			} else if (DeletedLinks.isEmpty()) {
 				ReportFactory.reporterOutput(TCID, "verify Remove Favourite Link On Favorites portlet on homepage ",
 						"Favourite links are not present " + DeletedLinks.toString(),
 						"Favourite should be removed and should no more display on 'Favourite' portlet on homepage, quick favourite modal window page",
@@ -2518,7 +2572,6 @@ public class Favourites_POF extends BaseClass {
 
 		} catch (Exception e) {
 			String er = e.getMessage().substring(0, 125).toString().trim();
-			System.out.println("test");
 			LogFactory.info(er);
 			flag = "Fail";
 
@@ -2531,9 +2584,9 @@ public class Favourites_POF extends BaseClass {
 	}
 
 	/**
-	 * @author Shubham Raj This case describes Verify country filtering for employee
-	 *         users on Links portlet and favorites portlet on Homepage & quick
-	 *         favorites modal window and all types of index pages.
+	 * @author Shubham Raj This case describes Verify country filtering for
+	 *         employee users on Links portlet and favorites portlet on Homepage
+	 *         & quick favorites modal window and all types of index pages.
 	 * 
 	 * 
 	 */
@@ -2572,8 +2625,8 @@ public class Favourites_POF extends BaseClass {
 						GenericFactory.navigateToHomePage();
 						// BrowserFactory.RefreshBrowser();
 						/*
-						 * WaitFactory.waitforelementToBeClickable(homepagepath) .click();
-						 * WaitFactory.waitForPageLoaded();
+						 * WaitFactory.waitforelementToBeClickable(homepagepath)
+						 * .click(); WaitFactory.waitForPageLoaded();
 						 */
 						FavouriteCreatedLinkHomepageBeforeFilter = ToGetMarkedFavouriteslink_HomePage();
 
@@ -2654,9 +2707,13 @@ public class Favourites_POF extends BaseClass {
 
 			if (ValidationFactory.isElementPresent(wbelHeaderTitleFav)) {
 				strActualHeaderMsg = wbelHeaderTitleFav.getText().toString();
-				//System.out.println("Actual String ---> " +strActualHeaderMsg.trim() + "   " +strActualHeaderMsg.trim().length());
-				//System.out.println("Expected String ---> " +strExpectedHeaderMsg.trim() + "   " +strExpectedHeaderMsg.trim().length());
-				
+				// System.out.println("Actual String ---> "
+				// +strActualHeaderMsg.trim() + " "
+				// +strActualHeaderMsg.trim().length());
+				// System.out.println("Expected String ---> "
+				// +strExpectedHeaderMsg.trim() + " "
+				// +strExpectedHeaderMsg.trim().length());
+
 				if (strActualHeaderMsg.equals(strExpectedHeaderMsg)) {
 					strFlag = "Pass";
 					strResult = "Favorites portlet with header text " + strActualHeaderMsg + " is displayed.";
@@ -2760,11 +2817,11 @@ public class Favourites_POF extends BaseClass {
 	}
 
 	/**
-	 * @author Shubham Raj This case describe that the marked Favourite link from
-	 *         the department should appear on Quick Modal window
+	 * @author Shubham Raj This case describe that the marked Favourite link
+	 *         from the department should appear on Quick Modal window
 	 * @param param1
-	 *            Describe the test case ID to be executed from the excel sheet @
-	 * exception Exception e
+	 *            Describe the test case ID to be executed from the excel
+	 *            sheet @ exception Exception e
 	 */
 
 	public static void favouriteQuickLinkOnHomePage(String strTCID) throws Throwable {
@@ -2787,14 +2844,14 @@ public class Favourites_POF extends BaseClass {
 	}
 
 	/**
-	 * @author Shubham Raj This case describe that whether the header of the Quick
-	 *         link window should be displayed according to the language selected by
-	 *         the user
+	 * @author Shubham Raj This case describe that whether the header of the
+	 *         Quick link window should be displayed according to the language
+	 *         selected by the user
 	 * @param param1
 	 *            Describe the test case ID to be executed from the excel sheet
 	 * @param param1
-	 *            Describe the expected header name to be appear on the Quick modal
-	 *            window @ exception Exception e
+	 *            Describe the expected header name to be appear on the Quick
+	 *            modal window @ exception Exception e
 	 */
 
 	public static void homePageQuickLinkContent(String strTCID, String strExpectedHeaderName) throws Throwable {
@@ -2802,35 +2859,33 @@ public class Favourites_POF extends BaseClass {
 			String strFlag = "FAIL";
 			String strResult = "Favorites Quick Link header is NOT showing as per dealer preferred language.";
 			WaitFactory.waitForPageLoaded();
-	
+
 			WebElement ele = WaitFactory.waitForElementClickable(wbelFavourSearch);
 
 			if (ValidationFactory.isElementPresent(ele)) {
-				
-//				WebElement ele = WaitFactory.waitForElementClickable(wbelFavourSearch);
-				
-			//	if (ValidationFactory.isElementPresent(ele)) {
-					
-					
-					wbelFavourSearch.click();
-					String strActualIconHeaderName = wbelQuickLinkHeader.getText().toString();
 
-					if (strActualIconHeaderName.equals(strExpectedHeaderName)) {
-						LogFactory.info("Verify Favourite Quick link Icon with content is displayed.");
-						strFlag = "PASS";
-						strResult = "Favourite Quick link Icon with contents are displayed.";
-					} else {
-						strFlag = "Fail";
-						strResult = "Favorites Quick Link header :" + strActualIconHeaderName
-								+ " is present but expected Quick Link header : " + strExpectedHeaderName
-								+ " is not showing on the Favorites Quick Link";
+				// WebElement ele =
+				// WaitFactory.waitForElementClickable(wbelFavourSearch);
 
-					}
+				// if (ValidationFactory.isElementPresent(ele)) {
 
-//				}
-			}
-			else
-			{
+				wbelFavourSearch.click();
+				String strActualIconHeaderName = wbelQuickLinkHeader.getText().toString();
+
+				if (strActualIconHeaderName.equals(strExpectedHeaderName)) {
+					LogFactory.info("Verify Favourite Quick link Icon with content is displayed.");
+					strFlag = "PASS";
+					strResult = "Favourite Quick link Icon with contents are displayed.";
+				} else {
+					strFlag = "Fail";
+					strResult = "Favorites Quick Link header :" + strActualIconHeaderName
+							+ " is present but expected Quick Link header : " + strExpectedHeaderName
+							+ " is not showing on the Favorites Quick Link";
+
+				}
+
+				// }
+			} else {
 				strFlag = "Fail";
 				strResult = "Favorites Quick Link is either not clickable/disabled/not presnt while executing this  testcase";
 
