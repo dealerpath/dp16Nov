@@ -20,6 +20,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
 import com.deere.Helpers.BaseClass;
+import com.deere.Helpers.BrowserFactory;
 import com.deere.Helpers.GenericFactory;
 import com.deere.Helpers.LogFactory;
 import com.deere.Helpers.ReportFactory;
@@ -597,7 +598,9 @@ public class Announcements_POF extends BaseClass {
 
 		String strFlag = "Fail";
 		String strResult = "Announcement Portlet is not available";
-
+		GenericFactory.navigateToHomePage();
+		WaitFactory.waitForPageLoaded();
+		Thread.sleep(2000);
 		/*****************
 		 * check Announcement header title content format
 		 ********************************************************/
@@ -648,6 +651,9 @@ public class Announcements_POF extends BaseClass {
 		List<String> emptyLinks = new ArrayList<String>();
 		Map<String, Integer> brokenLinks = new HashMap<String, Integer>();
 		List<String> CorrectLinks = new ArrayList<String>();
+		GenericFactory.navigateToHomePage();
+		WaitFactory.waitForPageLoaded();
+		Thread.sleep(2000);
 		List<WebElement> readMoreLinks = BaseClass.wbDriver.findElements(By.xpath(
 				".//div[@class='section']//div[@class='wide-list hide-overflow']//div[@class='secondary-action-container']"));
 		for (int i = 0; i < readMoreLinks.size(); i++) {
@@ -696,9 +702,16 @@ public class Announcements_POF extends BaseClass {
 				ReportFactory.reporterOutput(strTCID, "Verify Embedded Links on Announcement Portlets.", "NA",
 						"Embedded links should not be broken or empty", "No links are present", "Pass");
 			}
+			BrowserFactory.RefreshBrowser();
+			WaitFactory.waitForPageLoaded();
+			Thread.sleep(2000);
+			System.out.println();
 		} catch (Exception e) {
 			LogFactory.error("e");
 			String er = e.getMessage().toString().trim();
+			BrowserFactory.RefreshBrowser();
+			WaitFactory.waitForPageLoaded();
+			Thread.sleep(2000);
 			ReportFactory.reporterOutput(strTCID, "Verify Embedded Links on Announcement Portlets.", "NA", "NA", er,
 					"Fail");
 		}
@@ -902,7 +915,9 @@ public class Announcements_POF extends BaseClass {
 		String flagResult = "Pass";
 		String actualResult = "Announcement header is not present.";
 		try {
-Thread.sleep(2000);
+			GenericFactory.navigateToHomePage();
+			WaitFactory.waitForPageLoaded();
+			Thread.sleep(2000);
 			for (int i = 0; i < HeaderList.size(); i++) {
 				if (HeaderList.get(i).getText().contains("(")) {
 					String temp = GenericFactory.splitString(HeaderList.get(i).getText(), "(").get(1);
@@ -991,7 +1006,9 @@ Thread.sleep(2000);
 					strResult, strAnnouncementFlag);
 			ProductSegment_POF.wbelProductSegmentIcon.click();
 		}
-
+		GenericFactory.navigateToHomePage();
+		WaitFactory.waitForPageLoaded();
+		Thread.sleep(2000);
 	}
 
 	/**
@@ -1009,9 +1026,11 @@ Thread.sleep(2000);
 		boolean booFlagReadmore = true;
 		boolean booFlagCollapse = true;
 		try {
-			WaitFactory.WaitForElementToVisible(wbelAnnouncementFramePath);
+			GenericFactory.navigateToHomePage();
 			WaitFactory.waitForPageLoaded();
 			Thread.sleep(2000);
+			WaitFactory.WaitForElementToVisible(wbelAnnouncementFramePath);
+			WaitFactory.waitForPageLoaded();
 			List<WebElement> readMoreLink = wbelAnnouncementFramePath
 					.findElements(By.xpath(".//div[@class='secondary-action-container']"));
 			int readmorelinkcount = readMoreLink.size();
