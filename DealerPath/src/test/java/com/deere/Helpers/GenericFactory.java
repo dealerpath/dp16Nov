@@ -1743,7 +1743,7 @@ public class GenericFactory extends BaseClass {
                      List<String> languageCode = new ArrayList<String>();
                      languageCode.add(strActualLanguageCode);
                      analyzerUserMap.put("Language", languageCode);
-                     analyzerUserMapReset.put("Language", languageCode);
+                     analyzerUserMap.put("Language", languageCode);
                      flagBaseLanguage = true;
                }
 
@@ -3919,36 +3919,46 @@ public class GenericFactory extends BaseClass {
 
 			System.out.println("Check for Products>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>." + analyzerUserMapReset);
 			List<String> prodList = new ArrayList<String>();
+			List<String> translatedprodList = new ArrayList<String>();
 			String ProductFromAnalyseUserMapReset = "";
 			// Product segment reset
 			LogFactory.info("Resetting the values for Product.");
 			prodList = analyzerUserMapReset.get("User Products");
+			List<String> Product = getCheckBoxValuesAll();
 			if (ValidationFactory.getElementIfPresent(By.xpath("//div[@id='js-segments']")) != null) {
 				BaseClass.wbDriver.findElement(By.xpath("//div[@id='js-segments']")).click();
 				List<WebElement> checkBox = BaseClass.wbDriver.findElements(
 						By.xpath("//div[@id='js-segments-popover']//div[@class='value']//input[@type='checkbox']"));
 				if(prodList!=null) {
-				for (int i = 0; i < prodList.size(); i++) {
-					ProductFromAnalyseUserMapReset = prodList.get(i);
-
+					for (int i = 0; i < prodList.size(); i++) {
+						ProductFromAnalyseUserMapReset = prodList.get(i);
+						ProductFromAnalyseUserMapReset = GenericFactory
+								.getTranslation(ProductFromAnalyseUserMapReset).toString();
+						ProductFromAnalyseUserMapReset = ProductFromAnalyseUserMapReset.contains("[")
+								? ProductFromAnalyseUserMapReset.replaceAll("[\\[\\]]", "")
+								: ProductFromAnalyseUserMapReset;
+						translatedprodList.add(ProductFromAnalyseUserMapReset);
+					}
+					System.out.println("Product List >>>>>"+prodList);
+					System.out.println("Translated Product List >>>>>"+translatedprodList);
+					BaseClass.wbDriver.findElement(By.xpath("//div[@id='js-segments']")).click();
+					Thread.sleep(1000);
+					
+					for (int i = 0; i < checkBox.size(); i++) {
+						
 					if (!checkBox.get(i).isSelected()) {
 						System.out.println("*********unchecked**********");
-						String Product = BaseClass.wbDriver.findElement(By.xpath(
-								"//div[@id='js-segments-popover']//div[@class='value']//input[@type='checkbox']/../div"))
-								.getText();
-						if (prodList.contains(Product)) {
+						if (translatedprodList.contains(Product.get(i))) {
 							checkBox.get(i).click();
 						} else {
-							System.out.println("Product is not present in Analyse User Map >>>>" + Product);
+							System.out.println("Product is not present in Analyse User Map >>>>" + Product.get(i));
 						}
 					}
 					if (checkBox.get(i).isSelected()) {
 						System.out.println("*********checked**********");
-						String Product = BaseClass.wbDriver.findElement(By.xpath(
-								"//div[@id='js-segments-popover']//div[@class='value']//input[@type='checkbox']/../div"))
-								.getText();
-						if (prodList.contains(Product)) {
-							System.out.println("Already Checked>>>" + Product);
+
+						if (translatedprodList.contains(Product.get(i))) {
+							System.out.println("Already Checked>>>" + Product.get(i));
 						} else {
 							checkBox.get(i).click();
 						}
@@ -3971,7 +3981,7 @@ public class GenericFactory extends BaseClass {
 								+ LanguageReset + ".</br><b> Theme </b>: "
 								+ analyzerUserMapReset.get("Theme Colors").get(0) + ".</br><b> Departments </b>: "
 								+ analyzerUserMapReset.get("Department") + ".</br><b> Site </b>:"
-								+ siteFromAnalyseUserMapReset,
+								+ siteFromAnalyseUserMapReset+".</br><b> Products </b>:" +translatedprodList ,
 						"Changes made to verify the functionalities should be reverted back.",
 						"All the changes made to 'My Preferences' is reverted back.", strFlag);
 			} else {
@@ -4004,6 +4014,7 @@ public class GenericFactory extends BaseClass {
 						"All the changes made to 'My Preferences' may not have reverted back.", strFlag);
 			}
 
+		
 		} catch (Exception e) {
 			LogFactory.info("I am in catch block");
 
@@ -4098,6 +4109,23 @@ public class GenericFactory extends BaseClass {
 		return listExpectedData;
 	}
 
-
+ public static void productListForReset() {
+		ValidationFactory.getElementIfPresent(By.xpath("//div[@id='js-segments']")).click();
+		List<WebElement> tempList = BaseClass.wbDriver
+				.findElements(By.xpath(".//*[@id='productSegmentsForm']/div/div/label/input"));
+		List<String> listOfProductForResetList = new ArrayList<String>();
+		for (int i = 0; i < tempList.size(); i++) {
+			WebElement getCheckboxPath = BaseClass.wbDriver
+					.findElement(By.xpath(".//*[@id='productSegmentsForm']/div/div[" + (i + 2) + "]/label/input"));
+			String temp = BaseClass.wbDriver
+					.findElement(By.xpath(".//*[@id='productSegmentsForm']/div/div[" + (i + 2) + "]/label/input"))
+					.getAttribute("id");
+			if (getCheckboxPath.isSelected()) {
+				listOfProductForResetList.add(temp);
+			}
+		}
+		ValidationFactory.getElementIfPresent(By.xpath("//div[@id='js-segments']")).click();
+		analyzerUserMapReset.put("User Products", listOfProductForResetList);}
+}
 }
 
