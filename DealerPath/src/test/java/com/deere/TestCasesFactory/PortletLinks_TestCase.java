@@ -940,5 +940,14 @@ public class PortletLinks_TestCase extends BaseClass {
 		GenericFactory.tocheckAllProducts();                                             
 	}           
 
-
+	/**
+	 * This method is to verify after filtering random products, realted content should not be visible to the user
+	 * @author shrey.choudhary
+	 * @throws Throwable
+	 */
+	@Test(priority = 15)
+	public void VerifyPortletlinks() throws Throwable {
+		LogFactory.info("Verify the portlet links page product uncheck randomly");
+		PortletLinksPage_POF.unCheckProductTypesWithProductCombinations();
+	}
 }
