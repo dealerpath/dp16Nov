@@ -8,6 +8,7 @@
 
 package com.deere.PageFactory;
 
+import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -22,6 +23,7 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
@@ -34,11 +36,13 @@ import org.testng.asserts.SoftAssert;
 
 import com.deere.Helpers.BaseClass;
 import com.deere.Helpers.DateFactory;
+import com.deere.Helpers.ExcelFactory;
 import com.deere.Helpers.GenericFactory;
 import com.deere.Helpers.LogFactory;
 import com.deere.Helpers.ReportFactory;
 import com.deere.Helpers.ReportOutput;
 import com.deere.Helpers.ValidationFactory;
+import com.deere.Helpers.WaitFactory;
 
 public class PortletLinksPage_POF {
 	public static WebDriver PortletDriver;
@@ -247,7 +251,7 @@ public class PortletLinksPage_POF {
 			LogFactory.info("Verify Department Name");
 			List<String> translatedText = GenericFactory.getTranslation(strDepartmentName);
 			strDepartmentName = translatedText.get(0);
-		
+
 			WebElement department = GenericFactory.getDeptname(strDepartmentName);
 
 			if (department != null) {
@@ -360,7 +364,7 @@ public class PortletLinksPage_POF {
 
 					if (getFoldernameInvisi != null
 							&& LinksSearchedInvisibleUnderFolder.toString().trim().toUpperCase()
-							.contains(strSearchCriteria.toUpperCase().trim())
+									.contains(strSearchCriteria.toUpperCase().trim())
 							&& afterSearchC == afterClearText) {
 
 						result = "Search criteria is available for the link/links in the list and Size of Links under Folder is :"
@@ -378,7 +382,7 @@ public class PortletLinksPage_POF {
 							strSearchCriteria,
 							"Search criteria should be available in the list for searched Criteria and Folder with Links are :"
 									+ afterSearchC,
-									result, status);
+							result, status);
 
 					GenericFactory.toClickOnFolder(strSearchCriteria, strSubDepartmentName);
 				} else {
@@ -577,88 +581,88 @@ public class PortletLinksPage_POF {
 								 * 
 								 * } else
 								 */ if (!linksWhenFolder.equalsIgnoreCase(null)
-										 && !(additionalComingforFolder.contains(linksWhenFolder))
-										 || getFoldername.contains(strSearchCriteria.trim())) {
+										&& !(additionalComingforFolder.contains(linksWhenFolder))
+										|| getFoldername.contains(strSearchCriteria.trim())) {
 
-									 if (linksWhenFolder.toUpperCase()
-											 .contains(strSearchCriteria.trim().toString().toUpperCase())
-											 && (((folderFlag == true || flagForLinksunderFolder == true)
-													 && (additionalComingforFolder
-															 .size() == SAnchorTagsLinksOnclicksearch.size()
-															 || additionalComingforFolder
-															 .size() == SAnchorTagsLinksOnclicksearch.size() + 1)
-													 || ((folderFlag == false || flagForLinksunderFolder == true)
-															 && (additionalComingforFolder
-																	 .size() == SAnchorTagsLinksOnclicksearch.size()
-																	 || additionalComingforFolder
-																	 .size() == SAnchorTagsLinksOnclicksearch
-																	 .size() + 1))
-													 || (folderFlag == true || flagForLinksunderFolder == false)
-													 && (additionalComingforFolder
-															 .size() == SAnchorTagsLinksOnclicksearch.size()
-															 || additionalComingforFolder
-															 .size() == SAnchorTagsLinksOnclicksearch
-															 .size() + 1)))) {
+									if (linksWhenFolder.toUpperCase()
+											.contains(strSearchCriteria.trim().toString().toUpperCase())
+											&& (((folderFlag == true || flagForLinksunderFolder == true)
+													&& (additionalComingforFolder
+															.size() == SAnchorTagsLinksOnclicksearch.size()
+															|| additionalComingforFolder
+																	.size() == SAnchorTagsLinksOnclicksearch.size() + 1)
+													|| ((folderFlag == false || flagForLinksunderFolder == true)
+															&& (additionalComingforFolder
+																	.size() == SAnchorTagsLinksOnclicksearch.size()
+																	|| additionalComingforFolder
+																			.size() == SAnchorTagsLinksOnclicksearch
+																					.size() + 1))
+													|| (folderFlag == true || flagForLinksunderFolder == false)
+															&& (additionalComingforFolder
+																	.size() == SAnchorTagsLinksOnclicksearch.size()
+																	|| additionalComingforFolder
+																			.size() == SAnchorTagsLinksOnclicksearch
+																					.size() + 1)))) {
 
-										 result = "Search criteria is available in the list and Size of links under folder are "
-												 + additionalComingforFolder.size();
-										 status = "Pass";
-										 if (count == (linksName.size() - additionalComingforFolder.size()) - 1) {
-											 ReportFactory.reporterOutput("TC01_PortletLinks",
-													 "Verify filter functionality for links portlet.", strSearchCriteria,
-													 "Search criteria should be available in the list for all Links/Folder and Folder with Links are :"
-															 + additionalComingforFolder.size(),
-															 result, status);
-											 break;
-										 }
-										 count++;
+										result = "Search criteria is available in the list and Size of links under folder are "
+												+ additionalComingforFolder.size();
+										status = "Pass";
+										if (count == (linksName.size() - additionalComingforFolder.size()) - 1) {
+											ReportFactory.reporterOutput("TC01_PortletLinks",
+													"Verify filter functionality for links portlet.", strSearchCriteria,
+													"Search criteria should be available in the list for all Links/Folder and Folder with Links are :"
+															+ additionalComingforFolder.size(),
+													result, status);
+											break;
+										}
+										count++;
 
-									 }
+									}
 
-									 else if (getFoldername.toUpperCase()
-											 .contains(strSearchCriteria.toUpperCase().trim())
-											 && (((folderFlag == true || flagForLinksunderFolder == true)
-													 && (additionalComingforFolder
-															 .size() == SAnchorTagsLinksOnclicksearch.size()
-															 || additionalComingforFolder
-															 .size() == SAnchorTagsLinksOnclicksearch.size() + 1)
-													 || ((folderFlag == false || flagForLinksunderFolder == true)
-															 && (additionalComingforFolder
-																	 .size() == SAnchorTagsLinksOnclicksearch.size()
-																	 || additionalComingforFolder
-																	 .size() == SAnchorTagsLinksOnclicksearch
-																	 .size() + 1))
-													 || (folderFlag == true || flagForLinksunderFolder == false)
-													 && (additionalComingforFolder
-															 .size() == SAnchorTagsLinksOnclicksearch.size())
-													 || additionalComingforFolder
-													 .size() == SAnchorTagsLinksOnclicksearch.size() + 1))) {
-										 result = "Search criteria is available in the list and Size is :"
-												 + SAnchorTagsLinksOnclicksearch.size();
-										 status = "Pass";
-										 ReportFactory.reporterOutput(strTCID,
-												 "Verify filter functionality for links portlet.", strSearchCriteria,
-												 "Search criteria should be available in the list for all Links/Folder and Folder with Links are  :"
-														 + SAnchorTagsLinksOnclicksearch.size(),
-														 result, status);
-										 break;
+									else if (getFoldername.toUpperCase()
+											.contains(strSearchCriteria.toUpperCase().trim())
+											&& (((folderFlag == true || flagForLinksunderFolder == true)
+													&& (additionalComingforFolder
+															.size() == SAnchorTagsLinksOnclicksearch.size()
+															|| additionalComingforFolder
+																	.size() == SAnchorTagsLinksOnclicksearch.size() + 1)
+													|| ((folderFlag == false || flagForLinksunderFolder == true)
+															&& (additionalComingforFolder
+																	.size() == SAnchorTagsLinksOnclicksearch.size()
+																	|| additionalComingforFolder
+																			.size() == SAnchorTagsLinksOnclicksearch
+																					.size() + 1))
+													|| (folderFlag == true || flagForLinksunderFolder == false)
+															&& (additionalComingforFolder
+																	.size() == SAnchorTagsLinksOnclicksearch.size())
+													|| additionalComingforFolder
+															.size() == SAnchorTagsLinksOnclicksearch.size() + 1))) {
+										result = "Search criteria is available in the list and Size is :"
+												+ SAnchorTagsLinksOnclicksearch.size();
+										status = "Pass";
+										ReportFactory.reporterOutput(strTCID,
+												"Verify filter functionality for links portlet.", strSearchCriteria,
+												"Search criteria should be available in the list for all Links/Folder and Folder with Links are  :"
+														+ SAnchorTagsLinksOnclicksearch.size(),
+												result, status);
+										break;
 
-									 }
+									}
 
-									 else {
+									else {
 
-										 countn++;
-										 status = "Fail";
-										 result = "Links are not matching or No Result Found.";
-										 if (countn == 1) {
-											 ReportFactory.reporterOutput(strTCID,
-													 "Verify filter functionality for links portlet.", strSearchCriteria,
-													 "Search criteria should be available in the list.", result, status);
-											 break;
-										 }
+										countn++;
+										status = "Fail";
+										result = "Links are not matching or No Result Found.";
+										if (countn == 1) {
+											ReportFactory.reporterOutput(strTCID,
+													"Verify filter functionality for links portlet.", strSearchCriteria,
+													"Search criteria should be available in the list.", result, status);
+											break;
+										}
 
-									 }
-								 }
+									}
+								}
 							}
 							break;
 						}
@@ -706,7 +710,7 @@ public class PortletLinksPage_POF {
 
 			List<String> translatedText = GenericFactory.getTranslation(DepartmentName);
 			DepartmentName = translatedText.get(0);
-			 
+
 			WebElement department = GenericFactory.getDeptname(DepartmentName);
 
 			if (department != null) {
@@ -776,7 +780,7 @@ public class PortletLinksPage_POF {
 			LogFactory.info("Verify Department Name");
 			List<String> translatedText = GenericFactory.getTranslation(DepartmentName);
 			DepartmentName = translatedText.get(0);
-		 
+
 			WebElement department = GenericFactory.getDeptname(DepartmentName);
 
 			if (department != null) {
@@ -835,7 +839,7 @@ public class PortletLinksPage_POF {
 	 *            strWCMProducts,strContenttype, strDepartmentName,
 	 *            strSubDepartmentName,strThirdLevelFolder, strTitle);
 	 * @return Changing Produt Prefernce @ exception try and Catch @ throws
-	 * Throwable
+	 *         Throwable
 	 **/
 
 	@SuppressWarnings("unused")
@@ -895,7 +899,7 @@ public class PortletLinksPage_POF {
 					String WCMProd = WCMlist[l];
 					String ParentProd1 = GenericFactory.getParentProduct(WCMProd.trim().toString());
 					List<String> translatedText1 = GenericFactory.getTranslation(ParentProd1);
-					ParentProd1=translatedText1.get(0); 
+					ParentProd1 = translatedText1.get(0);
 					WCMProdlist.add(ParentProd1);
 
 				}
@@ -1025,7 +1029,8 @@ public class PortletLinksPage_POF {
 											&& PortletLinksPage_POF.noResultfound.isDisplayed()) {
 
 										Resultfound = PortletLinksPage_POF.noResultfound.getText();
-										List<String> translatedTextnew = GenericFactory.getTranslation("No results found");
+										List<String> translatedTextnew = GenericFactory
+												.getTranslation("No results found");
 										String NoResultEng = translatedTextnew.get(0);
 										if (Resultfound.equalsIgnoreCase(NoResultEng)) {
 
@@ -1068,16 +1073,16 @@ public class PortletLinksPage_POF {
 
 						}
 					} /*
-					 * else { flagItemnotfound = true; Expectedresult =
-					 * "Search criteria should not be available in the list after unchecking the items."
-					 * ; status = "Pass"; result =
-					 * "User can not perform operation as userdefined Product Preference item/items does not match with WCM Product list."
-					 * ; ReportFactory.reporterOutput(wcmTestCaseID,
-					 * "Verify Links portlet on changing of preferred product types."
-					 * ," <B>User Prefernce List :</B>"+listOfElements+ " UserDefined List :" +
-					 * hashsetUserdefinedList + "WCMProduct :" + hashsetWCMList +
-					 * " :and Link Name :" + Title, Expectedresult, result, status); break; }
-					 */
+						 * else { flagItemnotfound = true; Expectedresult =
+						 * "Search criteria should not be available in the list after unchecking the items."
+						 * ; status = "Pass"; result =
+						 * "User can not perform operation as userdefined Product Preference item/items does not match with WCM Product list."
+						 * ; ReportFactory.reporterOutput(wcmTestCaseID,
+						 * "Verify Links portlet on changing of preferred product types."
+						 * ," <B>User Prefernce List :</B>"+listOfElements+ " UserDefined List :" +
+						 * hashsetUserdefinedList + "WCMProduct :" + hashsetWCMList +
+						 * " :and Link Name :" + Title, Expectedresult, result, status); break; }
+						 */
 				}
 
 				if (m > 1 && flagItemnotfound == false) {
@@ -1087,7 +1092,7 @@ public class PortletLinksPage_POF {
 									+ hashsetUserdefinedList + "WCMProduct :" + WCMProducts
 									+ " List of WCM Product items which are removed  " + productWCMRemoved
 									+ " : and Link Name :" + Title,
-									Expectedresult, result, status);
+							Expectedresult, result, status);
 				} else if (m == 1)
 
 				{
@@ -1097,8 +1102,8 @@ public class PortletLinksPage_POF {
 							" <B>User Prefernce List :</B>" + listOfElements + " UserDefined List :"
 									+ hashsetUserdefinedList + "WCMProduct :" + WCMProducts + " :and Link Name :"
 									+ Title,
-									"Search criteria should not be available in the list after unchecking the items.",
-									"User is not able to perform product preference as single product is available.", status);
+							"Search criteria should not be available in the list after unchecking the items.",
+							"User is not able to perform product preference as single product is available.", status);
 				}
 
 			}
@@ -1903,69 +1908,66 @@ public class PortletLinksPage_POF {
 		String expectedResult = "";
 		List<WebElement> Column = null;
 		String strContenttype = userWcmContent.get("ContentType").toString().trim();
-		boolean filterbox=false;
+		boolean filterbox = false;
 
-		if (!ThirdLevelIndexPage.equalsIgnoreCase("NA") && !ThirdLevelIndexPageCategories.equalsIgnoreCase("NA"))
-		{ 
-			try
-			{
+		if (!ThirdLevelIndexPage.equalsIgnoreCase("NA") && !ThirdLevelIndexPageCategories.equalsIgnoreCase("NA")) {
+			try {
 
-				try
-				{
+				try {
 					filterbox = departmentLinksfilterbox.isDisplayed();
-				}
-				catch(Exception e)
-				{
+				} catch (Exception e) {
 
 				}
 
-				if(filterbox==true && (strContenttype.equalsIgnoreCase("AT-Index Page")||strContenttype.equalsIgnoreCase("AT-ChildIndex Page")|| strContenttype.equalsIgnoreCase("AT-GrandChild Index Page")))
-				{
+				if (filterbox == true && (strContenttype.equalsIgnoreCase("AT-Index Page")
+						|| strContenttype.equalsIgnoreCase("AT-ChildIndex Page")
+						|| strContenttype.equalsIgnoreCase("AT-GrandChild Index Page"))) {
 					expectedResult = "Links under Category should be distributed evenly in two columns without portlet scrolling.";
 					flag = "Pass";
 					actualResult = "Links under Category are not distributed evenly in two columns without portlet scrolling as Index/Child/Grand-Child Link is not Present.";
 
-				} 
-				else
-				{ 
-					boolean flagForIndex=false; 
+				} else {
+					boolean flagForIndex = false;
 
-					if(!ThirdLevelIndexPageNestedCategories.equalsIgnoreCase("NA"))
-					{
-						flagForIndex = GenericFactory.clickOnIndexPageLinkOnChildLevelDepartmentcheck(Title,ThirdLevelIndexPageCategories,ThirdLevelIndexPageNestedCategories);
+					if (!ThirdLevelIndexPageNestedCategories.equalsIgnoreCase("NA")) {
+						flagForIndex = GenericFactory.clickOnIndexPageLinkOnChildLevelDepartmentcheck(Title,
+								ThirdLevelIndexPageCategories, ThirdLevelIndexPageNestedCategories);
 					}
 
-					if(ContentType.equalsIgnoreCase("AT-Index Page") ||ContentType.equalsIgnoreCase("AT-ChildIndex Page")||ContentType.equalsIgnoreCase("AT-GrandChild Index Page") )
-					{
-						List<WebElement> Table = PortletDriver.findElements(By.xpath(".//*[@id='linkIndexPageContainer']/div"));
-						//     List<WebElement> Table = PortletDriver.findElements(By.xpath(".//*[@id='index-links-target']/div"));    
-						for(int i=1;i< Table.size();i++)
-						{
-							WebElement ThirdLevelIndexPageNestedCategoriesWeb = PortletDriver.findElement(By.xpath(".//*[@id='linkIndexPageContainer']/div["+i+"]"));
+					if (ContentType.equalsIgnoreCase("AT-Index Page")
+							|| ContentType.equalsIgnoreCase("AT-ChildIndex Page")
+							|| ContentType.equalsIgnoreCase("AT-GrandChild Index Page")) {
+						List<WebElement> Table = PortletDriver
+								.findElements(By.xpath(".//*[@id='linkIndexPageContainer']/div"));
+						// List<WebElement> Table =
+						// PortletDriver.findElements(By.xpath(".//*[@id='index-links-target']/div"));
+						for (int i = 1; i < Table.size(); i++) {
+							WebElement ThirdLevelIndexPageNestedCategoriesWeb = PortletDriver
+									.findElement(By.xpath(".//*[@id='linkIndexPageContainer']/div[" + i + "]"));
 
-							String allHeaderData= ThirdLevelIndexPageNestedCategoriesWeb.getText();
+							String allHeaderData = ThirdLevelIndexPageNestedCategoriesWeb.getText();
 
 							String[] upperData = allHeaderData.split("\n");
-							String headerFirst =  upperData[0];
+							String headerFirst = upperData[0];
 
-							if(headerFirst.equalsIgnoreCase(ThirdLevelIndexPageNestedCategories))
-							{
+							if (headerFirst.equalsIgnoreCase(ThirdLevelIndexPageNestedCategories)) {
 
-								Column = PortletDriver.findElements(By.xpath(".//*[@id='linkIndexPageContainer']/div["+i+"]/div"));
+								Column = PortletDriver.findElements(
+										By.xpath(".//*[@id='linkIndexPageContainer']/div[" + i + "]/div"));
 
-							}
-							else if(ThirdLevelIndexPageNestedCategories.equalsIgnoreCase("NA") ||ThirdLevelIndexPageNestedCategories==null )
-							{
-								Column = PortletDriver.findElements(By.xpath(".//*[@id='linkIndexPageContainer']/div["+i+"]/div"));
+							} else if (ThirdLevelIndexPageNestedCategories.equalsIgnoreCase("NA")
+									|| ThirdLevelIndexPageNestedCategories == null) {
+								Column = PortletDriver.findElements(
+										By.xpath(".//*[@id='linkIndexPageContainer']/div[" + i + "]/div"));
 
 							}
 						}
 
-						WebElement Category = PortletDriver.findElement(By.xpath("//h3[contains(.,'" + ThirdLevelIndexPageCategories + "')]"));
-						List<WebElement> columnScroll = PortletDriver.findElements(By.xpath(".//*[@id='linkIndexPageContainer']/div/div[2]/div"));
+						WebElement Category = PortletDriver
+								.findElement(By.xpath("//h3[contains(.,'" + ThirdLevelIndexPageCategories + "')]"));
+						List<WebElement> columnScroll = PortletDriver
+								.findElements(By.xpath(".//*[@id='linkIndexPageContainer']/div/div[2]/div"));
 						String CatName = Category.getText().toString();
-
-
 
 						if (ThirdLevelIndexPageCategories.equalsIgnoreCase(CatName)) {
 
@@ -1973,16 +1975,17 @@ public class PortletLinksPage_POF {
 							JavascriptExecutor jse = (JavascriptExecutor) PortletDriver;
 							Boolean isScrollable = (Boolean) jse.executeScript(JS_ELEMENT_IS_SCROLLABLE, columnScroll);
 
-							if(Table.size()==0)
-							{
+							if (Table.size() == 0) {
 								flag = "Fail";
 								actualResult = "Table with valid format/Links are not present to verify.";
 								expectedResult = "Links should be distributed evenly in two columns without portlet scrolling.";
 							}
 
-							else  if ((isScrollable == false && Column.size() == 1
-									|| isScrollable == false && Column.size() == 2 && flagForIndex==true)||isScrollable == false && Column.size() == 1
-									|| isScrollable == false && Column.size() == 2 && ThirdLevelIndexPageNestedCategories.equalsIgnoreCase("NA")) {
+							else if ((isScrollable == false && Column.size() == 1
+									|| isScrollable == false && Column.size() == 2 && flagForIndex == true)
+									|| isScrollable == false && Column.size() == 1
+									|| isScrollable == false && Column.size() == 2
+											&& ThirdLevelIndexPageNestedCategories.equalsIgnoreCase("NA")) {
 
 								expectedResult = "Links under Category should be distributed evenly in two columns without portlet scrolling.";
 								actualResult = "Links are distributed without portlet scrolling for Category :";
@@ -1996,27 +1999,26 @@ public class PortletLinksPage_POF {
 								flag = "Fail";
 							}
 
-
-
 						}
 
 					}
 
-					else
-					{
+					else {
 
-						Column = PortletDriver.findElements(By.xpath(".//*[@id='index-links-target']/div/div/div/div[1]"));
+						Column = PortletDriver
+								.findElements(By.xpath(".//*[@id='index-links-target']/div/div/div/div[1]"));
 						System.out.println(Column.size());
-						WebElement columnScroll = PortletDriver.findElement(By.xpath(".//*[@id='index-links-target']/div/div"));
+						WebElement columnScroll = PortletDriver
+								.findElement(By.xpath(".//*[@id='index-links-target']/div/div"));
 
 						String JS_ELEMENT_IS_SCROLLABLE = "return arguments[0].scrollHeight > arguments[0].offsetHeight;";
 						JavascriptExecutor jse = (JavascriptExecutor) PortletDriver;
 						Boolean isScrollable = (Boolean) jse.executeScript(JS_ELEMENT_IS_SCROLLABLE, columnScroll);
-						if ((isScrollable == false && Column.size() == 1
-								|| isScrollable == false && Column.size() == 2 )||isScrollable == false && Column.size() == 1 ) {
+						if ((isScrollable == false && Column.size() == 1 || isScrollable == false && Column.size() == 2)
+								|| isScrollable == false && Column.size() == 1) {
 
 							expectedResult = "Links under Category should be distributed evenly in two columns without portlet scrolling.";
-							actualResult = "Links are distributed without portlet scrolling for Category :" ;
+							actualResult = "Links are distributed without portlet scrolling for Category :";
 							flag = "Pass";
 						}
 
@@ -2027,44 +2029,42 @@ public class PortletLinksPage_POF {
 							flag = "Fail";
 						}
 
-
 					}
 				}
 
-			}
-			catch (Exception e) {
+			} catch (Exception e) {
 
 				expectedResult = "Links under Category should be distributed evenly in two columns without portlet scrolling.";
 				actualResult = e.getMessage().toString().substring(0, 125);
 
 			}
 
-
-
-		} 
-		else if(!ThirdLevelIndexPage.equalsIgnoreCase("NA") && ThirdLevelIndexPageCategories.equalsIgnoreCase("NA"))
-		{
+		} else if (!ThirdLevelIndexPage.equalsIgnoreCase("NA")
+				&& ThirdLevelIndexPageCategories.equalsIgnoreCase("NA")) {
 			try
 
 			{
-				if(ContentType.equalsIgnoreCase("AT-Index Page") ||ContentType.equalsIgnoreCase("AT-ChildIndex Page")||ContentType.equalsIgnoreCase("AT-GrandChild Index Page") )
+				if (ContentType.equalsIgnoreCase("AT-Index Page") || ContentType.equalsIgnoreCase("AT-ChildIndex Page")
+						|| ContentType.equalsIgnoreCase("AT-GrandChild Index Page"))
 
 				{
 
-					List<WebElement> Table = PortletDriver.findElements(By.xpath(".//*[@id='index-links-target']/div/div"));
+					List<WebElement> Table = PortletDriver
+							.findElements(By.xpath(".//*[@id='index-links-target']/div/div"));
 
-
-					//    Column = PortletDriver.findElements(By.xpath(".//*[@id='index-links-target']/div/div/div/div"));
+					// Column =
+					// PortletDriver.findElements(By.xpath(".//*[@id='index-links-target']/div/div/div/div"));
 					Column = PortletDriver.findElements(By.xpath(".//*[@id='index-links-target']/div/div/div/div[1]"));
 
 					System.out.println(Column.size());
-					WebElement columnScroll = PortletDriver.findElement(By.xpath(".//*[@id='index-links-target']/div/div"));
+					WebElement columnScroll = PortletDriver
+							.findElement(By.xpath(".//*[@id='index-links-target']/div/div"));
 
 					String JS_ELEMENT_IS_SCROLLABLE = "return arguments[0].scrollHeight > arguments[0].offsetHeight;";
 					JavascriptExecutor jse = (JavascriptExecutor) PortletDriver;
 					Boolean isScrollable = (Boolean) jse.executeScript(JS_ELEMENT_IS_SCROLLABLE, columnScroll);
-					if ((isScrollable == false && Column.size() == 1
-							|| isScrollable == false && Column.size() == 2 )||isScrollable == false && Column.size() == 1 ) {
+					if ((isScrollable == false && Column.size() == 1 || isScrollable == false && Column.size() == 2)
+							|| isScrollable == false && Column.size() == 1) {
 
 						expectedResult = "Links under Category should be distributed evenly in two columns without portlet scrolling.";
 						actualResult = "Links are distributed without portlet scrolling for Category :";
@@ -2078,19 +2078,17 @@ public class PortletLinksPage_POF {
 						flag = "Fail";
 					}
 
-
-				}
-				else
-				{
+				} else {
 					Column = PortletDriver.findElements(By.xpath(".//*[@id='index-links-target']/div/div/div/div"));
 					System.out.println(Column.size());
-					WebElement columnScroll = PortletDriver.findElement(By.xpath(".//*[@id='index-links-target']/div/div"));
+					WebElement columnScroll = PortletDriver
+							.findElement(By.xpath(".//*[@id='index-links-target']/div/div"));
 
 					String JS_ELEMENT_IS_SCROLLABLE = "return arguments[0].scrollHeight > arguments[0].offsetHeight;";
 					JavascriptExecutor jse = (JavascriptExecutor) PortletDriver;
 					Boolean isScrollable = (Boolean) jse.executeScript(JS_ELEMENT_IS_SCROLLABLE, columnScroll);
-					if ((isScrollable == false && Column.size() == 1
-							|| isScrollable == false && Column.size() == 2 )||isScrollable == false && Column.size() == 1 ) {
+					if ((isScrollable == false && Column.size() == 1 || isScrollable == false && Column.size() == 2)
+							|| isScrollable == false && Column.size() == 1) {
 
 						expectedResult = "Links under Category should be distributed evenly in two columns without portlet scrolling.";
 						actualResult = "Links are distributed without portlet scrolling for Category :";
@@ -2103,7 +2101,6 @@ public class PortletLinksPage_POF {
 						actualResult = "Links are not present to verify/distributed without portlet scrolling for Category :";
 						flag = "Fail";
 					}
-
 
 				}
 			}
@@ -2116,7 +2113,7 @@ public class PortletLinksPage_POF {
 
 			}
 
-		} 
+		}
 
 		else {
 
@@ -2125,12 +2122,10 @@ public class PortletLinksPage_POF {
 			flag = "Pass";
 		}
 
-
-		return new ReportOutput(flag, scenarioName,  BaseClass.PORTLET_LINKFLAG,
-				wcmTestCaseID, actualResult, expectedResult);
+		return new ReportOutput(flag, scenarioName, BaseClass.PORTLET_LINKFLAG, wcmTestCaseID, actualResult,
+				expectedResult);
 
 	}
-
 
 	/**
 	 * @author Archana Gaikwad Content should be displayed with header and footer
@@ -2233,7 +2228,7 @@ public class PortletLinksPage_POF {
 	 * @param param1
 	 *            matrix2xolumns(userWCMContent.get(i));
 	 * @return 2,3,4,5 Presentation Template @ exception try and Catch @ throws
-	 * Throwable
+	 *         Throwable
 	 **/
 
 	@SuppressWarnings({ "unused", "rawtypes" })
@@ -2417,11 +2412,11 @@ public class PortletLinksPage_POF {
 	 * @param param1
 	 *            matrixGrouping(userWCMContent.get(i),allDataComparison,allDates);
 	 * @return Sorting and year Grouping @ exception try and Catch @ throws
-	 * Throwable
+	 *         Throwable
 	 **/
 
 	public static void matrixGrouping(LinkedHashMap userWcmContent, List<String> allDataComparison,
-			List<String> allDates,String sorting) throws Throwable {
+			List<String> allDates, String sorting) throws Throwable {
 
 		String wcmTestCaseID = userWcmContent.get("Test Case ID").toString().trim();
 		String ThirdLevelIndexPage = userWcmContent.get("3rdLevelIndexPage").toString().trim();
@@ -2430,7 +2425,7 @@ public class PortletLinksPage_POF {
 		String Index_Page_Template = userWcmContent.get("Index_Page_Template").toString().trim();
 		String Index_Page_Labels = userWcmContent.get("Index_Page_Template_Label").toString().trim();
 		String strContenttype = userWcmContent.get("ContentType").toString().trim();
-		 
+
 		String sortingName = userWcmContent.get("Sort By").toString().trim();
 		String ascendingDescending = userWcmContent.get("Sort Order").toString().trim();
 		String YearGrouping = userWcmContent.get("Year Grouping Required").toString().trim();
@@ -2507,14 +2502,15 @@ public class PortletLinksPage_POF {
 									.findElement(
 											By.xpath(".//*[@id='indexPageContainer']/div/div[2]/div[1]/div[" + m + "]"))
 									.getText();
-							//code commented
+							// code commented
 
-							/*if (sorting.contains(columnNameString) && columnNameString.contains("Date")) {
-								sorting = "Date";
-							}*/
+							/*
+							 * if (sorting.contains(columnNameString) && columnNameString.contains("Date"))
+							 * { sorting = "Date"; }
+							 */
 
 							if (sorting.contains(columnNameString) || sorting.equalsIgnoreCase(columnNameString)) {
-								 
+
 								int cnt = 0;
 
 								List<WebElement> titleHorizontalEntry = PortletDriver.findElements(By
@@ -2650,34 +2646,32 @@ public class PortletLinksPage_POF {
 												+ i + "]/div[" + m + "]"))
 										.getText();
 								// String sDate1= issueDateFromTable.get(i).getText();
-								
-							      
-							      
-								
+
 								if (!sDate1.equalsIgnoreCase("")) {
-									
-									
-								String changeDateFormatYMD =	DateFactory.changeDateFormatYMD(sDate1,BaseClass.dateformat);
-								      
-				    SimpleDateFormat dateFormatDt = new SimpleDateFormat("yyyy-MM-dd");
-					Date dateDt = dateFormatDt.parse(changeDateFormatYMD);
 
-					allDatesIndexPage.add(dateDt);
-					allDatesString.add(sDate1);
-					String[] fieldsDt = sDate1.split("[ \\-]");
-					yearOnly = fieldsDt[0];
-					System.out.println(fieldsDt[0]);
+									String changeDateFormatYMD = DateFactory.changeDateFormatYMD(sDate1,
+											BaseClass.dateformat);
 
-				}
-			}
+									SimpleDateFormat dateFormatDt = new SimpleDateFormat("yyyy-MM-dd");
+									Date dateDt = dateFormatDt.parse(changeDateFormatYMD);
+
+									allDatesIndexPage.add(dateDt);
+									allDatesString.add(sDate1);
+									String[] fieldsDt = sDate1.split("[ \\-]");
+									yearOnly = fieldsDt[0];
+									System.out.println(fieldsDt[0]);
+
+								}
+							}
 
 							List<Date> allDatesSorted = new ArrayList<>(allDatesIndexPage);
-						/*	if (ascendingDescending.equalsIgnoreCase("Descending")
-									&& allDatesString.containsAll(allDates)
-									|| ascendingDescending.equalsIgnoreCase("Descending")
-									&& allDates.containsAll(allDatesString))*/
-							if (ascendingDescending.equalsIgnoreCase("Descending"))
-								{
+							/*
+							 * if (ascendingDescending.equalsIgnoreCase("Descending") &&
+							 * allDatesString.containsAll(allDates) ||
+							 * ascendingDescending.equalsIgnoreCase("Descending") &&
+							 * allDates.containsAll(allDatesString))
+							 */
+							if (ascendingDescending.equalsIgnoreCase("Descending")) {
 
 								Collections.sort(allDatesSorted, new DateFactory.DescendingDateComparator());
 								for (int index = 0; index < allDatesIndexPage.size(); index++) {
@@ -2806,7 +2800,7 @@ public class PortletLinksPage_POF {
 											if ((YearGrouping.equalsIgnoreCase("Yes") && alphaOrderFlag == true
 													&& allYear.size() == 1)
 													|| (YearGrouping.equalsIgnoreCase("Yes") && alphaOrderFlag == true
-													&& allYear.size() == 0)
+															&& allYear.size() == 0)
 													|| (YearGrouping.equalsIgnoreCase("No")
 															&& alphaOrderFlag == true)) {
 
@@ -2833,11 +2827,11 @@ public class PortletLinksPage_POF {
 											if ((YearGrouping.equalsIgnoreCase("Yes") && alphaOrderFlag == false
 													&& allYear.size() == 1)
 													|| (YearGrouping.equalsIgnoreCase("Yes") && alphaOrderFlag == false
-													&& allYear.size() == 0)
+															&& allYear.size() == 0)
 													|| (YearGrouping.equalsIgnoreCase("No")
 															&& (alphaOrderFlag == false && allYear.size() == 1))
 													|| (YearGrouping.equalsIgnoreCase("No") && alphaOrderFlag == true
-													&& allYear.size() == 0)) {
+															&& allYear.size() == 0)) {
 
 												if (h == headerMatch.size()) {
 													flag = "Pass";
@@ -2889,7 +2883,7 @@ public class PortletLinksPage_POF {
 										if (ascendingDescending.equalsIgnoreCase("Descending")
 												&& allDatesString.containsAll(allDates)
 												|| ascendingDescending.equalsIgnoreCase("Descending")
-												&& allDates.containsAll(allDatesString)) {
+														&& allDates.containsAll(allDatesString)) {
 											Collections.sort(allDatesSorted,
 													new DateFactory.DescendingDateComparator());
 
@@ -2968,7 +2962,7 @@ public class PortletLinksPage_POF {
 	 * @param param1
 	 *            ChangeOfPrefDept(strTCID,strDepartmentName);
 	 * @return Department check and uncheck @ exception try and Catch @ throws
-	 * Throwable
+	 *         Throwable
 	 **/
 	@SuppressWarnings("unused")
 	public static void ChangeOfPrefDept(String strTCID, String departmentName) throws Throwable {
@@ -3012,8 +3006,6 @@ public class PortletLinksPage_POF {
 		GenericFactory.checkUncheckDepartmentMyPreferenceIndex(departmentName);
 		Thread.sleep(7000);
 
-
-
 		if (BaseClass.wbDriver.findElement(By.xpath(".//*[@id='favorites-filter']")).isDisplayed()) {
 			LogFactory.info("User is on homepage");
 			result = " Navigated to a index/Child/GrandChild Index Page and department uncheck functionality is working as expected.";
@@ -3046,7 +3038,7 @@ public class PortletLinksPage_POF {
 	 *            strTitle,strThirdLevelFolder,strDescription,strRACFGroups,strdealerType);
 	 * @return Verify Content type whether it is
 	 *         'AT-Link','AT-Document','AT-Rich-Text' @ exception try and Catch @
-	 * throws Throwable
+	 *         throws Throwable
 	 **/
 	@SuppressWarnings("unused")
 	public static void portletLinks(String strWCMTCID, String userDefinedCountry, String wcmCountry,
@@ -3195,10 +3187,10 @@ public class PortletLinksPage_POF {
 														"This AT-Document but extension is not found in the extension list ");
 
 												ReportFactory
-												.reporterOutput(strWCMTCID, testCaseDescription, inputValue,
-														"Content Type is AT-Document but:  " + linkExtentionType
-														+ " not found in the extension list ",
-														strLink, "Fail");
+														.reporterOutput(strWCMTCID, testCaseDescription, inputValue,
+																"Content Type is AT-Document but:  " + linkExtentionType
+																		+ " not found in the extension list ",
+																strLink, "Fail");
 
 											}
 											break;
@@ -3277,14 +3269,14 @@ public class PortletLinksPage_POF {
 										if (racfGroup == false) {
 											ReportFactory.reporterOutput(strWCMTCID, testCaseDescription, inputValue,
 													"Link should not be available in the department : " + departmentName
-													+ " and section " + secondLevel,
+															+ " and section " + secondLevel,
 													"User Racf Group  are not matching with WCM Racf Group and Link : "
 															+ title + " is available in section : " + secondLevel,
 													"Fail");
 										} else {
 											ReportFactory.reporterOutput(strWCMTCID, testCaseDescription, inputValue,
 													"Link should not be available in the department : " + departmentName
-													+ " and section " + secondLevel,
+															+ " and section " + secondLevel,
 													"User Dealer Type are not matching with WCM Dealer Type and Link : "
 															+ title + " is available in section : " + secondLevel,
 													"Fail");
@@ -3301,7 +3293,7 @@ public class PortletLinksPage_POF {
 
 							ReportFactory.reporterOutput(strWCMTCID, testCaseDescription, inputValue,
 									" : Link should be available in the department : " + departmentName
-									+ " and section " + secondLevel,
+											+ " and section " + secondLevel,
 									"User Country & Product Types are matching with WCM Country & Product Types but Link : "
 											+ title + " is not available in section : " + secondLevel,
 									"Fail");
@@ -3313,25 +3305,25 @@ public class PortletLinksPage_POF {
 
 							ReportFactory.reporterOutput(strWCMTCID, testCaseDescription, inputValue,
 									" Link should NOT be available in the department : " + departmentName
-									+ " and section " + secondLevel,
+											+ " and section " + secondLevel,
 									"User Product types are not matching with WCM Product types but Link : " + title
-									+ " is available in section : " + secondLevel,
+											+ " is available in section : " + secondLevel,
 									"Fail");
 
 						} else if (booCountry == false && booProduct == true && booTitleFlag == true) {
 
 							ReportFactory.reporterOutput(strWCMTCID, testCaseDescription, inputValue,
 									" Link should NOT be available in the department : " + departmentName
-									+ " and section " + secondLevel,
+											+ " and section " + secondLevel,
 									"User Country is not matching with WCM country but Link : " + title
-									+ " is available in section : " + secondLevel,
+											+ " is available in section : " + secondLevel,
 									"Fail");
 
 						} else if (booCountry == false && booProduct == false && booTitleFlag == false) {
 
 							ReportFactory.reporterOutput(strWCMTCID, testCaseDescription, inputValue,
 									" Link should NOT be available in the department : " + departmentName
-									+ " and section " + secondLevel,
+											+ " and section " + secondLevel,
 									"User Country & Product types are not matching with WCM Country & Product types so Link : "
 											+ title + " is NOT available in section : " + secondLevel,
 									"Pass");
@@ -3340,16 +3332,16 @@ public class PortletLinksPage_POF {
 
 							ReportFactory.reporterOutput(strWCMTCID, testCaseDescription, inputValue,
 									" Link should NOT be available in the department : " + departmentName
-									+ " and section " + secondLevel,
+											+ " and section " + secondLevel,
 									"Product types are not matching with WCM Product types so Link : " + title
-									+ " is not available in section : " + secondLevel,
+											+ " is not available in section : " + secondLevel,
 									"Pass");
 
 						} else if (booCountry == false && booProduct == false && booTitleFlag == true) {
 
 							ReportFactory.reporterOutput(strWCMTCID, testCaseDescription, inputValue,
 									" Link should NOT be available in the department : " + departmentName
-									+ " and section " + secondLevel,
+											+ " and section " + secondLevel,
 									"User Country & Product types are NOT matching with WCM Country & Product types but Link : "
 											+ title + " is available in section : " + secondLevel,
 									"Fail");
@@ -3358,9 +3350,9 @@ public class PortletLinksPage_POF {
 
 							ReportFactory.reporterOutput(strWCMTCID, testCaseDescription, inputValue,
 									" Link should NOT be available in the department : " + departmentName
-									+ " and section " + secondLevel,
+											+ " and section " + secondLevel,
 									"User Country is not matching with WCM country so Link : " + title
-									+ " is NOT available in section : " + secondLevel,
+											+ " is NOT available in section : " + secondLevel,
 									"Pass");
 
 						}
@@ -3521,7 +3513,7 @@ public class PortletLinksPage_POF {
 
 										ReportFactory.reporterOutput(strWCMTCID, testCaseDescription, inputValue,
 												"Content Type is AT-Document but:  " + linkExtentionType
-												+ " not found in the extension list ",
+														+ " not found in the extension list ",
 												strLink, "Fail");
 										flag = true;
 
@@ -3649,7 +3641,7 @@ public class PortletLinksPage_POF {
 
 			List<String> translatedText = GenericFactory.getTranslation(DepartmentName);
 			DepartmentName = translatedText.get(0);
-			 
+
 			WebElement department = GenericFactory.getDeptname(DepartmentName);
 			if (department != null) {
 				department.click();
@@ -3726,7 +3718,7 @@ public class PortletLinksPage_POF {
 	 * @param param1
 	 *            verifySessionforExpandFolder(strTCID,strDepartmentName,SubDepartmentName,strFolderName,strTitle);
 	 * @return verifysessionExpandFolder @ exception try and Catch @ throws
-	 * Throwable
+	 *         Throwable
 	 **/
 
 	@SuppressWarnings("unused")
@@ -3740,9 +3732,9 @@ public class PortletLinksPage_POF {
 			LogFactory.info("Verify Department Name");
 			List<String> translatedText = GenericFactory.getTranslation(DepartmentName);
 			DepartmentName = translatedText.get(0);
-			
+
 			WebElement department = GenericFactory.getDeptname(DepartmentName);
-			
+
 			if (department != null) {
 				department.click();
 
@@ -3796,7 +3788,7 @@ public class PortletLinksPage_POF {
 	 * @param param1
 	 *            portletLandingPage(userWCMContent.get(i),strContenttype);
 	 * @return Changing Produt Prefernce @ exception try and Catch @ throws
-	 * Throwable
+	 *         Throwable
 	 **/
 
 	@SuppressWarnings({ "rawtypes", "unused" })
@@ -3873,24 +3865,23 @@ public class PortletLinksPage_POF {
 									.findElement(By.xpath("//p[contains(.,'" + strDescriptionRichText + "')]"))
 									.getText();
 						} catch (Exception e) {
-							richTextContent="NA";
+							richTextContent = "NA";
 						}
-						
+
 						if (richTextContent.equalsIgnoreCase(strDescriptionRichText)) {
 							flagRichText = true;
 						}
-							try{
-						WebElement imgElement = PortletDriver.findElement(By.xpath("//img[@border='0']"));
+						try {
+							WebElement imgElement = PortletDriver.findElement(By.xpath("//img[@border='0']"));
 
-						if (imgElement != null) {
-							GenericFactory.verifyimageActive(imgElement);
-						}
-
-						System.out.println("Total no. of invalid images are " + invalidImageCount);
-							} catch (Exception e) {
-							 
+							if (imgElement != null) {
+								GenericFactory.verifyimageActive(imgElement);
 							}
-							
+
+							System.out.println("Total no. of invalid images are " + invalidImageCount);
+						} catch (Exception e) {
+
+						}
 
 					}
 
@@ -3935,13 +3926,13 @@ public class PortletLinksPage_POF {
 	 * @param param1
 	 *            matrix2xolumns(userWCMContent.get(i));
 	 * @return productSegmentIndexPages(wcmTestCaseID,strTitle,strSubDepartmentName,strUserDefinedProducts,strWCMProducts,strThirdLevelFolder,strContenttype); @
-	 * exception try and Catch @ throws Throwable
+	 *         exception try and Catch @ throws Throwable
 	 **/
 
 	@SuppressWarnings("unused")
 	public static void productSegmentIndexPages(String wcmTestCaseID, String Title, String strSubDepartmentName,
 			String UserDefinedProducts, String WCMProducts, String strThirdLevelFolder, String strContenttype)
-					throws Throwable {
+			throws Throwable {
 
 		try {
 
@@ -4014,10 +4005,10 @@ public class PortletLinksPage_POF {
 				for (int l = 0; l < WCMlist.length; l++) {
 					String WCMProd = WCMlist[l];
 					String ParentProd1 = GenericFactory.getParentProduct(WCMProd.trim().toString());
-					
-					//code added
+
+					// code added
 					List<String> translatedText = GenericFactory.getTranslation(ParentProd1);
-					ParentProd1=translatedText.get(0); 
+					ParentProd1 = translatedText.get(0);
 					WCMProdlist.add(ParentProd1);
 
 				}
@@ -4046,8 +4037,6 @@ public class PortletLinksPage_POF {
 					Object[] myArr = hashsetWCMList.toArray();
 
 					parentItemUncheck = myArr[k].toString();
-					
-				
 
 					List<String> translatedText1 = GenericFactory.getTranslation(parentItemUncheck);
 					parentItemUncheck = translatedText1.get(0);
@@ -4060,7 +4049,7 @@ public class PortletLinksPage_POF {
 							ValidationFactory.getElementIfPresent(By.xpath("//div[@id='js-segments']")).click();
 						}
 						productWCMRemoved.add(parentItemUncheck);
-				 
+
 						boolean checkboxstatus = GenericFactory.productcheckstatus(parentItemUncheck);
 
 						if (k >= hashsetWCMList.size() - 1) {
@@ -4154,9 +4143,9 @@ public class PortletLinksPage_POF {
 				if (m > 1 && flagItemnotfound == false) {
 					ReportFactory.reporterOutput(wcmTestCaseID, "Verify Product Segment functionality on Index Pages.",
 							"<B>ContentType :</B>" + strContenttype + " <B>User Prefernce List :</B>" + listOfElements
-							+ " UserDefined List :" + hashsetUserdefinedList + "WCMProduct :" + WCMProducts
-							+ " List of WCM Product items which are removed. " + productWCMRemoved
-							+ " : and Link Name :" + Title,
+									+ " UserDefined List :" + hashsetUserdefinedList + "WCMProduct :" + WCMProducts
+									+ " List of WCM Product items which are removed. " + productWCMRemoved
+									+ " : and Link Name :" + Title,
 							Expectedresult, result, status);
 				} else if (m == 1)
 
@@ -4164,9 +4153,9 @@ public class PortletLinksPage_POF {
 					status = "Pass";
 					ReportFactory.reporterOutput(wcmTestCaseID, "Verify Product Segment functionality on Index Pages.",
 							"<B>ContentType :</B>" + strContenttype + " <B>User Prefernce List :</B>" + listOfElements
-							+ " UserDefined List :" + hashsetUserdefinedList + "WCMProduct :" + WCMProducts
-							+ " List of WCM Product items which are removed. " + productWCMRemoved
-							+ " :and Link Name :" + Title,
+									+ " UserDefined List :" + hashsetUserdefinedList + "WCMProduct :" + WCMProducts
+									+ " List of WCM Product items which are removed. " + productWCMRemoved
+									+ " :and Link Name :" + Title,
 							"Search criteria should not be available in the list after unchecking the items.",
 							"User is not able to perform product preference as single product is available.", status);
 				}
@@ -4203,7 +4192,7 @@ public class PortletLinksPage_POF {
 			String wcmCountrynameWcm = "";
 			String regionData = null;
 			boolean filterbox = false;
-			boolean countryI= false;
+			boolean countryI = false;
 
 			try {
 				Thread.sleep(2000);
@@ -4214,13 +4203,10 @@ public class PortletLinksPage_POF {
 
 			}
 
-			try
-			{
+			try {
 
-				countryI =countryIcon.isDisplayed();
-			}
-			catch(Exception e)
-			{
+				countryI = countryIcon.isDisplayed();
+			} catch (Exception e) {
 
 			}
 			if ((filterbox == true) && (strContenttype.equalsIgnoreCase("AT-Index Page")
@@ -4232,16 +4218,13 @@ public class PortletLinksPage_POF {
 				status = "Pass";
 				result = "Country filtering functionality can not be performed as Index/Child/Grand-Child Link is not Present.";
 
-			} 
-			else if(countryI== false)
-			{
+			} else if (countryI == false) {
 
 				Expectedresult = "Search criteria should not be available in the list after Country Filtering..";
 				status = "Pass";
 				result = "Country filtering functionality can not be performed as Country Icon is not Present.";
 
-			}
-			else {
+			} else {
 				if (strThirdLevelIndex.equalsIgnoreCase("NA")) {
 					WebElement department = GenericFactory.getDeptname(strDepartmentName);
 					boolean linkfolderFlag = false;
@@ -4375,7 +4358,7 @@ public class PortletLinksPage_POF {
 			ReportFactory.reporterOutput(wcmTestCaseID,
 					"Verify Country Filtering functionality for Link Portlet/Index/Child/GrandChild Pages.",
 					"UserDefined Country :" + strUserDefinedCountry + "WCMCountry :" + strWCMCountry
-					+ " : and Link Name :" + Title,
+							+ " : and Link Name :" + Title,
 					Expectedresult, result, status);
 
 			GenericFactory.checkAllCountryData();
@@ -4387,8 +4370,6 @@ public class PortletLinksPage_POF {
 		}
 
 	}
-
-
 
 	// *************************************************getLeftWindowLinks********************************
 	public static ArrayList<String> getLeftWindowLinks() {
@@ -4425,6 +4406,326 @@ public class PortletLinksPage_POF {
 
 		ReportFactory.reporterOutput(wcmTestCaseID, scenarioName, input, expResult,
 				"Criteria does not match so We can not perform./Data not found in WCM sheet.", "Fail");
+	}
+
+	public static void unCheckProductTypesWithProductCombinations() throws Throwable {
+		String strAlertFlag = "";
+		String strResult = "";
+		int products = 0;
+
+		GenericFactory.checkAllProducts();
+		WaitFactory.waitForPageLoaded();
+		if (ValidationFactory.isElementPresent(By.xpath("//div[@id='js-segments']"))) {
+			BaseClass.wbDriver.findElement((By.xpath("//div[@id='js-segments']"))).click();
+			GenericFactory.listOfProductSegmentsGlobal = getCheckBoxValuesPrefLanguage();
+			products = GenericFactory.listOfProductSegmentsGlobal.size();
+		}
+		Object[][] proCombination1 = { { 0 } };
+		Object[][] proCombination2 = { { 0 }, { 1 } };
+		Object[][] proCombination3 = { { 0, 1 }, { 0, 2 }, { 1, 2 } };
+		Object[][] proCombination4 = { { 0, 1, 3 }, { 1, 3 }, { 1, 2, 3 } };
+		Object[][] proCombination5 = { { 0, 2, 3, 4 }, { 0, 1, 4 }, { 0, 1, 2 } };
+		Object[][] proCombination6 = { { 0, 2, 3, 4, 5 }, { 0, 1, 3 }, { 0, 4, 5 }, { 2, 4, 5 } };
+		Object[][] proCombination7 = { { 0, 1, 3, 5, 6 }, { 1, 2, 4, 5, 6 }, { 0, 4, 5 }, { 1, 3, 5 } };
+		Object[][] proCombination8 = { { 0, 2, 4, 5, 6 }, { 1, 3, 5, 7 }, { 1, 6 }, { 2, 4, 6, 7 } };
+		String threeProScenarioName = "TCPTSC0";
+		String twoProScenarioName = "TCPTSC1";
+		String productFrmSheet = GenericFactory
+				.getParentProductSegmnentList(GenericFactory.listOfProductSegmentsGlobal.toString());
+
+		if (products == 8) {
+			List<Object> lstCase = null;
+			for (int i = 0; i < proCombination8.length; i++) {
+				lstCase = Arrays.asList(proCombination8[i]);
+				System.out.println("Product Combination Scenario 8 is found:");
+				System.out.println("----------------------------------------------");
+				System.out.println("List of Products needs to uncheck: " + getCheckBoxValuesfromSpecificIndex(lstCase));
+				productUncheckForAllContent(uncheckSpecificProductsFromProductSegment(
+						(getCheckBoxValuesfromSpecificIndex(lstCase).toString())));
+			}
+
+		} else if (products == 7) {
+			List lstCase = null;
+			for (int i = 0; i < proCombination7.length; i++) {
+				lstCase = Arrays.asList(proCombination7[i]);
+				productUncheckForAllContent(uncheckSpecificProductsFromProductSegment(
+						(getCheckBoxValuesfromSpecificIndex(lstCase).toString())));
+			}
+
+		} else if (products == 6) {
+			List lstCase = null;
+			for (int i = 0; i < proCombination6.length; i++) {
+				lstCase = Arrays.asList(proCombination6[i]);
+				System.out.println("List of Products needs to uncheck: " + getCheckBoxValuesfromSpecificIndex(lstCase));
+				productUncheckForAllContent(uncheckSpecificProductsFromProductSegment(
+						(getCheckBoxValuesfromSpecificIndex(lstCase).toString())));
+			}
+
+		} else if (products == 5) {
+			List lstCase = null;
+			for (int i = 0; i < proCombination5.length; i++) {
+				lstCase = Arrays.asList(proCombination5[i]);
+				System.out.println("List of Products needs to uncheck: " + getCheckBoxValuesfromSpecificIndex(lstCase));
+				productUncheckForAllContent(uncheckSpecificProductsFromProductSegment(
+						(getCheckBoxValuesfromSpecificIndex(lstCase).toString())));
+			}
+
+		} else if (products == 4) {
+			List lstCase = null;
+			for (int i = 0; i < proCombination4.length; i++) {
+				lstCase = Arrays.asList(proCombination4[i]);
+				System.out.println("List of Products needs to uncheck: " + getCheckBoxValuesfromSpecificIndex(lstCase));
+				productUncheckForAllContent(uncheckSpecificProductsFromProductSegment(
+						(getCheckBoxValuesfromSpecificIndex(lstCase).toString())));
+			}
+
+		} else if (products == 3) {
+			List lstCase = null;
+			for (int i = 0; i < proCombination3.length; i++) {
+				lstCase = Arrays.asList(proCombination3[i]);
+				System.out.println("List of Products needs to uncheck: " + getCheckBoxValuesfromSpecificIndex(lstCase));
+				productUncheckForAllContent(uncheckSpecificProductsFromProductSegment(
+						(getCheckBoxValuesfromSpecificIndex(lstCase).toString())));
+			}
+
+		} else if (products == 2) {
+			List lstCase = null;
+			for (int i = 0; i < proCombination2.length; i++) {
+				lstCase = Arrays.asList(proCombination2[i]);
+				System.out.println("List of Products needs to uncheck: " + getCheckBoxValuesfromSpecificIndex(lstCase));
+				productUncheckForAllContent(uncheckSpecificProductsFromProductSegment(
+						(getCheckBoxValuesfromSpecificIndex(lstCase).toString())));
+			}
+
+		} else if (products == 1) {
+			List lstCase = null;
+			lstCase = Arrays.asList(proCombination1[0]);
+			System.out.println("List of Products needs to uncheck: " + getCheckBoxValuesfromSpecificIndex(lstCase));
+			productUncheckForAllContent(uncheckSpecificProductsFromProductSegment(
+					(getCheckBoxValuesfromSpecificIndex(lstCase).toString())));
+
+		} else {
+			System.out.println("No Products found for Dealer..." + BaseClass.strUserRACFID);
+			LogFactory.info("No Products found for Dealer..." + BaseClass.strUserRACFID);
+		}
+
+	}
+
+	public static List<String> uncheckSpecificProductsFromProductSegment(String strProductName)
+			throws IOException, Exception {
+		int i;
+		String eachProductName = "";
+		WebElement eachProductCheckbox;
+		String[] productsUncheck = null;
+		Boolean firstProduct = false;
+		Boolean secondProduct = false;
+		Boolean thirdProduct = false;
+		Boolean breakFlag = false;
+		List<String> productsUncheckNew = new ArrayList<>();
+		List<String> ActualproductsUnchecked = new ArrayList<>();
+		if (strProductName.contains("[") && strProductName.contains("]")) {
+			strProductName = strProductName.replaceAll("[\\[\\]]", "");
+			if (strProductName.contains(","))
+				productsUncheck = strProductName.trim().split(",");
+
+		}
+
+		if (productsUncheck != null) {
+			for (int k = 0; k < productsUncheck.length; k++) {
+				productsUncheckNew.add(productsUncheck[k].trim());
+			}
+		} else {
+			productsUncheckNew.add(strProductName);
+		}
+		GenericFactory.checkAllProducts();
+		WaitFactory.waitForPageLoaded();
+		ValidationFactory.getElementIfPresent(By.xpath("//div[@id='js-segments']")).click();
+
+		List<WebElement> productCheckboxList = BaseClass.wbDriver
+				.findElements(By.xpath(".//*[@id='productSegmentsForm']/div/div/label/input"));
+		List<WebElement> productNameList = BaseClass.wbDriver
+				.findElements(By.xpath(".//*[@id='productSegmentsForm']/div/div/label/div"));
+		try {
+			int j = 0;
+			for (i = 0; i < productNameList.size(); i++) {
+				// To take the list of product segment
+				eachProductName = productNameList.get(i).getText().toString().trim();
+				eachProductCheckbox = productCheckboxList.get(i);
+
+				if (!(productsUncheckNew.isEmpty())) {
+					if (eachProductCheckbox.isSelected()
+							&& (GenericFactory.getTranslation(productsUncheckNew.get(j).trim())
+									.contains(eachProductName.trim()))
+							|| eachProductCheckbox.isSelected() && eachProductName.trim()
+									.contains(GenericFactory.getTranslation(productsUncheckNew.get(j)).toString().trim()
+											.replaceAll("[\\[\\]]", ""))
+							|| eachProductCheckbox.isSelected() && (GenericFactory
+									.getTranslation(productsUncheckNew.get(j).toString().trim().split(" ")[0])
+									.contains(eachProductName.trim()))) {
+						eachProductCheckbox.click();
+						ActualproductsUnchecked
+								.add(GenericFactory.getTranslation(productsUncheckNew.get(j)).toString().trim());
+						if (j == productsUncheckNew.size() - 1)
+							break;
+						else
+							j++;
+
+					} else
+						continue;
+				}
+			}
+			LogFactory.info("Actual Products Unchecked from segments are: " + ActualproductsUnchecked);
+			ValidationFactory.getElementIfPresent(By.xpath(".//*[@id='js-segments-popover']/div[2]/div[3]/button"))
+					.click();
+			WaitFactory.waitForPageLoaded();
+			if (ValidationFactory.isElementPresent(By.xpath("//p[@id='productSegmentsError']"))) {
+				Alerts_POF.segmentError = Alerts_POF.wblProdSegmentError.getText();
+				if (ValidationFactory.getElementIfPresent(By.xpath("//div[@id='js-segments']")) != null)
+					ValidationFactory.getElementIfPresent(By.xpath("//div[@id='js-segments']")).click();
+				LogFactory.info("Unable to perform Product Type filters verification due to error message : "
+						+ Alerts_POF.segmentError);
+			}
+
+		} catch (Exception e) {
+			System.out.println("Product Not Found on UI:" + e.getMessage());
+		}
+		return productsUncheckNew;
+	}
+
+	public static List<String> getCheckBoxValuesfromSpecificIndex(List<Object> indexNumbers) {
+
+		if (!ValidationFactory.isElementPresent(By.xpath(".//*[@id='js-segments-popover']/div[2]/div[3]/button"))) {
+			BaseClass.wbDriver.findElement((By.xpath("//div[@id='js-segments']"))).click();
+			WaitFactory
+					.waitForElementClickable(ValidationFactory
+							.getElementIfPresent(By.xpath(".//*[@id='js-segments-popover']/div[2]/div[3]/button")))
+					.click();
+		}
+		List<WebElement> getWebElementsLinks = BaseClass.wbDriver
+				.findElements(By.xpath("//form[@id='productSegmentsForm']/div/div[@class='value']//div/../input"));
+
+		List<String> listOfElements = new ArrayList<String>();
+		int j = 0;
+		for (int i = 0; i < getWebElementsLinks.size(); i++) {
+			if (i == Integer.parseInt(indexNumbers.get(j).toString())) {
+				listOfElements.add(getWebElementsLinks.get(i).getAttribute("id"));
+				j++;
+			} else {
+				continue;
+			}
+			if (listOfElements.size() == indexNumbers.size())
+				break;
+		}
+		return listOfElements;
+	}
+
+	public static void productUncheckForAllContent(List<String> listOfProductsToUncheck) throws Throwable {
+		List<String> expectedListTitleToVisible = new ArrayList<String>();
+		List<String> actualListTitleToVisible = new ArrayList<String>();
+		List<String> expectedListTitleNotToVisible = new ArrayList<String>();
+		List<String> actualListTitleNotToVisible = new ArrayList<String>();
+		List<LinkedHashMap> wcmContent = ExcelFactory.getUserWcmDetailsAfterFilteringCountryAndProduct("AT-Document",
+				"AT-Rich Text", "AT-Link", "");
+		for (int i = 0; i < wcmContent.size(); i++) {
+			String getProductList = (String) wcmContent.get(i).get("ProductType");
+			String departmentName = (String) wcmContent.get(i).get("DepartmentName");
+			String secondLevelIndex = (String) wcmContent.get(i).get("2ndLevel");
+			String thirdlevelFolder = (String) wcmContent.get(i).get("3rdLevelFolder");
+			String title = (String) wcmContent.get(i).get("Title");
+			List<String> listofProductFromUserProducts = BaseClass.analyzerUserMap.get("User Products");
+			if (listofProductFromUserProducts == null || listofProductFromUserProducts.isEmpty()) {
+				listofProductFromUserProducts = GenericFactory.listOfProductSegmentsGlobal;
+			}
+			List<String> listOfProductFromWCMSheet = GenericFactory.splitString(getProductList, ",");
+			if (CollectionUtils.containsAny(listOfProductFromWCMSheet, listofProductFromUserProducts)) {
+				listOfProductFromWCMSheet.removeAll(listOfProductsToUncheck);
+
+				if (listofProductFromUserProducts == null || listofProductFromUserProducts.isEmpty()) {
+					listofProductFromUserProducts = GenericFactory.listOfProductSegmentsGlobal;
+				}
+				List<String> remainingListofProductFromUserProducts = new ArrayList<String>(
+						listofProductFromUserProducts);
+				remainingListofProductFromUserProducts.removeAll(listOfProductsToUncheck);
+				if (CollectionUtils.containsAny(listOfProductFromWCMSheet, remainingListofProductFromUserProducts)) {
+					expectedListTitleToVisible.add(title);
+
+					if (thirdlevelFolder.equalsIgnoreCase("NA")) {
+						GenericFactory.clickOnDepartmentByName(departmentName);
+						if (GenericFactory.findIndexPageLink(title, secondLevelIndex)) {
+							actualListTitleToVisible.add(title);
+						}
+					} else {
+						GenericFactory.clickOnDepartmentByName(departmentName);
+						GenericFactory.toClickOnFolder(thirdlevelFolder, secondLevelIndex);
+						if (GenericFactory.findIndexPageLink(title, secondLevelIndex)) {
+							actualListTitleToVisible.add(title);
+						}
+					}
+				} else {
+					expectedListTitleNotToVisible.add(title);
+					if (thirdlevelFolder.equalsIgnoreCase("NA")) {
+						GenericFactory.clickOnDepartmentByName(departmentName);
+						if (!GenericFactory.findIndexPageLink(title, secondLevelIndex)) {
+							actualListTitleNotToVisible.add(title);
+						}
+					} else {
+						GenericFactory.clickOnDepartmentByName(departmentName);
+						GenericFactory.toClickOnFolder(thirdlevelFolder, secondLevelIndex);
+						if (!GenericFactory.findIndexPageLink(title, secondLevelIndex)) {
+							actualListTitleNotToVisible.add(title);
+						}
+					}
+				}
+			} else {
+				expectedListTitleNotToVisible.add(title);
+				if (thirdlevelFolder.equalsIgnoreCase("NA")) {
+					GenericFactory.clickOnDepartmentByName(departmentName);
+					if (!GenericFactory.findIndexPageLink(title, secondLevelIndex)) {
+						actualListTitleNotToVisible.add(title);
+					}
+				} else {
+					GenericFactory.clickOnDepartmentByName(departmentName);
+					GenericFactory.toClickOnFolder(thirdlevelFolder, secondLevelIndex);
+					if (!GenericFactory.findIndexPageLink(title, secondLevelIndex)) {
+						actualListTitleNotToVisible.add(title);
+					}
+				}
+			}
+		}
+
+		if (expectedListTitleToVisible.equals(actualListTitleToVisible)
+				&& expectedListTitleNotToVisible.equals(actualListTitleNotToVisible)) {
+			ReportFactory.reporterOutput("Product Uncheck", "Verify Portlet links on doing product uncheck",
+					"Unchecked Products are : " + listOfProductsToUncheck.toString(),
+					"<B>Expected list of title to be visible :</B>" + expectedListTitleToVisible.toString()
+							+ "</br><B>Expected list of title not to be visible :</B>"
+							+ expectedListTitleNotToVisible.toString(),
+					"<B>Actual list of title which is visible :</B>" + actualListTitleToVisible.toString()
+							+ "</br><B>Actual list of title which is not visible :</B>"
+							+ actualListTitleNotToVisible.toString(),
+					"Pass");
+
+		} else {
+			ReportFactory.reporterOutput("Product Uncheck", "Verify Portlet links on doing product uncheck",
+					"Unchecked Products are : " + listOfProductsToUncheck.toString(),
+					"<B>Expected list of title to be visible :</B>" + expectedListTitleToVisible.toString()
+							+ "</br><B>Expected list of title not to be visible :</B>"
+							+ expectedListTitleNotToVisible.toString(),
+					"<B>Actual list of title which is visible :</B>" + actualListTitleToVisible.toString()
+							+ "</br><B>Actual list of title which is not visible :</B>"
+							+ actualListTitleNotToVisible.toString(),
+					"Fail");
+		}
+	}
+
+	public static List<String> getCheckBoxValuesPrefLanguage() {
+		List<WebElement> getWebElementsLinks = BaseClass.wbDriver
+				.findElements(By.xpath("//form[@id='productSegmentsForm']/div/div[@class='value']//div/../input"));
+		List<String> listOfElements = new ArrayList<String>();
+		for (int i = 0; i < getWebElementsLinks.size(); i++) {
+			listOfElements.add(getWebElementsLinks.get(i).getAttribute("id"));
+		}
+		return listOfElements;
 	}
 
 }
