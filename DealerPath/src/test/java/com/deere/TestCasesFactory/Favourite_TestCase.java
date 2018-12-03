@@ -251,6 +251,32 @@ public class Favourite_TestCase extends BaseClass {
 					"No Marked link is present for the particular dealer", "FAIL");
 		}
 	}
+	
+	
+	/**
+	 * @author Shubham Raj This case describes that Favorites from one dealer to
+	 *         another dealer should be copied only if those links are accessible
+	 *         (in terms of country tagging, product type tagging, additional RACF
+	 *         group tagging, department access) to the dealer who is copying them.
+	 */
+
+	@Test(priority = 11)
+	public static void verifyCopyFavouriteDealerUser() throws Throwable {
+		String TCID = "TC14_Favourite";
+
+		LogFactory.beginTestCase(TCID + " : Verify copy Favourite for dealer user ");
+		String RACFID = getExcelDataByTestCaseID(TCID);
+		if (!RACFID.isEmpty() && !RACFID.equalsIgnoreCase("NA")) {
+			favouritesFactory.verifyCopyFavouriteForDealer(TCID, RACFID);
+		} else {
+			ReportFactory.reporterOutput(strTCID, "Verify copy Favourite for dealer user ", "NA", "NA",
+					"No Input value has been provided in the test data sheet", "Pass");
+
+		}
+		LogFactory.endTestCase("");
+
+	}
+
 
 	/**
 	 * @author Shubham Raj This case describes that user should be able to deleted a
@@ -258,7 +284,7 @@ public class Favourite_TestCase extends BaseClass {
 	 *         Homepage and Quick modal window
 	 * 
 	 */
-	@Test(priority = 11)
+	@Test(priority = 12)
 	public static void verifyToRemoveFavouriteLinkfromlinkportlet() throws Throwable {
 		String strTCID = "TC11_Favourite";
 		String linkName = "";
@@ -282,7 +308,7 @@ public class Favourite_TestCase extends BaseClass {
 	 * 
 	 */
 
-	@Test(priority = 12)
+	@Test(priority = 13)
 	public static void verifyToRemoveFavouriteLinkfromQuickmodalwindow() throws Throwable {
 		String strTCID = "TC12_Favourite";
 		String linkName = "";
@@ -303,7 +329,7 @@ public class Favourite_TestCase extends BaseClass {
 	 *         displayed on Quick modal window
 	 * 
 	 */
-	@Test(priority = 13)
+	@Test(priority = 14)
 	public static void verifyToRemoveFavLinkfromFavoritesPortlethomepage() throws Throwable {
 		String strTCID = "TC13_Favourite";
 		String linkName = "";
@@ -318,31 +344,8 @@ public class Favourite_TestCase extends BaseClass {
 					"No sufficient favourite links found to execute this test case", "PASS");
 		}
 	}
-
-	/**
-	 * @author Shubham Raj This case describes that Favorites from one dealer to
-	 *         another dealer should be copied only if those links are accessible
-	 *         (in terms of country tagging, product type tagging, additional RACF
-	 *         group tagging, department access) to the dealer who is copying them.
-	 */
-
-	@Test(priority = 14)
-	public static void verifyCopyFavouriteDealerUser() throws Throwable {
-		String TCID = "TC14_Favourite";
-
-		LogFactory.beginTestCase(TCID + " : Verify copy Favourite for dealer user ");
-		String RACFID = getExcelDataByTestCaseID(TCID);
-		if (!RACFID.isEmpty() && !RACFID.equalsIgnoreCase("NA")) {
-			favouritesFactory.verifyCopyFavouriteForDealer(TCID, RACFID);
-		} else {
-			ReportFactory.reporterOutput(strTCID, "Verify copy Favourite for dealer user ", "NA", "NA",
-					"No Input value has been provided in the test data sheet", "Pass");
-
-		}
-		LogFactory.endTestCase("");
-
-	}
-
+	
+	
 	/**
 	 * @author Shubham Raj This case describes Verify country filtering for employee
 	 *         users on Links portlet and favorites portlet on Homepage & quick
@@ -386,6 +389,7 @@ public class Favourite_TestCase extends BaseClass {
 		}
 		LogFactory.endTestCase(" ");
 	}
+
 
 	@AfterClass
 	public void getReportFooter() throws InterruptedException {
