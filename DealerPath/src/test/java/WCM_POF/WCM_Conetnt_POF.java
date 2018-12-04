@@ -2223,31 +2223,36 @@ public class WCM_Conetnt_POF extends BaseClass {
 
 			}
 			else
-			{System.out.println("NO SAT type contetn to fetch");}
+			{System.out.println("NO SAT type content to fetch");}
 
 			} else {
 				System.out.println("Child Table::" + childTablename + " has no content inside it");
 
 			}
 			
+			System.out.println("final link to click to go back is ::"+childTableStructure.get(nextlevel));
+			
 			String key="";
-			for(HashMap.Entry<String, String> entry : childTableStructure.entrySet()){
-	            if(entry.getValue().equals(nextlevel)){
+			String keyToClick=childTableStructure.get(nextlevel);
+			System.out.println("Key to click is:;"+keyToClick);
+			for(HashMap.Entry<String, String> entry : linksAndSATHashMap.entrySet()){
+	            if(entry.getValue().equals(keyToClick)){
 	            	key=entry.getKey(); 
-	            	System.out.println("Key is ::"+key);
+	            	System.out.println("Key found in hashmap is ::"+key);
 	                break;//no break, looping entire hashtable
 	            }
+	           
 	        }
 
 
 	
-			wcmalrtDriver.findElement(By.xpath("//a[.='"+childTableStructure.get(key)+"']")).click();
+			wcmalrtDriver.findElement(By.xpath("//a[.='"+key+"']")).click();
 
 		} catch (Exception e) {
 			System.out.println("Error While fetching content for Child table::" + childTablename + " "
 					+ e.getMessage().toString());
 		}
-
+		
 	}
 
 	/**
@@ -3907,7 +3912,7 @@ public class WCM_Conetnt_POF extends BaseClass {
 
 		catch (Exception e) {
 
-			System.out.println("Error while checking for Nested Categories " + e.getMessage().toString());
+			System.out.println("Error while checking for Nested Categories for Index page" + e.getMessage().toString());
 		}
 	}
 
@@ -5644,7 +5649,7 @@ public class WCM_Conetnt_POF extends BaseClass {
 
 			List<String> categoryContent = new ArrayList<String>();
 			List<String> nestedcategoryContent = new ArrayList<String>();
-			;
+			
 
 			for (int nc = 1; nc <= categoriesContent.size(); nc++) {
 				String isNestedCategoryPresent = wcmalrtDriver.findElement(By.xpath("//tr[" + nc + "]//td[2]//img[2]"))
@@ -5830,9 +5835,10 @@ public class WCM_Conetnt_POF extends BaseClass {
 
 						}
 
-						
+						if(ValidationFactory.isElementPresent(By.xpath("//a[.='"+nestedcategoryTitle+"']")))
+						{
 						wcmalrtDriver.findElement(By.xpath("//a[.='"+nestedcategoryTitle+"']")).click();
-						
+						}
 						for (int ncgcip = 0; ncgcip < numberOfContentsToFetch(IsCategoryChildGCIP); ncgcip++) {
 							System.out.println("fetchinf grand child index page content for nested category");
 							wcmKeyValuePair.put("3rdLevelGrandChildIndexPage", linksAndSATHashMap.get(IsCategoryChildGCIP.get(ncgcip)));
@@ -5850,8 +5856,8 @@ public class WCM_Conetnt_POF extends BaseClass {
 										.info("Unable to find the xpath for title::" + IsCategoryChildGCIP.get(ncgcip));
 							}
 						}
-
-						wcmalrtDriver.findElement(By.xpath("//a[.='" + wcmKeyValuePair.get(levelToFwd) + "']")).click();
+						if(ValidationFactory.isElementPresent(By.xpath("//a[.='"+wcmKeyValuePair.get(levelToFwd)+"']"))) {
+						wcmalrtDriver.findElement(By.xpath("//a[.='" + wcmKeyValuePair.get(levelToFwd) + "']")).click();}
 
 					} else {
 						LogFactory.info(
@@ -5860,10 +5866,11 @@ public class WCM_Conetnt_POF extends BaseClass {
 
 				}
 				if (IsCategoryChild_NestedCategories.size() > 0) {
+					if(ValidationFactory.isElementPresent(By.xpath("//a[.='"+wcmKeyValuePair.get("3rdLevelChildIndexPageCategories")+"']"))) {
 					wcmalrtDriver
 							.findElement(By
 									.xpath("//li[.='"+wcmKeyValuePair.get("3rdLevelChildIndexPageCategories")+"']"))
-							.click();
+							.click();}
 				}
 
 				
@@ -5900,11 +5907,13 @@ public class WCM_Conetnt_POF extends BaseClass {
 					//fetchTableRowsContent(SAT_Table_Index_pages.get(rt), subDepartmentTableKeyValue,"3rdLevelIndexPage");
 					}
 					else
-					{System.out.println("content not fiund in the list");}
+					{System.out.println("content not found in the list");}
 				}
 				
 				if (IsCategoryChild_Table.size() > 0) {
-					wcmalrtDriver.findElement(By.xpath("//li[.='"+wcmKeyValuePair.get("3rdLevelChildIndexPageCategories")+"']")).click();
+					if(ValidationFactory.isElementPresent(By.xpath("//a[.='"+wcmKeyValuePair.get("3rdLevelChildIndexPageCategories")+"']"))) {
+					
+					wcmalrtDriver.findElement(By.xpath("//li[.='"+wcmKeyValuePair.get("3rdLevelChildIndexPageCategories")+"']")).click();}
 				}			
 				
 				
