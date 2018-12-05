@@ -2521,7 +2521,7 @@ public class WCM_Conetnt_POF extends BaseClass {
 
 					List<String> IsLanding_Child_Tables = new ArrayList<String>();
 					List<String> IsLanding_Child_Index_pages = new ArrayList<String>();
-					;
+					
 
 					for (int lpc = 1; lpc <= allLandingPageChildImages.size(); lpc++) {
 						String landingChildImageTitle = wcmalrtDriver
@@ -2902,7 +2902,7 @@ public class WCM_Conetnt_POF extends BaseClass {
 					System.out.println("Total Count is::" + totalCount);
 					List<String> IsChild_Tables = new ArrayList<String>();
 					List<String> IsChild_Index_pages = new ArrayList<String>();
-					;
+					
 					List<String> IsChild_Categories = new ArrayList<String>();
 
 					for (int cgc = 1; cgc <= totalCountAfterComparison; cgc++) {
@@ -3737,9 +3737,10 @@ public class WCM_Conetnt_POF extends BaseClass {
 			//code for reading Index page categories' CIP contents
 				
 				
-				
+				HashMap<String,String> ipCategoryCIP=new HashMap<String,String>();
 				for (int ipcCIP = 0; ipcCIP < indexPageCategoryCIP.size(); ipcCIP++) {
-					wcmKeyValuePair.put("3rdLevelChildIndexPage", linksAndSATHashMap.get(indexPageCategoryCIP.get(ipcCIP)));
+					ipCategoryCIP.put("3rdLevelChildIndexPage", linksAndSATHashMap.get(indexPageCategoryCIP.get(ipcCIP)));
+					ipCategoryCIP.putAll(wcmKeyValuePair);
 					if (ValidationFactory.isElementPresent(By.xpath("//a[.='" + indexPageCategoryCIP.get(ipcCIP)
 							+ "' and starts-with(@title,'View children')]"))) {
 
@@ -3748,7 +3749,7 @@ public class WCM_Conetnt_POF extends BaseClass {
 										+ "' and starts-with(@title,'View children')]"));
 						categoryChildIndexPage.click();
 
-						fetchContentForChildIndexPage(wcmKeyValuePair, "3rdLevelChildIndexPage");
+						fetchContentForChildIndexPage(ipCategoryCIP, "3rdLevelChildIndexPage");
 					} else {
 						LogFactory
 								.info("Unable to find the xpath for title::" + indexPageCategoryCIP.get(ipcCIP));
@@ -3862,8 +3863,10 @@ public class WCM_Conetnt_POF extends BaseClass {
 				}
 
 				// now reading child index page content for category
+				HashMap<String,String> catChildIP=new HashMap<String,String>();
 				for (int cciip = 0; cciip < IsCategoryChild_Index_pages.size(); cciip++) {
-					wcmKeyValuePair.put("3rdLevelChildIndexPage", linksAndSATHashMap.get(IsCategoryChild_Index_pages.get(cciip)));
+					catChildIP.put("3rdLevelChildIndexPage", linksAndSATHashMap.get(IsCategoryChild_Index_pages.get(cciip)));
+					catChildIP.putAll(wcmKeyValuePair);
 					if (ValidationFactory.isElementPresent(By.xpath("//a[.='" + IsCategoryChild_Index_pages.get(cciip)
 							+ "' and starts-with(@title,'View children')]"))) {
 
@@ -3872,7 +3875,7 @@ public class WCM_Conetnt_POF extends BaseClass {
 										+ "' and starts-with(@title,'View children')]"));
 						categoryChildIndexPage.click();
 
-						fetchContentForChildIndexPage(wcmKeyValuePair, "3rdLevelChildIndexPage");
+						fetchContentForChildIndexPage(catChildIP, "3rdLevelChildIndexPage");
 					} else {
 						LogFactory
 								.info("Unable to find the xpath for title::" + IsCategoryChild_Index_pages.get(cciip));
@@ -3894,7 +3897,9 @@ public class WCM_Conetnt_POF extends BaseClass {
 						tabledata = fetchTablesContent(childtableTitle);
 
 						categoryChildtable.put("Test Case ID", wcmTCID);
+						
 						categoryChildtable.put("3rdLevelChildIndexPage", linksAndSATHashMap.get(childtableTitle));
+						categoryChildtable.putAll(wcmKeyValuePair);
 						categoryChildtable.putAll(tabledata);
 
 						excelOutput(categoryChildtable);
@@ -3969,6 +3974,7 @@ public class WCM_Conetnt_POF extends BaseClass {
 
 			}
 
+			HashMap<String,String> cipChildLinksMap=new HashMap<String,String>();
 			// Now reading link portlets for CHild index page
 			for (int cilp = 0; cilp < numberOfContentsToFetch(childIndexPageLinkPortlet); cilp++) {
 
@@ -3999,10 +4005,10 @@ public class WCM_Conetnt_POF extends BaseClass {
 
 					String wcmTCID = testCaseID + testcaseNumber;
 
-					tableChildIsChildIndexPage.put("Test Case ID", wcmTCID);
-
+					cipChildLinksMap.put("Test Case ID", wcmTCID);
+					cipChildLinksMap.putAll(tableChildIsChildIndexPage);
 					// wcmKeyValuePair.put("3rdLevelChildIndexPage",childIndexPageTitle);
-					writeWCMToExcel(tableChildIsChildIndexPage, "None");
+					writeWCMToExcel(cipChildLinksMap, "None");
 					writeWCMHeaderContentFinalToExcel();
 					testcaseNumber++;
 					closeContent.click();
@@ -4036,6 +4042,7 @@ public class WCM_Conetnt_POF extends BaseClass {
 					+ " grand child Index pages and " + IsGrandChildIndex_Categories.size() + " categories");
 
 			// fetching content for Child index page's tables
+			HashMap<String,String> cipChildTableMap=new HashMap<String,String>();
 			for (int gct = 0; gct < numberOfContentsToFetch(IsGrandChild_Tables); gct++) {
 				System.out.println("Fetching Grand Child Table:: " + IsGrandChild_Tables.get(gct) + " Contents");// Child
 																												// Table
@@ -4048,28 +4055,32 @@ public class WCM_Conetnt_POF extends BaseClass {
 					String wcmTCID = testCaseID + testcaseNumber;
 					Map<String, String> tabledata = new HashMap<String, String>();
 					tabledata = fetchTablesContent(grandChildtableTitle);
-					tableChildIsChildIndexPage.put("Test Case ID", wcmTCID);
-					tableChildIsChildIndexPage.putAll(tabledata);
+					
+					cipChildTableMap.put("Test Case ID", wcmTCID);
+					cipChildTableMap.putAll(tableChildIsChildIndexPage);
+					cipChildTableMap.putAll(tabledata);
 
 					if (Level.contains("3rdLevelChildIndexPage") || Level.contains("3rdLevelLandingPage")) {
 
-						tableChildIsChildIndexPage.put("3rdLevelGrandChildIndexPage", linksAndSATHashMap.get(grandChildtableTitle));
+						cipChildTableMap.put("3rdLevelGrandChildIndexPage", linksAndSATHashMap.get(grandChildtableTitle));
 					} else if (Level.contains("4thLevelChildIndexPage")) {
-						tableChildIsChildIndexPage.put("4thLevelGrandChildIndexPage", linksAndSATHashMap.get(grandChildtableTitle));
+						cipChildTableMap.put("4thLevelGrandChildIndexPage", linksAndSATHashMap.get(grandChildtableTitle));
 
 					}
-					excelOutput(tableChildIsChildIndexPage);
+					excelOutput(cipChildTableMap);
 
 					writeWCMHeaderContentFinalToExcel();
 					testcaseNumber++;
 					
-					fetchTableRowsContentForGrandChildTable(grandChildtableTitle, tableChildIsChildIndexPage, Level);
+					fetchTableRowsContentForGrandChildTable(grandChildtableTitle, cipChildTableMap, Level);
 
 				} else {
 					LogFactory.info("Unable to find the xpath for title::" + IsGrandChild_Tables.get(gct));
 				}
 			}
 			/// Fetching content for Child index page's categories
+			
+			HashMap<String,String> cipChildCategory=new HashMap<String,String>();
 			for (int cc = 0; cc < numberOfContentsToFetch(IsGrandChildIndex_Categories); cc++) {
 				System.out.println("Reading content for Category:: " + IsGrandChildIndex_Categories.get(cc)
 						+ " of Child Index Page:" + tableChildIsChildIndexPage.get("3rdLevelChildIndexPage"));// SALES
@@ -4086,18 +4097,18 @@ public class WCM_Conetnt_POF extends BaseClass {
 																										// category
 																										// clicked
 					// checking for nested category
-
+					cipChildCategory.putAll(tableChildIsChildIndexPage);
 					String levelToFwd;
 					if (Level.contains("3rdLevelChildIndexPage") || Level.contains("3rdLevelLandingPage")) {
 						levelToFwd = "3rdLevelChildIndexPageCategories";
-						tableChildIsChildIndexPage.put("3rdLevelChildIndexPageCategories", childCategoryTitle);
+						cipChildCategory.put("3rdLevelChildIndexPageCategories", childCategoryTitle);
 					} else {
 						levelToFwd = "4thLevelChildIndexPageCategories";
-						tableChildIsChildIndexPage.put("4thLevelChildIndexPageCategories", childCategoryTitle);
+						cipChildCategory.put("4thLevelChildIndexPageCategories", childCategoryTitle);
 					}
 					// System.out.println(wcmKeyValue1);
 					
-					checkNestedcategorieForChildIndexPage(tableChildIsChildIndexPage, levelToFwd);
+					checkNestedcategorieForChildIndexPage(cipChildCategory, levelToFwd);
 
 					wcmalrtDriver
 							.findElement(By.xpath("//a[contains(.,'" + tableChildIsChildIndexPage.get(Level) + "')]"))
@@ -4178,6 +4189,8 @@ public class WCM_Conetnt_POF extends BaseClass {
 
 					}
 
+					
+					HashMap<String,String> gcipChildLinksMap=new HashMap<String,String>();
 					//// now fetching grand child index page link portlets
 					for (int gclp = 0; gclp < numberOfContentsToFetch(grandChildIndexPageLinkPortlet); gclp++) {
 						System.out.println("Fetching Grand child index page Link portlets::"
@@ -4208,16 +4221,17 @@ public class WCM_Conetnt_POF extends BaseClass {
 							}
 
 							String wcmTCID = testCaseID + testcaseNumber;
-
-							tableChildIsChildIndexPage.put("Test Case ID", wcmTCID);
+							gcipChildLinksMap.put("Test Case ID", wcmTCID);
+							gcipChildLinksMap.putAll(tableChildIsChildIndexPage);
+							
 
 							if (Level.contains("3rdLevelChildIndexPage") || Level.contains("3rdLevelLandingPage")) {
-								tableChildIsChildIndexPage.put("3rdLevelGrandChildIndexPage", grandchildContents);
+								gcipChildLinksMap.put("3rdLevelGrandChildIndexPage", grandchildContents);
 							} else {
-								tableChildIsChildIndexPage.put("4thLevelGrandChildIndexPage", grandchildContents);
+								gcipChildLinksMap.put("4thLevelGrandChildIndexPage", grandchildContents);
 							}
 
-							writeWCMToExcel(tableChildIsChildIndexPage, "None");
+							writeWCMToExcel(gcipChildLinksMap, "None");
 							writeWCMHeaderContentFinalToExcel();
 							testcaseNumber++;
 							closeContent.click();
@@ -4248,6 +4262,7 @@ public class WCM_Conetnt_POF extends BaseClass {
 						}
 					}
 					// Now fetching table content for grand child index page
+					HashMap<String,String> gcipChildTable=new HashMap<String,String>();
 					for (int gctc = 0; gctc < numberOfContentsToFetch(IsFinalChild_Tables); gctc++) {
 						System.out
 								.println("Fetching Grand Child Table:: " + IsFinalChild_Tables.get(gctc) + " Content");// Child
@@ -4261,17 +4276,19 @@ public class WCM_Conetnt_POF extends BaseClass {
 							String wcmTCID = testCaseID + testcaseNumber;
 							Map<String, String> grandChildtabledata = new HashMap<String, String>();
 							grandChildtabledata = fetchTablesContent(finalGrandChildtableTitle);
-							tableChildIsChildIndexPage.put("Test Case ID", wcmTCID);
+							gcipChildTable.put("Test Case ID", wcmTCID);
+							gcipChildTable.putAll(tableChildIsChildIndexPage);
+							
 
 							if (Level.contains("3rdLevelChildIndexPage") || Level.contains("3rdLevelLandingPage")) {
-								tableChildIsChildIndexPage.put("3rdLevelGrandChildIndexPageCategories",
+								gcipChildTable.put("3rdLevelGrandChildIndexPageCategories",
 										linksAndSATHashMap.get(grandChildIndexPageTitle));
 							} else {
-								tableChildIsChildIndexPage.put("4thLevelGrandChildIndexPageCategories",
+								gcipChildTable.put("4thLevelGrandChildIndexPageCategories",
 										linksAndSATHashMap.get(grandChildIndexPageTitle));
 							}
-							tableChildIsChildIndexPage.putAll(grandChildtabledata);
-							excelOutput(tableChildIsChildIndexPage);
+							gcipChildTable.putAll(grandChildtabledata);
+							excelOutput(gcipChildTable);
 
 							writeWCMHeaderContentFinalToExcel();
 							testcaseNumber++;
@@ -4280,6 +4297,7 @@ public class WCM_Conetnt_POF extends BaseClass {
 						}
 					}
 					// fetching grand child categoryies content
+					HashMap<String,String> gcipChildCategory= new HashMap<String,String>();
 					for (int gcfcc = 0; gcfcc < numberOfContentsToFetch(IsFinalChild_Categories); gcfcc++) {
 						System.out.println("Reading content for Category " + IsFinalChild_Categories.get(gcfcc)
 								+ " of Grand Child Index Page" + grandChildIndexPageTitle);// SALES
@@ -4293,16 +4311,20 @@ public class WCM_Conetnt_POF extends BaseClass {
 							finalGrandchildCategory.click(); // Child index page first category clicked
 
 							if (Level.contains("3rdLevelChildIndexPage") || Level.contains("3rdLevelLandingPage")) {
-								tableChildIsChildIndexPage.put("3rdLevelGrandChildIndexPage", linksAndSATHashMap.get(grandChildIndexPageTitle));
-								tableChildIsChildIndexPage.put("3rdLevelGrandChildIndexPageCategories",
+								
+								gcipChildCategory.put("3rdLevelGrandChildIndexPage", linksAndSATHashMap.get(grandChildIndexPageTitle));
+								gcipChildCategory.put("3rdLevelGrandChildIndexPageCategories",
 										grandChildCategoryTitle);
-								checkForNestedcategories(tableChildIsChildIndexPage,
+								gcipChildCategory.putAll(tableChildIsChildIndexPage);
+								checkForNestedcategories(gcipChildCategory,
 										"3rdLevelGrandChildIndexPageCategories");
 							} else {
-								tableChildIsChildIndexPage.put("4thLevelGrandChildIndexPage", linksAndSATHashMap.get(grandChildIndexPageTitle));
-								tableChildIsChildIndexPage.put("4thLevelGrandChildIndexPageCategories",
+								
+								gcipChildCategory.put("4thLevelGrandChildIndexPage", linksAndSATHashMap.get(grandChildIndexPageTitle));
+								gcipChildCategory.put("4thLevelGrandChildIndexPageCategories",
 										grandChildCategoryTitle);
-								checkForNestedcategories(tableChildIsChildIndexPage,
+								gcipChildCategory.putAll(tableChildIsChildIndexPage);
+								checkForNestedcategories(gcipChildCategory,
 										"4thLevelGrandChildIndexPageCategories");
 							}
 
@@ -4404,6 +4426,7 @@ public class WCM_Conetnt_POF extends BaseClass {
 			
 			
 			if (nestedcategoryContent.size() > 0) {
+				HashMap<String,String> nccForGcip=new HashMap<String,String>();
 				for (int ncc = 0; ncc <= numberOfContentsToFetch(nestedcategoryContent); ncc++) {
 					System.out.println("fetching content for nested category:" + nestedcategoryContent.get(ncc));
 
@@ -4430,11 +4453,11 @@ public class WCM_Conetnt_POF extends BaseClass {
 
 							String[] Key = categoryType.split("Categories");
 
-							wcmKeyValue1.put("Test Case ID", wcmTCID);
-							wcmKeyValue1.putAll(wcmKeyValue);
-							wcmKeyValue1.put(Key[0] + "NestedCategories", nestedcategoryTitle);
+							nccForGcip.put("Test Case ID", wcmTCID);
+							nccForGcip.putAll(wcmKeyValue);
+							nccForGcip.put(Key[0] + "NestedCategories", nestedcategoryTitle);
 
-							writeWCMToExcel(wcmKeyValue1, "None");
+							writeWCMToExcel(nccForGcip, "None");
 
 							writeWCMHeaderContentFinalToExcel();
 							testcaseNumber++;
@@ -5755,7 +5778,7 @@ public class WCM_Conetnt_POF extends BaseClass {
 							}
 
 						}
-
+						HashMap<String,String> ncNoChildContent=new HashMap<String,String>();
 						for (int ncncc = 0; ncncc < numberOfContentsToFetch(nestedcategoryNoChildContent1); ncncc++) {
 							System.out.println("fetching Final content for nested category:" + nestedcategoryTitle);
 
@@ -5768,10 +5791,10 @@ public class WCM_Conetnt_POF extends BaseClass {
 
 								String wcmTCID = testCaseID + testcaseNumber;
 								String[] Key = levelToFwd.split("Categories");
-								newWcmKeyValue.put("Test Case ID", wcmTCID);
-								newWcmKeyValue.put(Key[0] + "NestedCategories", nestedcategoryTitle);
-								newWcmKeyValue.putAll(wcmKeyValuePair);
-								writeWCMToExcel(newWcmKeyValue, "None");
+								ncNoChildContent.put("Test Case ID", wcmTCID);
+								ncNoChildContent.put(Key[0] + "NestedCategories", nestedcategoryTitle);
+								ncNoChildContent.putAll(wcmKeyValuePair);
+								writeWCMToExcel(ncNoChildContent, "None");
 								writeWCMHeaderContentFinalToExcel();
 								testcaseNumber++;
 								closeContent.click();
@@ -5781,6 +5804,7 @@ public class WCM_Conetnt_POF extends BaseClass {
 							}
 						}
 
+						
 						for (int nccip = 0; nccip < numberOfContentsToFetch(nestedcategoryChildContent); nccip++) {
 							System.out.println("Checking for grandchild for nested category ");
 							WebElement categoryChild = wcmalrtDriver
@@ -5804,6 +5828,7 @@ public class WCM_Conetnt_POF extends BaseClass {
 						//Write code her for table
 						
 						HashMap<String,String> grandChildTableMap=new HashMap<String,String>();
+						HashMap<String,String> ncChildTableContent=new HashMap<String,String>();
 						for (int gct = 0; gct < IsCategoryChildTable.size(); gct++) {
 							System.out.println("Fetching content for Grand Child Table of :" + IsCategoryChildTable.get(gct));
 							
@@ -5819,13 +5844,14 @@ public class WCM_Conetnt_POF extends BaseClass {
 																									// Portlets and
 							String wcmTCID = testCaseID + testcaseNumber;
 
-							wcmKeyValuePair.put("Test Case ID", wcmTCID);
-							wcmKeyValuePair.putAll(grandChildTableMap);
+							ncChildTableContent.put("Test Case ID", wcmTCID);
+							ncChildTableContent.putAll(wcmKeyValuePair);
+							ncChildTableContent.putAll(grandChildTableMap);
 
-							excelOutput(wcmKeyValuePair);
+							excelOutput(ncChildTableContent);
 							writeWCMHeaderContentFinalToExcel();
 							testcaseNumber++;
-							fetchTableRowsContentForGrandChildTable(finalGrandChildtableTitle, grandChildTableMap, "3rdLevelChildIndexPage");
+							fetchTableRowsContentForGrandChildTable(finalGrandChildtableTitle, ncChildTableContent, "3rdLevelChildIndexPage");
 							}
 							else
 							{
@@ -5839,9 +5865,12 @@ public class WCM_Conetnt_POF extends BaseClass {
 						{
 						wcmalrtDriver.findElement(By.xpath("//a[.='"+nestedcategoryTitle+"']")).click();
 						}
+						
+						HashMap<String,String> ncChildGCIP=new HashMap<String,String>();
 						for (int ncgcip = 0; ncgcip < numberOfContentsToFetch(IsCategoryChildGCIP); ncgcip++) {
 							System.out.println("fetchinf grand child index page content for nested category");
-							wcmKeyValuePair.put("3rdLevelGrandChildIndexPage", linksAndSATHashMap.get(IsCategoryChildGCIP.get(ncgcip)));
+							ncChildGCIP.put("3rdLevelGrandChildIndexPage", linksAndSATHashMap.get(IsCategoryChildGCIP.get(ncgcip)));
+							ncChildGCIP.putAll(wcmKeyValuePair);
 							if (ValidationFactory.isElementPresent(By.xpath("//a[.='" + IsCategoryChildGCIP.get(ncgcip)
 									+ "' and starts-with(@title,'View children')]"))) {
 
@@ -5850,7 +5879,7 @@ public class WCM_Conetnt_POF extends BaseClass {
 												+ "' and starts-with(@title,'View children')]"));
 								categoryChildIndexPage.click();
 
-								fetchContentForGrandChildIndexPage(wcmKeyValuePair, "3rdLevelGrandChildIndexPage");
+								fetchContentForGrandChildIndexPage(ncChildGCIP, "3rdLevelGrandChildIndexPage");
 							} else {
 								LogFactory
 										.info("Unable to find the xpath for title::" + IsCategoryChildGCIP.get(ncgcip));
@@ -5877,6 +5906,7 @@ public class WCM_Conetnt_POF extends BaseClass {
 				
 				
 				//now reading CIP category for Table
+				HashMap<String,String> cipTableStr=new HashMap<String,String>();
 				HashMap<String,String> cipTable=new HashMap<String,String>();
 				for (int cct = 0; cct < IsCategoryChild_Table.size(); cct++) {
 					System.out.println("Fetching content for Grand Child Table :" + IsCategoryChild_Table.get(cct));
@@ -5889,22 +5919,23 @@ public class WCM_Conetnt_POF extends BaseClass {
 
 						String finalGrandChildtableTitle = finalGrandChildTable.getText();
 
-					cipTable = fetchTablesContent(IsCategoryChild_Table.get(cct));// can contain Link
+						cipTableStr = fetchTablesContent(IsCategoryChild_Table.get(cct));// can contain Link
 					String wcmTCID = testCaseID + testcaseNumber;
 
-					wcmKeyValuePair.put("Test Case ID", wcmTCID);
-					
+					cipTable.put("Test Case ID", wcmTCID);
+					cipTable.putAll(wcmKeyValuePair);
+					cipTable.putAll(cipTableStr);
 					if(levelToFwd.equals("3rdLevelChildIndexPageCategories"))
-					wcmKeyValuePair.put("3rdLevelGrandChildIndexPage", finalGrandChildtableTitle);
+						cipTable.put("3rdLevelGrandChildIndexPage", finalGrandChildtableTitle);
 					else if(levelToFwd.equals("4thLevelChildIndexPageCategories"))
-						wcmKeyValuePair.put("4thLevelGrandChildIndexPage", finalGrandChildtableTitle);
-					wcmKeyValuePair.putAll(cipTable);
+						cipTable.put("4thLevelGrandChildIndexPage", finalGrandChildtableTitle);
+					
 
-					excelOutput(wcmKeyValuePair);
+					excelOutput(cipTable);
 					writeWCMHeaderContentFinalToExcel();
 					testcaseNumber++;
-					fetchTableRowsContentForGrandChildTable(finalGrandChildtableTitle, wcmKeyValuePair, "3rdLevelGrandChildIndexPage");
-					//fetchTableRowsContent(SAT_Table_Index_pages.get(rt), subDepartmentTableKeyValue,"3rdLevelIndexPage");
+					fetchTableRowsContentForGrandChildTable(finalGrandChildtableTitle, cipTable, "3rdLevelGrandChildIndexPage");
+					
 					}
 					else
 					{System.out.println("content not found in the list");}
@@ -5918,8 +5949,10 @@ public class WCM_Conetnt_POF extends BaseClass {
 				
 				
 				// now reading child index page content for category
+				HashMap<String,String> catChildGCIP=new HashMap<String,String>();
 				for (int cciip = 0; cciip < IsCategoryChild_GCIP.size(); cciip++) {
-					wcmKeyValuePair.put("3rdLevelGrandChildIndexPage", IsCategoryChild_GCIP.get(cciip));
+					catChildGCIP.put("3rdLevelGrandChildIndexPage", IsCategoryChild_GCIP.get(cciip));
+					catChildGCIP.putAll(wcmKeyValuePair);
 					if (ValidationFactory.isElementPresent(By.xpath("//a[.='" + IsCategoryChild_GCIP.get(cciip)
 							+ "' and starts-with(@title,'View children')]"))) {
 
@@ -5929,7 +5962,7 @@ public class WCM_Conetnt_POF extends BaseClass {
 						categoryChildIndexPage.click();
 						System.out.println("GCIP:: "+IsCategoryChild_GCIP.get(cciip)+" is clicked");
 
-						fetchContentForGrandChildIndexPage(wcmKeyValuePair, "3rdLevelGrandChildIndexPage");
+						fetchContentForGrandChildIndexPage(catChildGCIP, "3rdLevelGrandChildIndexPage");
 					} else {
 						LogFactory
 								.info("Unable to find the xpath for title::" + IsCategoryChild_GCIP.get(cciip));
@@ -5942,7 +5975,7 @@ public class WCM_Conetnt_POF extends BaseClass {
 
 		catch (Exception e) {
 
-			System.out.println("Error while checking for Nested Categories " + e.getMessage().toString());
+			System.out.println("Error while checking Nested Categories for child index page" + e.getMessage().toString());
 		}
 
 	}
@@ -5957,7 +5990,7 @@ public class WCM_Conetnt_POF extends BaseClass {
 			List<WebElement> allChildForChildIndexPage = allChildren;
 			List<String> childIndexPageLinkPortlet = new ArrayList<String>();
 			List<String> grandChildContentForChildIndexPage = new ArrayList<String>();
-
+			HashMap<String,String> gcipContentMap=new HashMap<String,String>();
 			int totalCountAfterComparisonq = totalCount;
 			if (allChildForChildIndexPage.size() < totalCount) {
 				totalCountAfterComparisonq = allChildForChildIndexPage.size();
@@ -6030,10 +6063,10 @@ public class WCM_Conetnt_POF extends BaseClass {
 
 					String wcmTCID = testCaseID + testcaseNumber;
 
-					tableChildIsChildIndexPage.put("Test Case ID", wcmTCID);
-
+					gcipContentMap.put("Test Case ID", wcmTCID);
+					gcipContentMap.putAll(tableChildIsChildIndexPage);
 					// wcmKeyValuePair.put("3rdLevelChildIndexPage",childIndexPageTitle);
-					writeWCMToExcel(tableChildIsChildIndexPage, "None");
+					writeWCMToExcel(gcipContentMap, "None");
 					writeWCMHeaderContentFinalToExcel();
 					testcaseNumber++;
 					closeContent.click();
@@ -6041,26 +6074,13 @@ public class WCM_Conetnt_POF extends BaseClass {
 					LogFactory.info("Unable to find the xpath for title::" + childIndexPageLinkPortlet.get(cilp));
 				}
 			}
-			// creating list for Child index page content apart from link portlets
-			/*for (int gcct = 0; gcct < grandChildContentForChildIndexPage.size(); gcct++) {
-				String gccfci = grandChildContentForChildIndexPage.get(gcct);
-				if (ValidationFactory.isElementPresent(
-						By.xpath("//a[.='" + gccfci + "' and starts-with(@title,'View children')]"))) {
-
-					String grandChildType = checkContentType(gccfci);
-					if (grandChildType.contains("SAT-Default Sub-Site Area")) {
-						IsGrandChildIndex_Categories.add(gccfci);
-					}
-					System.out.println("This child:" + gccfci + " is a " + grandChildType);
-				} else {
-					LogFactory.info("Unable to find the xpath for title::" + gccfci);
-				}
-			}*/
+			
 			System.out.println("Grand Child Index page::" + tableChildIsChildIndexPage.get(Level) + " has total::"
 					+ IsGrandChild_Tables.size() + " tables, and " + IsGrandChildIndex_Categories.size()
 					+ " categories");
 
 			/// Fetching content for Child index page's categories
+			HashMap<String,String> gcipChildCategory=new HashMap<String,String>();
 			for (int cc = 0; cc < numberOfContentsToFetch(IsGrandChildIndex_Categories); cc++) {
 				System.out.println("Reading content for Category " + IsGrandChildIndex_Categories.get(cc)
 						+ " of Grand Child Index Page:"
@@ -6082,14 +6102,17 @@ public class WCM_Conetnt_POF extends BaseClass {
 					String levelToFwd;
 					if (Level.contains("3rdLevelGrandChildIndexPage") || Level.contains("3rdLevelLandingPage")) {
 						levelToFwd = "3rdLevelGrandChildIndexPageCategories";
-						tableChildIsChildIndexPage.put("3rdLevelGrandChildIndexPageCategories", childCategoryTitle);
+						gcipChildCategory.put("3rdLevelGrandChildIndexPageCategories", childCategoryTitle);
+						gcipChildCategory.putAll(tableChildIsChildIndexPage);
+						
 					} else {
 						levelToFwd = "4thLevelChildIndexPageCategories";
-						tableChildIsChildIndexPage.put("4thLevelChildIndexPageCategories", childCategoryTitle);
+						gcipChildCategory.put("4thLevelChildIndexPageCategories", childCategoryTitle);
+						gcipChildCategory.putAll(tableChildIsChildIndexPage);
 					}
 					// System.out.println(wcmKeyValue1);
 					
-					checkForNestedcategories(tableChildIsChildIndexPage, levelToFwd);
+					checkForNestedcategories(gcipChildCategory, levelToFwd);
 					
 
 					wcmalrtDriver
