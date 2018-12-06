@@ -2031,6 +2031,13 @@ public class Favourites_POF extends BaseClass {
                                                                                                                                                 By.xpath("//div[@class='fav-link-body']//span[@class='icon folder closed']"))) {
                                                                                                                                 folder_icon.get(j).click();
                                                                                                                 }
+                                                                                                                else if(ValidationFactory.isElementPresent(
+                                                                                                                                                By.xpath("//div[@class='fav-link-body']//span[@class='icon folder  closed']"))){
+                                                                                                                	
+                                                                                                                	folder_icon.get(j).click();
+                                                                                                                
+                                                                                                                	
+                                                                                                                }
                                                                                                 }
                                                                                                 if (countryFlag && productFlag && racfFlag && department_new_flag) {
 
@@ -2100,15 +2107,15 @@ public class Favourites_POF extends BaseClass {
                                                                 }
 
                                                                 
-                                                               if ( !Allflag_title_result.isEmpty() && title_result.isEmpty() && country_result.isEmpty() && product_result.isEmpty()) {
+                                                               if ( Allflag_title_result.isEmpty() && title_result.isEmpty() && country_result.isEmpty() && product_result.isEmpty()) {
                                                                                 
-                                                
-                                                                FinalResult = Allflag_title_result + "</br> " + title_result + "</br> " + country_result + "</br> "
-                                                                                                + product_result + "";
+                                                            	   resultflag="Fail";
                                                                 }
                                                                 else {
-                                                                                resultflag="Fail";
-                                                                                FinalResult = " Looks like nothing has been copied reason could be Invalid 2nd User, please check all mappings check the 2nd dealer/employee and update and retry ";
+                                                                	
+                                                                	FinalResult = Allflag_title_result + "</br> " + title_result + "</br> " + country_result + "</br> "
+                                                                            + product_result + "";
+                                                                                
                                                                 }
                                                                 
                                                                 ReportFactory.reporterOutput(TCID, "Copy favourites from Employee/Dealer",
