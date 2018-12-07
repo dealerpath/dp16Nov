@@ -1582,7 +1582,6 @@ public class WCM_Conetnt_POF extends BaseClass {
 							subDepartmentTableKeyValue.put("Test Case ID", wcmTCID);
 							subDepartmentTableKeyValue.put("DepartmentName", departmentName);
 							subDepartmentTableKeyValue.put("2ndLevel", subDeptsUnderDeptName);
-							//subDepartmentTableKeyValue.put("3rdLevelIndexPage", SAT_Table_Index_pages.get(rt));
 							subDepartmentTableKeyValue.put("3rdLevelIndexPage", linksAndSATHashMap.get(SAT_Table_Index_pages.get(rt)));
 							subDepartmentTableKeyValue.putAll(subDepartmentTable);
 
@@ -1699,7 +1698,7 @@ public class WCM_Conetnt_POF extends BaseClass {
 				}
 
 			}
-			//fetchContentForGrandChildIndexPage(tableChildIsChildIndexPage, Level);
+			
 			
 			for(int tcc=0;tcc<table_ChildCategoriesList.size();tcc++)
 			{
@@ -1746,7 +1745,7 @@ public class WCM_Conetnt_POF extends BaseClass {
 			
 			
 			if (tableRows.size() > 0) {
-				for (int rtr = 0; rtr < tableRows.size(); rtr++) {
+				for (int rtr = 0	; rtr < tableRows.size(); rtr++) {
 
 					if (ValidationFactory.isElementPresent(By.xpath("//a[.='" + tableRows.get(rtr)
 							+ "' and not(contains(@title, 'View children')) and not(contains(@title, 'Navigate to'))]"))) {
@@ -1787,9 +1786,9 @@ public class WCM_Conetnt_POF extends BaseClass {
 
 				// now fetching table data apart from ROWS
 				if (otherTableData.size() > 0) {
-					System.out.println("Table::" + tableName + " has index page type content" + otherTableData.size());
+					System.out.println("Table::" + tableName + " has content of index page type:: " + otherTableData.size());
 
-					System.out.println("Now fetching Child Index page's content for Table index page::" + tableName);
+					
 					List<String> table_ChildIndexPagesList = new ArrayList<String>();
 					
 					List<String> table_ChildTablesList = new ArrayList<String>();
@@ -1809,9 +1808,7 @@ public class WCM_Conetnt_POF extends BaseClass {
 								table_ChildIndexPagesList.add(tableChildName);
 							} else if (tableChildContentType.contains("SAT-Table Index Page")) {
 								table_ChildTablesList.add(tableChildName);
-							} /*else if (tableChildContentType.contains("SAT-Default Sub-Site Area")) {
-								table_ChildCategoriesList.add(tableChildName);
-							}*/
+							} 
 						} else {
 							LogFactory.info("Unable to find the xpath for title::" + tableChildName);
 						}
@@ -1822,7 +1819,7 @@ public class WCM_Conetnt_POF extends BaseClass {
 							+ table_ChildCategoriesList.size() + " categories");
 					// fetching content for table index page apart from link portlets
 					for (int tcipt = 0; tcipt < numberOfContentsToFetch(table_ChildTablesList); tcipt++) {
-
+					
 						System.out.println("Fetching Child Table:: " + table_ChildTablesList.get(tcipt)
 								+ " Content for Table index page::" + tableName);// Child Table
 
@@ -1839,9 +1836,10 @@ public class WCM_Conetnt_POF extends BaseClass {
 							tabledata = fetchTablesContent(tableChildTabletitle);
 
 							tableChildIsTables.put("Test Case ID", wcmTCID);
-
-							tableChildIsTables.put("DepartmentName", tableStructure.get("DepartmentName"));
-							tableChildIsTables.put("2ndLevel", tableStructure.get("2ndLevel"));
+							tableChildIsTables.putAll(tableStructure);
+							tableChildIsTables.putAll(tabledata);
+							//tableChildIsTables.put("DepartmentName", tableStructure.get("DepartmentName"));
+							//tableChildIsTables.put("2ndLevel", tableStructure.get("2ndLevel"));
 
 							if (Level.contains("3rdLevelIndexPage")) {
 								tableChildIsTables.put("3rdLevelIndexPage", linksAndSATHashMap.get(tableName));
@@ -1864,51 +1862,18 @@ public class WCM_Conetnt_POF extends BaseClass {
 
 					}
 
-					/// Fetching content for Child index page's categories
-
-					/*for (int tipc = 0; tipc < numberOfContentsToFetch(table_ChildCategoriesList); tipc++) {
-						System.out.println("Reading content for Category " + table_ChildCategoriesList.get(tipc)
-								+ " of Table Index Page::" + tableName);// SALES
-
-						if (ValidationFactory.isElementPresent(By.xpath("//a[.='" + table_ChildCategoriesList.get(tipc)
-								+ "' and starts-with(@title,'View children')]"))) {
-							WebElement tableChildCategory = wcmalrtDriver
-									.findElement(By.xpath("//a[.='" + table_ChildCategoriesList.get(tipc)
-											+ "' and starts-with(@title,'View children')]"));
-
-							String tableChildCategoryTitle = tableChildCategory.getText();
-
-							tableChildCategory.click(); // tools and documents
-							System.out.println("Category ::" + tableChildCategoryTitle + " for Table index page:"
-									+ tableName + " is clicked");// table index page first category clicked
-
-							// checking for nested category
-
-							String wcmTCID = testCaseID + testcaseNumber;
-							tableChildIsCategory.put("Test Case ID", wcmTCID);
-							tableChildIsCategory.put("3rdLevelIndexPageCategories", tableChildCategoryTitle);
-							tableChildIsCategory.putAll(tableStructure);
-
-							checkForNestedcategories(tableChildIsCategory, "3rdLevelIndexPageCategories");
-
-							wcmalrtDriver.findElement(By.xpath("//a[contains(.,'" + tableName + "')]")).click();
-						} else {
-							LogFactory
-									.info("Unable to find the xpath for title::" + table_ChildCategoriesList.get(tipc));
-						}
-					}*/
-
+					
 					for (int tcip = 0; tcip < table_ChildIndexPagesList.size(); tcip++) {
+						
+						tableChildIsChildIndexPage.putAll(tableStructure);
 						if (Level.contains("3rdLevelIndexPage")) {
-							tableChildIsChildIndexPage.put("3rdLevelIndexPage", linksAndSATHashMap.get(tableName));
+							//tableChildIsChildIndexPage.put("3rdLevelIndexPage", linksAndSATHashMap.get(tableName));
 							tableChildIsChildIndexPage.put("3rdLevelChildIndexPage", linksAndSATHashMap.get(table_ChildIndexPagesList.get(tcip)));
 						} else {
 							tableChildIsChildIndexPage.put("4thLevelIndexPage", linksAndSATHashMap.get(tableName));
 							tableChildIsChildIndexPage.put("4thLevelChildIndexPage", linksAndSATHashMap.get(table_ChildIndexPagesList.get(tcip)));
 						}
 						
-						//tableChildIsChildIndexPage.put("3rdLevelChildIndexPage", table_ChildIndexPagesList.get(tcip));
-
 						if (ValidationFactory.isElementPresent(By.xpath("//a[.='" + table_ChildIndexPagesList.get(tcip)
 								+ "' and starts-with(@title,'View children')]"))) {
 							WebElement categoryChildIndexPage = wcmalrtDriver
