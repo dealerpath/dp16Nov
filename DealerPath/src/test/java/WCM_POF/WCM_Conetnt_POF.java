@@ -5697,14 +5697,17 @@ public class WCM_Conetnt_POF extends BaseClass {
 							String checkNestedategory = wcmalrtDriver
 									.findElement(By.xpath("//tr[" + ncc + "]//td[2]//img[2]/following::td[1]//a/span"))
 									.getText();
-							if (isNestedCategoryChildPresent.contains("View children")) {
+							/*if (isNestedCategoryChildPresent.contains("View children")) {
 								nestedcategoryChildContent.add(checkNestedategory);
 								System.out.println("Child content " + checkNestedategory + " added as a SAT");
 							} else {
 								nestedcategoryNoChildContent1.add(checkNestedategory);
 								System.out.println("Child content " + checkNestedategory + " added as a link");
+							}*/
+							if (!(isNestedCategoryChildPresent.contains("View children"))) {
+								nestedcategoryNoChildContent1.add(checkNestedategory);
+								System.out.println("Child content " + checkNestedategory + " added as a Link");
 							}
-
 						}
 						HashMap<String,String> ncNoChildContent=new HashMap<String,String>();
 						for (int ncncc = 0; ncncc < numberOfContentsToFetch(nestedcategoryNoChildContent1); ncncc++) {
@@ -5716,6 +5719,26 @@ public class WCM_Conetnt_POF extends BaseClass {
 								wcmalrtDriver.findElement(By.xpath("//a[.='" + nestedcategoryNoChildContent1.get(ncncc)
 										+ "' and not(contains(@title, 'View children')) and not(contains(@title, 'Navigate to'))]"))
 										.click();
+								
+								
+								String contentType = contentTypeOnPage.getText();
+								String[] cType = contentType.split("/");
+								String conType = cType[cType.length - 1].trim();
+								
+								if (conType.equals("AT-Child Index Page") && ValidationFactory.isElementPresent(webContentElement)
+										&& !(webContentLinkText.getText().contains("None"))) {
+									
+									System.out.println("This is an index page link");
+									String[] indexPageTitleArray = webContentLinkText.getText().split("/");
+									String indexPageTitle = indexPageTitleArray[indexPageTitleArray.length - 1].trim();
+
+									linksAndSATHashMap.put(indexPageTitle, nestedcategoryNoChildContent1.get(ncncc));
+
+									nestedcategoryChildContent.add(indexPageTitle);
+								}
+								
+								
+								
 
 								String wcmTCID = testCaseID + testcaseNumber;
 								String[] Key = levelToFwd.split("Categories");
@@ -5802,7 +5825,7 @@ public class WCM_Conetnt_POF extends BaseClass {
 						
 						HashMap<String,String> ncChildGCIP=new HashMap<String,String>();
 						for (int ncgcip = 0; ncgcip < numberOfContentsToFetch(IsCategoryChildGCIP); ncgcip++) {
-							System.out.println("fetchinf grand child index page content for nested category");
+							System.out.println("fetching grand child index page content for nested category");
 							
 							String[] Key = levelToFwd.split("Categories");
 							ncChildGCIP.putAll(wcmKeyValuePair);
