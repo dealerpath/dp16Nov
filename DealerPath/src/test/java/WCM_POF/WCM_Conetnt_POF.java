@@ -235,7 +235,7 @@ public class WCM_Conetnt_POF extends BaseClass {
 		try {
 			contentSection.click();
 
-			//alertsSection.click();
+			alertsSection.click();
 
 			if (isElementNotPresent(removeFilterForStatus) && !(publishedDate.equals("NA"))) {
 				applyFilterForStatusAndDate();
