@@ -160,8 +160,8 @@ public static  boolean WaitForTexttoBePresentInElement(WebElement element, Strin
 	public static WebElement explicitWait(final String strLocator)  
 	{  
 		Wait<WebDriver> wait = new FluentWait<WebDriver>(wbDriver)  
-				.withTimeout(20, TimeUnit.SECONDS)  
-				.pollingEvery(5, TimeUnit.SECONDS)  
+			//	.withTimeout(20, TimeUnit.SECONDS)  
+			//	.pollingEvery(5, TimeUnit.SECONDS)  
 				.ignoring(NoSuchElementException.class); 
 
 		WebElement element= wait.until(new Function<WebDriver, WebElement>() {  
@@ -175,8 +175,8 @@ public static  boolean WaitForTexttoBePresentInElement(WebElement element, Strin
 	public static WebElement explicitWaitByXpath(final String strLocator)  
 	{  
 		Wait<WebDriver> wait = new FluentWait<WebDriver>(wbDriver)  
-				.withTimeout(20, TimeUnit.SECONDS)  
-				.pollingEvery(5, TimeUnit.SECONDS)  
+			//	.withTimeout(20, TimeUnit.SECONDS)  
+			//	.pollingEvery(5, TimeUnit.SECONDS)  
 				.ignoring(NoSuchElementException.class); 
 
 		WebElement element= wait.until(new Function<WebDriver, WebElement>() {  
@@ -279,8 +279,8 @@ public static  boolean WaitForTexttoBePresentInElement(WebElement element, Strin
 	public static WebElement FluentWaitByWebElement(final WebElement strLocator)  
 	{  
 		Wait<WebDriver> wait = new FluentWait<WebDriver>(BaseClass.wbDriver)  
-				.withTimeout(60, TimeUnit.SECONDS)  
-				.pollingEvery(2, TimeUnit.SECONDS)  
+			//	.withTimeout(60, TimeUnit.SECONDS)  
+			//	.pollingEvery(2, TimeUnit.SECONDS)  
 				.ignoring(NoSuchElementException.class); 
 
 		WebElement element= wait.until(new Function<WebDriver, WebElement>() {  
