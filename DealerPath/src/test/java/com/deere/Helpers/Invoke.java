@@ -33,7 +33,7 @@ public class Invoke extends BaseClass {
 				System.err.close();
 				ip = new FileInputStream(strWorkingDir + "\\src\\test\\java\\com\\deere\\ConfigFactory\\config.properties");
 				configProperties.load(ip);
-				
+				System.out.println("hello2");
 				GenericFactory.readPropertyFile();
 				ExcelFactory.readWCMContentData();
 				translationSheet=ExcelFactory.translationLookUp();
