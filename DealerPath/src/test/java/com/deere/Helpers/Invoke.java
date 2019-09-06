@@ -42,6 +42,7 @@ public class Invoke extends BaseClass {
 				GenericFactory.createXML();
 				BrowserFactory.initiateDriver();
 				initPageElements();
+				System.out.println("hello");
 				ReportFactory.createHeader();
 				GenericFactory.createHeaderSection("Login Page");
 			} catch (Exception e) {
