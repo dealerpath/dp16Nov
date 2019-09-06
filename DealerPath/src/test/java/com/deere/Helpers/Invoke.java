@@ -36,6 +36,7 @@ public class Invoke extends BaseClass {
 				
 				GenericFactory.readPropertyFile();
 				ExcelFactory.readWCMContentData();
+				System.out.println("hello1");
 				translationSheet=ExcelFactory.translationLookUp();
 				classesExecution=ExcelFactory.getRunningStatus();
 				ExcelFactory.setCredentials();
